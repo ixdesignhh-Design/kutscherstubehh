@@ -4,1339 +4,1047 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kutscherstube – Speisekarte</title>
-  <meta name="description" content="Digitale Speisekarte der Kutscherstube" />
   <style>
     :root{
-      --bg:#12100f;
-      --bg2:#1a1613;
-      --panel:#1f1a17;
-      --card:#241f1b;
-      --line:rgba(255,255,255,.08);
-      --text:#f5efe7;
-      --muted:#ccbca8;
-      --accent:#c79b6b;
-      --accent2:#8e6740;
-      --ok:#8fc47e;
-      --shadow:0 14px 38px rgba(0,0,0,.28);
-      --radius:20px;
-      --max:1100px;
+      --bg:#070504;
+      --bg-soft:#0d0907;
+      --panel:#120d0a;
+      --line:#3a2818;
+      --line-soft:#24180f;
+      --text:#f0e6d6;
+      --muted:#cdbda7;
+      --gold:#c7a56c;
+      --paper:#ece2d0;
+      --dark:#17110c;
+      --ok:#b8d8a8;
     }
 
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{
       margin:0;
-      font-family:Arial,Helvetica,sans-serif;
-      color:var(--text);
       background:
-        radial-gradient(circle at top right, rgba(199,155,107,.12), transparent 20%),
-        linear-gradient(180deg,var(--bg) 0%, #0d0c0b 100%);
-      line-height:1.55;
+        radial-gradient(circle at top, rgba(140,100,50,.06), transparent 24%),
+        linear-gradient(180deg, #080605 0%, #050403 100%);
+      color:var(--text);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height:1.5;
     }
 
-    .wrap{
-      width:min(var(--max), calc(100% - 24px));
-      margin:0 auto;
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(1120px, calc(100% - 28px)); margin:0 auto}
+
+    .hero{
+      padding:24px 0 18px;
+      border-bottom:1px solid var(--line-soft);
     }
 
-    .top{
-      position:sticky;
-      top:0;
-      z-index:1000;
-      backdrop-filter:blur(14px);
-      background:rgba(15,13,12,.92);
-      border-bottom:1px solid var(--line);
-    }
-
-    .top-inner{
+    .hero-top{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
-      gap:12px;
-      padding:14px 0;
+      gap:16px;
       flex-wrap:wrap;
     }
 
     .brand h1{
       margin:0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(1.4rem,2.6vw,2rem);
+      font-size:clamp(2.4rem, 5.6vw, 4.4rem);
+      line-height:1;
+      color:var(--text);
+      font-weight:700;
     }
 
-    .brand p{
-      margin:3px 0 0;
+    .motto{
+      margin:8px 0 0;
+      font-size:clamp(1rem, 2vw, 1.45rem);
       color:var(--muted);
-      font-size:.92rem;
+      font-style:italic;
     }
 
     .lang-switch{
       display:flex;
       gap:8px;
-      background:rgba(255,255,255,.05);
-      padding:6px;
-      border-radius:999px;
-      border:1px solid var(--line);
+      align-items:center;
+      margin-top:4px;
     }
 
-    .lang-switch button{
-      border:0;
+    .lang-btn{
+      appearance:none;
+      border:1px solid var(--line);
       background:transparent;
       color:var(--text);
-      padding:10px 14px;
-      border-radius:999px;
+      min-width:52px;
+      height:38px;
+      padding:0 12px;
+      font:inherit;
+      font-size:.92rem;
       font-weight:700;
       cursor:pointer;
+      transition:.2s ease;
     }
 
-    .lang-switch button.active{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:#18120f;
+    .lang-btn.active,
+    .lang-btn:hover{
+      background:var(--paper);
+      color:var(--dark);
+      border-color:var(--paper);
     }
 
-    .hero{
-      padding:28px 0 18px;
-    }
-
-    .hero-box{
-      background:
-        linear-gradient(135deg, rgba(199,155,107,.12), rgba(255,255,255,.02)),
-        linear-gradient(180deg,var(--panel) 0%, var(--card) 100%);
+    .hero-card{
+      margin-top:18px;
       border:1px solid var(--line);
-      border-radius:28px;
-      padding:26px 20px;
-      box-shadow:var(--shadow);
+      background:linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,0)), var(--panel);
+      padding:24px;
     }
 
-    .badge{
-      display:inline-block;
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--line);
-      color:var(--muted);
-      font-size:.88rem;
-      margin-bottom:12px;
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.3fr .9fr;
+      gap:24px;
     }
 
-    .hero h2{
-      margin:0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(2rem,4.5vw,3.8rem);
+    .hero-title{
+      margin:0 0 10px;
+      font-size:clamp(1.85rem, 4vw, 2.8rem);
       line-height:1.05;
+      color:var(--text);
     }
 
-    .hero p{
-      margin:14px 0 0;
-      max-width:820px;
-      color:#e0d6ca;
+    .hero-text{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:1.06rem;
+      max-width:700px;
     }
 
-    .actions{
+    .address{
+      font-size:1.1rem;
+      color:var(--text);
+      margin-bottom:18px;
+    }
+
+    .cta-row{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
-      margin-top:18px;
     }
 
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      padding:12px 18px;
-      border-radius:999px;
-      font-weight:700;
-      text-decoration:none;
+      min-height:46px;
+      padding:0 18px;
       border:1px solid var(--line);
+      background:transparent;
       color:var(--text);
-      background:rgba(255,255,255,.04);
+      font:inherit;
+      font-size:.96rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s ease;
     }
 
-    .btn.primary{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:#1a130f;
-      border-color:transparent;
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{
+      background:var(--paper);
+      color:var(--dark);
+      border-color:var(--paper);
     }
 
-    .cards{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:14px;
-      margin-top:18px;
-    }
-
-    .card{
-      background:rgba(255,255,255,.04);
+    .info-panel{
       border:1px solid var(--line);
-      border-radius:18px;
-      padding:16px;
-      box-shadow:var(--shadow);
+      background:#0f0b08;
     }
 
-    .card small{
-      display:block;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-
-    .card strong{
-      display:block;
-      font-size:1rem;
-    }
-
-    .ok{color:var(--ok)}
-
-    section{
-      padding:18px 0 0;
-      scroll-margin-top:90px;
-    }
-
-    .section-head{
-      margin-bottom:16px;
-    }
-
-    .section-head h3{
-      margin:0;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:clamp(1.4rem,2.3vw,2rem);
-    }
-
-    .section-head p{
-      margin:6px 0 0;
-      color:var(--muted);
-    }
-
-    .cat-nav{
-      position:sticky;
-      top:72px;
-      z-index:900;
-      background:rgba(15,13,12,.95);
-      backdrop-filter:blur(14px);
-      border-top:1px solid var(--line);
+    .info-row{
+      padding:18px 20px;
       border-bottom:1px solid var(--line);
-      margin:12px 0 18px;
     }
 
-    .cat-nav .inner{
-      display:flex;
-      gap:10px;
-      overflow-x:auto;
-      padding:12px 0;
+    .info-row:last-child{border-bottom:none}
+
+    .info-label{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-size:.82rem;
+      margin-bottom:7px;
     }
 
-    .cat-nav .inner::-webkit-scrollbar{display:none}
-
-    .chip{
-      white-space:nowrap;
-      padding:10px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
+    .info-value{
+      font-size:1.08rem;
       font-weight:700;
       color:var(--text);
-      text-decoration:none;
+    }
+
+    .status-open{color:var(--ok)}
+
+    .menu-page{padding:28px 0 70px}
+
+    .section-head h2{
+      margin:0 0 14px;
+      font-size:clamp(2rem, 4.8vw, 3rem);
+      color:var(--text);
+    }
+
+    .sticky-categories{
+      position:sticky;
+      top:0;
+      z-index:999;
+      background:rgba(7,5,4,.97);
+      border-top:1px solid var(--line-soft);
+      border-bottom:1px solid var(--line-soft);
+      box-shadow:0 8px 16px rgba(0,0,0,.45);
+      padding:8px 0;
+      margin:0 0 24px;
+      backdrop-filter:blur(4px);
+    }
+
+    .category-tabs{
+      display:flex;
+      gap:8px;
+      overflow-x:auto;
+      scrollbar-width:none;
+      scroll-behavior:smooth;
+      padding:2px 0;
+    }
+
+    .category-tabs::-webkit-scrollbar{display:none}
+
+    .tab-btn{
+      flex:0 0 auto;
+      min-width:auto;
+      height:40px;
+      border:1px solid var(--line);
+      background:#0f0b08;
+      color:var(--text);
+      font:inherit;
+      font-size:.9rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s ease;
+      padding:0 14px;
+      white-space:nowrap;
+    }
+
+    .tab-btn.active,
+    .tab-btn:hover{
+      background:#1a120d;
+      color:var(--gold);
+      border-color:#5a3f27;
     }
 
     .category{
-      padding-top:8px;
-      scroll-margin-top:130px;
+      scroll-margin-top:84px;
+      margin-bottom:36px;
     }
 
-    .category h4{
-      margin:0 0 14px;
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:1.2rem;
+    .category-title{
+      margin:0 0 12px;
+      padding-bottom:12px;
+      border-bottom:1px solid var(--line);
+      font-size:clamp(1.8rem, 4vw, 2.5rem);
+      color:var(--gold);
     }
 
-    .menu-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
-    }
-
-    .item{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.025));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .item-head{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-      margin-bottom:8px;
-    }
-
-    .item-head h5{
-      margin:0;
-      font-size:1.04rem;
-      line-height:1.3;
-    }
-
-    .price{
-      color:var(--accent);
-      font-weight:800;
-      white-space:nowrap;
-    }
-
-    .desc{
-      margin:0;
-      color:#ddd2c5;
-      font-size:.95rem;
-    }
-
-    .tag{
-      display:inline-block;
-      margin-top:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.05);
-      border:1px solid var(--line);
+    .category-note{
+      margin:-2px 0 12px;
       color:var(--muted);
-      font-size:.8rem;
+      font-size:.96rem;
+      font-style:italic;
+    }
+
+    .menu-list{
+      border-top:1px solid var(--line-soft);
+    }
+
+    .dish{
+      padding:18px 0 18px;
+      border-bottom:1px solid var(--line-soft);
+    }
+
+    .dish-head{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:6px;
+    }
+
+    .dish-name{
+      margin:0;
+      font-size:1.38rem;
+      line-height:1.18;
+      color:var(--text);
       font-weight:700;
     }
 
-    .addon{
-      margin-top:12px;
-      padding-top:10px;
-      border-top:1px dashed rgba(255,255,255,.12);
+    .dish-price{
+      white-space:nowrap;
+      color:var(--gold);
+      font-size:1.28rem;
+      font-weight:700;
     }
 
-    .addon-row{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      padding:4px 0;
-      font-size:.92rem;
-      color:#e8ddd1;
+    .dish-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:1rem;
     }
 
-    .panel{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--line);
-      border-radius:24px;
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .hours{
-      display:grid;
-      gap:10px;
+    .hours-list{
+      border-top:1px solid var(--line-soft);
     }
 
     .hours-row{
       display:grid;
       grid-template-columns:1fr auto;
-      gap:12px;
-      padding:12px 14px;
-      border-radius:16px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-    }
-
-    .info-grid,
-    .contact-grid{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:14px;
+      padding:16px 0;
+      border-bottom:1px solid var(--line-soft);
     }
 
-    .feature{
-      padding:14px;
-      border-radius:16px;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--line);
-      color:#e6dbcf;
+    .hours-day{
+      color:var(--text);
+      font-size:1.06rem;
+      font-weight:700;
+    }
+
+    .hours-time{
+      color:var(--muted);
+      font-size:1.06rem;
+      text-align:right;
     }
 
     .footer{
-      padding:24px 0 60px;
+      border-top:1px solid var(--line-soft);
+      padding:22px 0 32px;
       color:var(--muted);
-      font-size:.92rem;
+      font-size:.96rem;
     }
 
-    .t{display:none}
-    body.lang-de .t.de{display:inline}
-    body.lang-pl .t.pl{display:inline}
-    body.lang-en .t.en{display:inline}
-    body.lang-de .t.de.block{display:block}
-    body.lang-pl .t.pl.block{display:block}
-    body.lang-en .t.en.block{display:block}
-
-    @media (max-width:980px){
-      .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .menu-grid{grid-template-columns:1fr}
-      .info-grid,.contact-grid{grid-template-columns:1fr}
+    @media (max-width: 900px){
+      .hero-grid{grid-template-columns:1fr}
+      .dish-head{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:4px;
+      }
     }
 
-    @media (max-width:700px){
-      .cards{grid-template-columns:1fr}
-      .top-inner{align-items:flex-start}
-      .wrap{width:min(var(--max), calc(100% - 18px))}
+    @media (max-width: 640px){
+      .hero{padding-top:18px}
+      .hero-card{padding:18px}
+      .btn{width:100%}
+      .dish-name{font-size:1.22rem}
+      .dish-price{font-size:1.16rem}
+      .dish-desc{font-size:.96rem}
+      .hours-row{grid-template-columns:1fr}
+      .hours-time{text-align:left}
     }
   </style>
 </head>
-<body class="lang-de">
+<body>
 
-  <header class="top">
-    <div class="wrap top-inner">
-      <div class="brand">
-        <h1>Kutscherstube</h1>
-        <p>
-          <span class="t de">Essen mit besonderer Note</span>
-          <span class="t pl">Jedzenie z wyjątkową nutą</span>
-          <span class="t en">Dining with a special touch</span>
-        </p>
+  <header class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <div class="brand">
+          <h1>Kutscherstube</h1>
+          <p class="motto" id="motto">Essen mit besonderer Note</p>
+        </div>
+
+        <div class="lang-switch" aria-label="Sprachauswahl">
+          <button class="lang-btn active" data-lang="de">DE</button>
+          <button class="lang-btn" data-lang="pl">PL</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
       </div>
 
-      <div class="lang-switch">
-        <button type="button" class="lang-btn active" data-lang="de">DE</button>
-        <button type="button" class="lang-btn" data-lang="pl">PL</button>
-        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      <div class="hero-card">
+        <div class="hero-grid">
+          <div>
+            <h2 class="hero-title" id="heroTitle">Kutscherstube</h2>
+            <p class="hero-text" id="heroText">Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost.</p>
+
+            <div class="address" id="addressBlock">
+              Großmoorbogen 11A<br>
+              21079 Hamburg
+            </div>
+
+            <div class="cta-row">
+              <a href="#speisekarte" class="btn btn-primary" id="btnMenu">Zur Speisekarte</a>
+              <a href="#oeffnungszeiten" class="btn" id="btnHours">Öffnungszeiten</a>
+              <a href="tel:01756803931" class="btn" id="btnCall">Anrufen</a>
+              <a href="https://maps.google.com/?q=Großmoorbogen+11A,+21079+Hamburg" target="_blank" class="btn" id="btnRoute">Anfahrt</a>
+            </div>
+          </div>
+
+          <aside class="info-panel">
+            <div class="info-row">
+              <div class="info-label" id="labelStatus">Status</div>
+              <div class="info-value status-open" id="statusText">Geöffnet · Schließt um 20:00</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label" id="labelPhone">Telefon</div>
+              <div class="info-value">0175 6803931</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label" id="labelService">Service</div>
+              <div class="info-value" id="serviceText">Vor Ort · Zum Mitnehmen · WhatsApp</div>
+            </div>
+            <div class="info-row">
+              <div class="info-label" id="labelNote">Hinweis</div>
+              <div class="info-value" id="noteText">Nur Barzahlung</div>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="hero">
+  <main class="menu-page" id="speisekarte">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="menuHeading">Speisekarte</h2>
+      </div>
+    </div>
+
+    <div class="sticky-categories">
       <div class="wrap">
-        <div class="hero-box">
-          <div class="badge">
-            <span class="t de">Digitale Speisekarte</span>
-            <span class="t pl">Cyfrowe menu</span>
-            <span class="t en">Digital menu</span>
-          </div>
+        <nav class="category-tabs" id="categoryTabs" aria-label="Menükategorien">
+          <button class="tab-btn active" data-target="fruehstueck" id="tab-fruehstueck">Frühstück</button>
+          <button class="tab-btn" data-target="schnitzel" id="tab-schnitzel">Schnitzel</button>
+          <button class="tab-btn" data-target="salat" id="tab-salat">Salat</button>
+          <button class="tab-btn" data-target="snacks" id="tab-snacks">Snacks</button>
+          <button class="tab-btn" data-target="hausgerichte" id="tab-hausgerichte">Hausgerichte</button>
+          <button class="tab-btn" data-target="getraenke" id="tab-getraenke">Getränke</button>
+          <button class="tab-btn" data-target="oeffnungszeiten" id="tab-oeffnungszeiten">Zeiten</button>
+        </nav>
+      </div>
+    </div>
 
-          <h2>
-            <span class="t de">Willkommen in der Kutscherstube</span>
-            <span class="t pl">Witamy w Kutscherstube</span>
-            <span class="t en">Welcome to Kutscherstube</span>
-          </h2>
+    <div class="wrap">
 
-          <p>
-            <span class="t de">Übersichtlich, schnell und mobilfreundlich – hier finden Sie Speisekarte, Öffnungszeiten, Kontakt und praktische Informationen an einem Ort.</span>
-            <span class="t pl">Przejrzyście, szybko i wygodnie na telefonie — tutaj znajdziesz menu, godziny otwarcia, kontakt i najważniejsze informacje w jednym miejscu.</span>
-            <span class="t en">Clear, fast and mobile-friendly — here you can find the menu, opening hours, contact and practical information in one place.</span>
-          </p>
-
-          <div class="actions">
-            <a class="btn primary" href="#menu">
-              <span class="t de">Speisekarte ansehen</span>
-              <span class="t pl">Zobacz menu</span>
-              <span class="t en">View menu</span>
-            </a>
-            <a class="btn" href="#hours">
-              <span class="t de">Öffnungszeiten</span>
-              <span class="t pl">Godziny otwarcia</span>
-              <span class="t en">Opening hours</span>
-            </a>
-            <a class="btn" href="tel:+491756803931">
-              <span class="t de">Jetzt anrufen</span>
-              <span class="t pl">Zadzwoń teraz</span>
-              <span class="t en">Call now</span>
-            </a>
-            <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Gro%C3%9Fmoorbogen%2011A%2C%2021079%20Hamburg">
-              <span class="t de">Route öffnen</span>
-              <span class="t pl">Otwórz trasę</span>
-              <span class="t en">Open route</span>
-            </a>
-          </div>
-
-          <div class="cards">
-            <div class="card">
-              <small>
-                <span class="t de">Status</span>
-                <span class="t pl">Status</span>
-                <span class="t en">Status</span>
-              </small>
-              <strong class="ok" id="statusText">Jetzt geöffnet</strong>
+      <section class="category" id="fruehstueck">
+        <h3 class="category-title" id="cat-fruehstueck">Frühstück</h3>
+        <p class="category-note" id="note-fruehstueck">Tylko pozycje z widoczną ceną.</p>
+        <div class="menu-list">
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Rührei mit Schinken und Zwiebeln</h4>
+              <div class="dish-price">7,00 €</div>
             </div>
+          </article>
 
-            <div class="card">
-              <small>
-                <span class="t de">Adresse</span>
-                <span class="t pl">Adres</span>
-                <span class="t en">Address</span>
-              </small>
-              <strong>Großmoorbogen 11A<br>21079 Hamburg</strong>
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Rundstück warm</h4>
+              <div class="dish-price">10,50 €</div>
             </div>
+          </article>
 
-            <div class="card">
-              <small>
-                <span class="t de">Telefon</span>
-                <span class="t pl">Telefon</span>
-                <span class="t en">Phone</span>
-              </small>
-              <strong>0175 6803931</strong>
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Polnische Wurst</h4>
+              <div class="dish-price">7,00 €</div>
             </div>
+            <p class="dish-desc">Mit geschmolzenen Zwiebeln, Brötchen</p>
+          </article>
 
-            <div class="card">
-              <small>
-                <span class="t de">Wichtig</span>
-                <span class="t pl">Ważne</span>
-                <span class="t en">Important</span>
-              </small>
-              <strong>
-                <span class="t de">Barzahlung • Vor Ort • Zum Mitnehmen</span>
-                <span class="t pl">Tylko gotówka • Na miejscu • Na wynos</span>
-                <span class="t en">Cash only • Dine in • Takeaway</span>
-              </strong>
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Bratkartoffeln</h4>
+              <div class="dish-price">11,00 €</div>
             </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Bauernfrühstück</h4>
+              <div class="dish-price">10,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">3 Spiegeleier</h4>
+              <div class="dish-price">7,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Bratkartoffeln / Krautsalat</h4>
+              <div class="dish-price">9,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Pommes</h4>
+              <div class="dish-price">4,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Rührei</h4>
+              <div class="dish-price">2,30 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Mett</h4>
+              <div class="dish-price">2,30 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Schweinebraten</h4>
+              <div class="dish-price">2,30 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Lachs</h4>
+              <div class="dish-price">2,80 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Matjes</h4>
+              <div class="dish-price">2,80 €</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="category" id="schnitzel">
+        <h3 class="category-title" id="cat-schnitzel">Schnitzel</h3>
+        <div class="menu-list">
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Jäger Schnitzel</h4>
+              <div class="dish-price">15,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Zigeuner Schnitzel</h4>
+              <div class="dish-price">15,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Hamburger Schnitzel</h4>
+              <div class="dish-price">15,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Hawai Schnitzel</h4>
+              <div class="dish-price">15,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Schnitzel Wiener Art</h4>
+              <div class="dish-price">14,00 €</div>
+            </div>
+            <p class="dish-desc">Beilagen: Pommes, Salat, Bratkartoffeln</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="category" id="salat">
+        <h3 class="category-title" id="cat-salat">Salat</h3>
+        <div class="menu-list">
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Salat mit Hähnchenbrust</h4>
+              <div class="dish-price">13,00 €</div>
+            </div>
+            <p class="dish-desc">Oliven, Baguette</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="category" id="snacks">
+        <h3 class="category-title" id="cat-snacks">Snacks</h3>
+        <div class="menu-list">
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Curry Wurst &amp; Pommes</h4>
+              <div class="dish-price">8,50 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Frikadelle + Brötchen</h4>
+              <div class="dish-price">4,50 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">2 Frikadellen + Kartoffelsalat + Krautsalat</h4>
+              <div class="dish-price">11,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Ketchup, Majo</h4>
+              <div class="dish-price">0,50 €</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="category" id="hausgerichte">
+        <h3 class="category-title" id="cat-hausgerichte">Hausgerichte</h3>
+        <p class="category-note" id="note-hausgerichte">Tylko pozycje z widoczną ceną ze screenów Google Menu.</p>
+        <div class="menu-list">
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Halbe Braten</h4>
+              <div class="dish-price">14,00 €</div>
+            </div>
+            <p class="dish-desc">Bohnen, Salzkartoffeln</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Hackbraten</h4>
+              <div class="dish-price">14,00 €</div>
+            </div>
+            <p class="dish-desc">Bohnen, Salzkartoffeln</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Königsberger Klops</h4>
+              <div class="dish-price">14,00 €</div>
+            </div>
+            <p class="dish-desc">Bohnen, Salzkartoffeln</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Krustenbraten</h4>
+              <div class="dish-price">15,00 €</div>
+            </div>
+            <p class="dish-desc">Rotkohl, Klösschen</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Schweinerippchen</h4>
+              <div class="dish-price">15,00 €</div>
+            </div>
+            <p class="dish-desc">Rotkohl, Salzkartoffeln</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Grützwurst</h4>
+              <div class="dish-price">14,00 €</div>
+            </div>
+            <p class="dish-desc">(Polnisch) Püree</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">2 Kohlrouladen</h4>
+              <div class="dish-price">15,00 €</div>
+            </div>
+            <p class="dish-desc">Püree, Tomaten-Sahne-Sauce</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Salzgurken Suppe</h4>
+              <div class="dish-price">10,00 €</div>
+            </div>
+            <p class="dish-desc">(Polnisch) Brötchen</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Hühnersuppe mit Graupen</h4>
+              <div class="dish-price">10,00 €</div>
+            </div>
+            <p class="dish-desc">Brot</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Rahmgulasch</h4>
+              <div class="dish-price">15,00 €</div>
+            </div>
+            <p class="dish-desc">Bohnen, Spätzle</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Hühnerfrikassee</h4>
+              <div class="dish-price">18,00 €</div>
+            </div>
+            <p class="dish-desc">Mischgemüse, Reis</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Steinpilze-Sahnesauce</h4>
+              <div class="dish-price">13,00 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Spinat</h4>
+              <div class="dish-price">13,00 €</div>
+            </div>
+            <p class="dish-desc">Salzkartoffeln, 3 Spiegeleier</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Schweineleber</h4>
+              <div class="dish-price">17,00 €</div>
+            </div>
+            <p class="dish-desc">Mischgemüse, Püree</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">LachsFilet</h4>
+              <div class="dish-price">17,00 €</div>
+            </div>
+            <p class="dish-desc">Kraut, Sahnesauce</p>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Hawaiischnitzel</h4>
+              <div class="dish-price">14,00 €</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="category" id="getraenke">
+        <h3 class="category-title" id="cat-getraenke">Getränke</h3>
+        <div class="menu-list">
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Becher Kaffee</h4>
+              <div class="dish-price">2,50 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Becher Tee</h4>
+              <div class="dish-price">2,50 €</div>
+            </div>
+          </article>
+
+          <article class="dish">
+            <div class="dish-head">
+              <h4 class="dish-name">Becher Kakao</h4>
+              <div class="dish-price">2,50 €</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="category" id="oeffnungszeiten">
+        <h3 class="category-title" id="cat-zeiten">Öffnungszeiten</h3>
+        <div class="hours-list">
+          <div class="hours-row">
+            <div class="hours-day" id="day-mon">Montag</div>
+            <div class="hours-time">08:00–20:00</div>
+          </div>
+          <div class="hours-row">
+            <div class="hours-day" id="day-tue">Dienstag</div>
+            <div class="hours-time">08:00–20:00</div>
+          </div>
+          <div class="hours-row">
+            <div class="hours-day" id="day-wed">Mittwoch</div>
+            <div class="hours-time">08:00–20:00</div>
+          </div>
+          <div class="hours-row">
+            <div class="hours-day" id="day-thu">Donnerstag</div>
+            <div class="hours-time">08:00–20:00</div>
+          </div>
+          <div class="hours-row">
+            <div class="hours-day" id="day-fri">Freitag</div>
+            <div class="hours-time">08:00–20:00</div>
+          </div>
+          <div class="hours-row">
+            <div class="hours-day" id="day-sat">Samstag</div>
+            <div class="hours-time" id="closed-sat">Geschlossen</div>
+          </div>
+          <div class="hours-row">
+            <div class="hours-day" id="day-sun">Sonntag</div>
+            <div class="hours-time" id="closed-sun">Geschlossen</div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="menu">
-      <div class="wrap">
-        <div class="section-head">
-          <h3>
-            <span class="t de">Speisekarte</span>
-            <span class="t pl">Menu</span>
-            <span class="t en">Menu</span>
-          </h3>
-          <p>
-            <span class="t de">Klare Kategorien, schnelle Orientierung und gut lesbare Preise.</span>
-            <span class="t pl">Czytelne kategorie, szybka orientacja i dobrze widoczne ceny.</span>
-            <span class="t en">Clear categories, quick navigation and easy-to-read prices.</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="cat-nav">
-        <div class="wrap inner">
-          <a class="chip" href="#starters">
-            <span class="t de">Vorspeisen</span>
-            <span class="t pl">Przystawki</span>
-            <span class="t en">Starters</span>
-          </a>
-          <a class="chip" href="#soups">
-            <span class="t de">Suppen</span>
-            <span class="t pl">Zupy</span>
-            <span class="t en">Soups</span>
-          </a>
-          <a class="chip" href="#salads">
-            <span class="t de">Salate</span>
-            <span class="t pl">Sałatki</span>
-            <span class="t en">Salads</span>
-          </a>
-          <a class="chip" href="#mains">
-            <span class="t de">Hauptgerichte</span>
-            <span class="t pl">Dania główne</span>
-            <span class="t en">Main dishes</span>
-          </a>
-          <a class="chip" href="#schnitzel">
-            <span class="t de">Schnitzel</span>
-            <span class="t pl">Schnitzle</span>
-            <span class="t en">Schnitzels</span>
-          </a>
-          <a class="chip" href="#kids">
-            <span class="t de">Kinder</span>
-            <span class="t pl">Dla dzieci</span>
-            <span class="t en">Kids</span>
-          </a>
-          <a class="chip" href="#desserts">
-            <span class="t de">Dessert</span>
-            <span class="t pl">Desery</span>
-            <span class="t en">Desserts</span>
-          </a>
-          <a class="chip" href="#aperitif">
-            <span class="t de">Aperitif</span>
-            <span class="t pl">Aperitif</span>
-            <span class="t en">Aperitif</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="wrap">
-        <div id="starters" class="category">
-          <h4>
-            <span class="t de">Vorspeisen</span>
-            <span class="t pl">Przystawki</span>
-            <span class="t en">Starters</span>
-          </h4>
-          <div class="menu-grid">
-            <article class="item">
-              <div class="item-head">
-                <h5>Tatar vom Räucherlachs</h5>
-                <div class="price">15,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Kartoffelplätzchen / Honig-Dill-Senfsauce</span>
-                <span class="t pl">Tatar z wędzonego łososia / placuszki ziemniaczane / sos miodowo-koperkowo-musztardowy</span>
-                <span class="t en">Smoked salmon tartare / potato cakes / honey dill mustard sauce</span>
-              </p>
-              <span class="tag">🐟 Fisch</span>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Crevettes à l’ail</h5>
-                <div class="price">15,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Garnelen in Knoblauch / Kräuter / Salzbutter / Baguette</span>
-                <span class="t pl">Krewetki z czosnkiem i ziołami / solone masło / bagietka</span>
-                <span class="t en">Shrimps with garlic and herbs / salted butter / baguette</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Gebackenes Gemüse</h5>
-                <div class="price">12,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Kräuterbackteig / Sour Creme</span>
-                <span class="t pl">Warzywa w cieście ziołowym / sour cream</span>
-                <span class="t en">Vegetables in herb batter / sour cream</span>
-              </p>
-              <span class="tag">🌱 Vegetarisch</span>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Dreierlei Quiche</h5>
-                <div class="price">13,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Salatbouquet</span>
-                <span class="t pl">Trzy rodzaje quiche / bukiet sałat</span>
-                <span class="t en">Three kinds of quiche / salad bouquet</span>
-              </p>
-            </article>
-          </div>
-        </div>
-
-        <div id="soups" class="category">
-          <h4>
-            <span class="t de">Suppen</span>
-            <span class="t pl">Zupy</span>
-            <span class="t en">Soups</span>
-          </h4>
-          <div class="menu-grid">
-            <article class="item">
-              <div class="item-head">
-                <h5>Schwerter Senfsuppe</h5>
-                <div class="price">7,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Schwerter Senf / westfälischer Landschinken</span>
-                <span class="t pl">Zupa musztardowa Schwerter / westfalska szynka</span>
-                <span class="t en">Schwerter mustard soup / Westphalian country ham</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Lyoner Zwiebelsuppe</h5>
-                <div class="price">7,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Mit Käse gratiniert / Weißbrot</span>
-                <span class="t pl">Francuska zupa cebulowa / zapiekana z serem / białe pieczywo</span>
-                <span class="t en">French onion soup / gratinated with cheese / white bread</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Knoblauchcremesuppe</h5>
-                <div class="price">7,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Croûtons</span>
-                <span class="t pl">Krem czosnkowy / grzanki</span>
-                <span class="t en">Garlic cream soup / croutons</span>
-              </p>
-            </article>
-          </div>
-        </div>
-
-        <div id="salads" class="category">
-          <h4>
-            <span class="t de">Salate</span>
-            <span class="t pl">Sałatki</span>
-            <span class="t en">Salads</span>
-          </h4>
-          <div class="menu-grid">
-            <article class="item">
-              <div class="item-head">
-                <h5>Salade de Chèvre Chaud</h5>
-                <div class="price">20,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Karamellisierter Ziegenkäse / Honig / Marktsalat / Pinienkerne / geröstetes Landbrot</span>
-                <span class="t pl">Karmelizowany kozi ser / miód / sałata / orzeszki piniowe / pieczywo rustykalne</span>
-                <span class="t en">Caramelized goat cheese / honey / mixed salad / pine nuts / toasted country bread</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Caesar</h5>
-                <div class="price">20,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Hähnchenbrust / Blattsalat / Kirschtomaten / Croûtons / Parmesan</span>
-                <span class="t pl">Pierś z kurczaka / sałata / pomidorki / grzanki / parmezan</span>
-                <span class="t en">Chicken breast / lettuce / cherry tomatoes / croutons / parmesan</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Mediterraner Bauernsalat</h5>
-                <div class="price">15,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Tomate / Gurke / Oliven / Zwiebeln / Fetakäse</span>
-                <span class="t pl">Pomidor / ogórek / oliwki / cebula / feta</span>
-                <span class="t en">Tomato / cucumber / olives / onions / feta cheese</span>
-              </p>
-              <div class="addon">
-                <div class="addon-row">
-                  <span class="t de">Mit Streifen von der Rindersteakhüfte</span>
-                  <span class="t pl">Z dodatkiem steku wołowego w paskach</span>
-                  <span class="t en">With sliced beef steak</span>
-                  <strong>+9,95 €</strong>
-                </div>
-                <div class="addon-row">
-                  <span class="t de">Mit Lachsfiletwürfeln</span>
-                  <span class="t pl">Z kostkami fileta z łososia</span>
-                  <span class="t en">With salmon fillet cubes</span>
-                  <strong>+8,95 €</strong>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        <div id="mains" class="category">
-          <h4>
-            <span class="t de">Hauptgerichte</span>
-            <span class="t pl">Dania główne</span>
-            <span class="t en">Main dishes</span>
-          </h4>
-          <div class="menu-grid">
-            <article class="item">
-              <div class="item-head">
-                <h5>Dry-Aged Carré vom spanischen Duroc-Schwein</h5>
-                <div class="price">35,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Pinienkern-Kräuterkruste / mallorquinische Bratkartoffeln mit Paprika / Zucchini / Aubergine</span>
-                <span class="t pl">Dry-aged carré z hiszpańskiej wieprzowiny Duroc / ziołowo-piniowa skórka / ziemniaki po majorkańsku / papryka / cukinia / bakłażan</span>
-                <span class="t en">Dry-aged Spanish Duroc pork carré / pine nut herb crust / Mallorcan fried potatoes / peppers / zucchini / eggplant</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Bretonische Fischpfanne aus dem Ofen</h5>
-                <div class="price">34,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Lachs / Zander / Garnelen / Weißweinsauce / Frühlingszwiebeln / Kartoffeln</span>
-                <span class="t pl">Bretońska rybna patelnia z pieca / łosoś / sandacz / krewetki / sos białowinny / szczypior / ziemniaki</span>
-                <span class="t en">Breton oven-baked fish pan / salmon / pike-perch / shrimps / white wine sauce / spring onions / potatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Spare Ribs</h5>
-                <div class="price">28,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Zweierlei Sauce / Kartoffel-Wedges / Cole Slaw</span>
-                <span class="t pl">Żeberka / dwa sosy / ziemniaczane wedges / coleslaw</span>
-                <span class="t en">Spare ribs / two sauces / potato wedges / coleslaw</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Gourmet-Burger</h5>
-                <div class="price">21,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Selbstgemachtes Rinderpatty medium gegrillt / Röstzwiebeln / BBQ Sauce / Cheddar / Speck / Pommes</span>
-                <span class="t pl">Burger gourmet / domowy kotlet wołowy medium / prażona cebulka / sos BBQ / cheddar / bekon / frytki</span>
-                <span class="t en">Gourmet burger / homemade medium grilled beef patty / crispy onions / BBQ sauce / cheddar / bacon / fries</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Ravioli</h5>
-                <div class="price">20,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Feigen-Frischkäse-Füllung / Champignons / Lauchzwiebeln / Basilikum-Pesto</span>
-                <span class="t pl">Ravioli z nadzieniem figowo-serkowym / pieczarki / dymka / pesto bazyliowe</span>
-                <span class="t en">Ravioli with fig and cream cheese filling / mushrooms / spring onions / basil pesto</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Argentinisches Hüftsteak</h5>
-                <div class="price">35,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Speckbohnen / Pfeffersauce / Bratkartoffeln</span>
-                <span class="t pl">Argentyńskie stek z rostbefu / fasolka z boczkiem / sos pieprzowy / smażone ziemniaki</span>
-                <span class="t en">Argentinian rump steak / bacon beans / pepper sauce / fried potatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Tafelspitz vom Kalb</h5>
-                <div class="price">29,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Meerrettichsauce / Gemüse / Salzkartoffeln</span>
-                <span class="t pl">Cielęcina / sos chrzanowy / warzywa / ziemniaki gotowane</span>
-                <span class="t en">Veal / horseradish sauce / vegetables / boiled potatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Grillteller</h5>
-                <div class="price">28,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Verschiedene Spezialitäten vom Grill / Pommes / selbstgemachte Kräuterbutter</span>
-                <span class="t pl">Talerz grillowy / różne specjały z grilla / frytki / domowe masło ziołowe</span>
-                <span class="t en">Mixed grill platter / various grilled specialties / fries / homemade herb butter</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Coq au Vin</h5>
-                <div class="price">28,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Französisches Maishähnchen in Weißweinsauce gegart / Wurzelgemüse / Rosmarinkartoffeln</span>
-                <span class="t pl">Francuskie kukurydziane kurczę / duszone w sosie z białego wina / warzywa korzeniowe / ziemniaki z rozmarynem</span>
-                <span class="t en">French corn-fed chicken in white wine sauce / root vegetables / rosemary potatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Boeuf Bourguignon</h5>
-                <div class="price">28,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">In Burgunder geschmorte Rinderschulter / Champignons / Karotten / Rosmarinkartoffeln</span>
-                <span class="t pl">Wołowina duszona w burgundzie / pieczarki / marchew / ziemniaki z rozmarynem</span>
-                <span class="t en">Beef shoulder braised in Burgundy wine / mushrooms / carrots / rosemary potatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Teriyaki-Sesamhähnchen</h5>
-                <div class="price">26,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Wok-Gemüse / Limettenreis / Currykokos-Sauce</span>
-                <span class="t pl">Kurczak teriyaki z sezamem / warzywa z woka / ryż limonkowy / sos curry-kokos</span>
-                <span class="t en">Teriyaki sesame chicken / wok vegetables / lime rice / curry coconut sauce</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Medaillons vom bergischen Landschwein</h5>
-                <div class="price">28,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Im Speckmantel / Schwerter Senfspitzkohl / Bratkartoffeln</span>
-                <span class="t pl">Medaliony z wieprzowiny / w boczku / kapusta z musztardą Schwerter / smażone ziemniaki</span>
-                <span class="t en">Pork medallions wrapped in bacon / mustard pointed cabbage / fried potatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Kibbelinge</h5>
-                <div class="price">22,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Selbstgemachte Kibbelinge vom Seelachs / Pommes / Joppiesauce / Salatbeilage</span>
-                <span class="t pl">Domowe kawałki ryby z mintaja / frytki / sos joppie / sałatka</span>
-                <span class="t en">Homemade pollock bites / fries / joppie sauce / side salad</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Bratwurst vom Landschwein</h5>
-                <div class="price">18,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Hausgemachte Currysauce / Parmesan-Trüffel-Pommes / Salatbeilage</span>
-                <span class="t pl">Bratwurst z wieprzowiny / domowy sos curry / frytki parmezan-trufla / sałatka</span>
-                <span class="t en">Country pork bratwurst / homemade curry sauce / parmesan truffle fries / side salad</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Ofenkartoffel</h5>
-                <div class="price">14,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Kräuterdip / Salatbeilage</span>
-                <span class="t pl">Pieczony ziemniak / dip ziołowy / sałatka</span>
-                <span class="t en">Baked potato / herb dip / side salad</span>
-              </p>
-              <div class="addon">
-                <div class="addon-row">
-                  <span class="t de">Mit Hähnchenbrust</span>
-                  <span class="t pl">Z piersią kurczaka</span>
-                  <span class="t en">With chicken breast</span>
-                  <strong>+3,95 €</strong>
-                </div>
-                <div class="addon-row">
-                  <span class="t de">Mit Räucherlachs</span>
-                  <span class="t pl">Z wędzonym łososiem</span>
-                  <span class="t en">With smoked salmon</span>
-                  <strong>+5,95 €</strong>
-                </div>
-                <div class="addon-row">
-                  <span class="t de">Mit Garnelen</span>
-                  <span class="t pl">Z krewetkami</span>
-                  <span class="t en">With shrimps</span>
-                  <strong>+5,95 €</strong>
-                </div>
-              </div>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Elsässer Flammkuchen</h5>
-                <div class="price">18,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Speck / Zwiebeln</span>
-                <span class="t pl">Flammkuchen alzacki / boczek / cebula</span>
-                <span class="t en">Alsatian tarte flambée / bacon / onions</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Flammkuchen Bruschetta</h5>
-                <div class="price">18,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Tomatenwürfel / Knoblauch / Lauchzwiebeln / Mozzarella / Balsamicocreme</span>
-                <span class="t pl">Flammkuchen bruschetta / pomidory / czosnek / dymka / mozzarella / krem balsamiczny</span>
-                <span class="t en">Bruschetta tarte flambée / diced tomatoes / garlic / spring onions / mozzarella / balsamic cream</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Räucherlachs Flammkuchen</h5>
-                <div class="price">19,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Kirschtomaten</span>
-                <span class="t pl">Flammkuchen z wędzonym łososiem / pomidorki koktajlowe</span>
-                <span class="t en">Smoked salmon tarte flambée / cherry tomatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Hähnchenschnitzel im Parmesanmantel</h5>
-                <div class="price">24,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Mediterranes Gemüse / Ravioli mit getrockneten Tomaten und Kräutern gefüllt</span>
-                <span class="t pl">Sznicel z kurczaka w parmezanie / warzywa śródziemnomorskie / ravioli z suszonymi pomidorami i ziołami</span>
-                <span class="t en">Chicken schnitzel in parmesan coating / Mediterranean vegetables / ravioli filled with sun-dried tomatoes and herbs</span>
-              </p>
-            </article>
-          </div>
-        </div>
-
-        <div id="schnitzel" class="category">
-          <h4>
-            <span class="t de">Schnitzel vom westfälischen Landschwein</span>
-            <span class="t pl">Schnitzle z westfalskiej wieprzowiny</span>
-            <span class="t en">Schnitzels from Westphalian pork</span>
-          </h4>
-          <div class="menu-grid">
-            <article class="item">
-              <div class="item-head">
-                <h5>Surf ’n’ Turf</h5>
-                <div class="price">26,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Schweineschnitzel / Schwerter Senfsauce / gebratene Garnelen / Drillinge</span>
-                <span class="t pl">Sznicel wieprzowy / sos musztardowy Schwerter / smażone krewetki / młode ziemniaki</span>
-                <span class="t en">Pork schnitzel / Schwerter mustard sauce / fried shrimps / baby potatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Kutscherstubenschnitzel</h5>
-                <div class="price">22,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Schweineschnitzel / Champignonrahmsauce / Schinken-Rührei / Pommes</span>
-                <span class="t pl">Sznicel wieprzowy / sos pieczarkowo-śmietanowy / jajecznica z szynką / frytki</span>
-                <span class="t en">Pork schnitzel / mushroom cream sauce / scrambled eggs with ham / fries</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Westfälisches Krüstchen</h5>
-                <div class="price">22,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Schweineschnitzel / Röstzwiebeln / Spiegelei / Bratkartoffeln</span>
-                <span class="t pl">Sznicel wieprzowy / prażona cebulka / jajko sadzone / smażone ziemniaki</span>
-                <span class="t en">Pork schnitzel / crispy onions / fried egg / fried potatoes</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>
-                  <span class="t de">Kleiner Beilagensalat</span>
-                  <span class="t pl">Mała sałatka</span>
-                  <span class="t en">Small side salad</span>
-                </h5>
-                <div class="price">7,50 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Frische saisonale Beilage</span>
-                <span class="t pl">Świeża sezonowa przystawka</span>
-                <span class="t en">Fresh seasonal side</span>
-              </p>
-            </article>
-          </div>
-        </div>
-
-        <div id="kids" class="category">
-          <h4>
-            <span class="t de">Für Kinder</span>
-            <span class="t pl">Dla dzieci</span>
-            <span class="t en">For kids</span>
-          </h4>
-          <div class="menu-grid">
-            <article class="item">
-              <div class="item-head">
-                <h5>Kutscher-Kids</h5>
-                <div class="price">8,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Chicken Nuggets, Hamburger oder Schnitzel, dazu Pommes</span>
-                <span class="t pl">Nuggetsy, hamburger albo sznicel, do tego frytki</span>
-                <span class="t en">Chicken nuggets, hamburger or schnitzel, served with fries</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Räuberteller</h5>
-                <div class="price">0,00 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Für die Beute von Mama und Papa</span>
-                <span class="t pl">Talerz dla małych łowców porcji od mamy i taty</span>
-                <span class="t en">A plate for sharing from mom’s and dad’s meal</span>
-              </p>
-            </article>
-          </div>
-        </div>
-
-        <div id="desserts" class="category">
-          <h4>
-            <span class="t de">Dessert</span>
-            <span class="t pl">Desery</span>
-            <span class="t en">Desserts</span>
-          </h4>
-          <div class="menu-grid">
-            <article class="item">
-              <div class="item-head">
-                <h5>Café Gourmand</h5>
-                <div class="price">9,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Kugel Eis / warmes Schokotörtchen / Tasse Kaffee oder Espresso</span>
-                <span class="t pl">Gałka lodów / ciepłe ciastko czekoladowe / kawa lub espresso</span>
-                <span class="t en">Ice cream scoop / warm chocolate cake / coffee or espresso</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Creme Brûlée vom Käsekuchen im Glas</h5>
-                <div class="price">8,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Serviert im Glas</span>
-                <span class="t pl">Creme brûlée sernikowe w słoiczku</span>
-                <span class="t en">Cheesecake-style crème brûlée served in a glass</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Hausgemachtes Tiramisu im Glas</h5>
-                <div class="price">9,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Mit Pistazieneis und Früchten</span>
-                <span class="t pl">Domowe tiramisu w słoiczku / lody pistacjowe / owoce</span>
-                <span class="t en">Homemade tiramisu in a glass / pistachio ice cream / fruit</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Vanilleeis</h5>
-                <div class="price">6,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Heiße Kirschen / Sahne</span>
-                <span class="t pl">Lody waniliowe / gorące wiśnie / bita śmietana</span>
-                <span class="t en">Vanilla ice cream / hot cherries / whipped cream</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>Eiskaffee oder Eisschokolade</h5>
-                <div class="price">6,95 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">2 Kugeln Vanilleeis / Sahne</span>
-                <span class="t pl">Kawa mrożona lub czekolada mrożona / 2 gałki lodów waniliowych / bita śmietana</span>
-                <span class="t en">Iced coffee or iced chocolate / 2 scoops of vanilla ice cream / whipped cream</span>
-              </p>
-            </article>
-
-            <article class="item">
-              <div class="item-head">
-                <h5>
-                  <span class="t de">Kugel Eis</span>
-                  <span class="t pl">Gałka lodów</span>
-                  <span class="t en">Ice cream scoop</span>
-                </h5>
-                <div class="price">1,80 €</div>
-              </div>
-              <p class="desc">
-                <span class="t de">Schoko / Erdbeere / Vanille / Pistazie</span>
-                <span class="t pl">Czekolada / truskawka / wanilia / pistacja</span>
-                <span class="t en">Chocolate / strawberry / vanilla / pistachio</span>
-              </p>
-            </article>
-          </div>
-        </div>
-
-        <div id="aperitif" class="category">
-          <h4>
-            <span class="t de">Aperitif</span>
-            <span class="t pl">Aperitif</span>
-            <span class="t en">Aperitif</span>
-          </h4>
-          <div class="menu-grid">
-            <article class="item"><div class="item-head"><h5>Porto Tonic</h5><div class="price">7,95 €</div></div><p class="desc"><span class="t de">Erfrischender Aperitif</span><span class="t pl">Orzeźwiający aperitif</span><span class="t en">Refreshing aperitif</span></p></article>
-            <article class="item"><div class="item-head"><h5>Lillet Wild Berry</h5><div class="price">7,95 €</div></div><p class="desc"><span class="t de">Fruchtig und leicht</span><span class="t pl">Owocowy i lekki</span><span class="t en">Fruity and light</span></p></article>
-            <article class="item"><div class="item-head"><h5>Aperol Spritz</h5><div class="price">7,95 €</div></div><p class="desc"><span class="t de">Klassischer Aperitif</span><span class="t pl">Klasyczny aperitif</span><span class="t en">Classic aperitif</span></p></article>
-            <article class="item"><div class="item-head"><h5>Limoncello Spritz</h5><div class="price">7,95 €</div></div><p class="desc"><span class="t de">Zitronig und spritzig</span><span class="t pl">Cytrynowy i musujący</span><span class="t en">Lemony and sparkling</span></p></article>
-            <article class="item"><div class="item-head"><h5>Martini Pomegranate</h5><div class="price">7,95 €</div></div><p class="desc"><span class="t de">Alkoholfrei</span><span class="t pl">Bezalkoholowy</span><span class="t en">Non-alcoholic</span></p></article>
-            <article class="item"><div class="item-head"><h5>Crodino Spritz</h5><div class="price">7,95 €</div></div><p class="desc"><span class="t de">Alkoholfrei</span><span class="t pl">Bezalkoholowy</span><span class="t en">Non-alcoholic</span></p></article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="hours">
-      <div class="wrap">
-        <div class="section-head">
-          <h3>
-            <span class="t de">Öffnungszeiten</span>
-            <span class="t pl">Godziny otwarcia</span>
-            <span class="t en">Opening hours</span>
-          </h3>
-        </div>
-
-        <div class="panel">
-          <div class="hours">
-            <div class="hours-row"><span><span class="t de">Montag</span><span class="t pl">Poniedziałek</span><span class="t en">Monday</span></span><strong>08:00–20:00</strong></div>
-            <div class="hours-row"><span><span class="t de">Dienstag</span><span class="t pl">Wtorek</span><span class="t en">Tuesday</span></span><strong>08:00–20:00</strong></div>
-            <div class="hours-row"><span><span class="t de">Mittwoch</span><span class="t pl">Środa</span><span class="t en">Wednesday</span></span><strong>08:00–20:00</strong></div>
-            <div class="hours-row"><span><span class="t de">Donnerstag</span><span class="t pl">Czwartek</span><span class="t en">Thursday</span></span><strong>08:00–20:00</strong></div>
-            <div class="hours-row"><span><span class="t de">Freitag</span><span class="t pl">Piątek</span><span class="t en">Friday</span></span><strong>08:00–20:00</strong></div>
-            <div class="hours-row"><span><span class="t de">Samstag</span><span class="t pl">Sobota</span><span class="t en">Saturday</span></span><strong><span class="t de">Geschlossen</span><span class="t pl">Zamknięte</span><span class="t en">Closed</span></strong></div>
-            <div class="hours-row"><span><span class="t de">Sonntag</span><span class="t pl">Niedziela</span><span class="t en">Sunday</span></span><strong><span class="t de">Geschlossen</span><span class="t pl">Zamknięte</span><span class="t en">Closed</span></strong></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <div class="wrap">
-        <div class="section-head">
-          <h3>
-            <span class="t de">Kontakt & Anfahrt</span>
-            <span class="t pl">Kontakt i dojazd</span>
-            <span class="t en">Contact & directions</span>
-          </h3>
-        </div>
-
-        <div class="contact-grid">
-          <div class="card">
-            <small>
-              <span class="t de">Adresse</span>
-              <span class="t pl">Adres</span>
-              <span class="t en">Address</span>
-            </small>
-            <strong>Großmoorbogen 11A<br>21079 Hamburg</strong>
-          </div>
-
-          <div class="card">
-            <small>
-              <span class="t de">Telefon</span>
-              <span class="t pl">Telefon</span>
-              <span class="t en">Phone</span>
-            </small>
-            <strong>0175 6803931</strong>
-          </div>
-
-          <div class="card">
-            <small>WhatsApp</small>
-            <strong>
-              <span class="t de">Direkter Kontakt möglich</span>
-              <span class="t pl">Możliwy bezpośredni kontakt</span>
-              <span class="t en">Direct contact available</span>
-            </strong>
-          </div>
-        </div>
-
-        <div class="actions" style="margin-top:16px;">
-          <a class="btn primary" href="tel:+491756803931">
-            <span class="t de">Anrufen</span>
-            <span class="t pl">Zadzwoń</span>
-            <span class="t en">Call</span>
-          </a>
-          <a class="btn" target="_blank" rel="noopener" href="https://wa.me/491756803931">WhatsApp</a>
-          <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Gro%C3%9Fmoorbogen%2011A%2C%2021079%20Hamburg">
-            <span class="t de">Google Maps öffnen</span>
-            <span class="t pl">Otwórz w Google Maps</span>
-            <span class="t en">Open in Google Maps</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section id="info">
-      <div class="wrap">
-        <div class="section-head">
-          <h3>
-            <span class="t de">Gut zu wissen</span>
-            <span class="t pl">Warto wiedzieć</span>
-            <span class="t en">Good to know</span>
-          </h3>
-        </div>
-
-        <div class="panel">
-          <div class="info-grid">
-            <div class="feature"><span class="t de">Außenbereich / Terrasse</span><span class="t pl">Ogródek</span><span class="t en">Outdoor seating</span></div>
-            <div class="feature"><span class="t de">Zum Mitnehmen</span><span class="t pl">Na wynos</span><span class="t en">Takeaway</span></div>
-            <div class="feature"><span class="t de">Vor Ort essen</span><span class="t pl">Na miejscu</span><span class="t en">Dine in</span></div>
-            <div class="feature"><span class="t de">Guter Kaffee</span><span class="t pl">Dobra kawa</span><span class="t en">Good coffee</span></div>
-            <div class="feature"><span class="t de">Alkohol</span><span class="t pl">Alkohol</span><span class="t en">Alcohol</span></div>
-            <div class="feature"><span class="t de">Bier</span><span class="t pl">Piwo</span><span class="t en">Beer</span></div>
-            <div class="feature"><span class="t de">Frühstück</span><span class="t pl">Śniadanie</span><span class="t en">Breakfast</span></div>
-            <div class="feature"><span class="t de">Mittagessen</span><span class="t pl">Obiad</span><span class="t en">Lunch</span></div>
-            <div class="feature"><span class="t de">Desserts</span><span class="t pl">Desery</span><span class="t en">Desserts</span></div>
-            <div class="feature"><span class="t de">Bedienung am Tisch</span><span class="t pl">Obsługa kelnerska</span><span class="t en">Table service</span></div>
-            <div class="feature"><span class="t de">Toilette</span><span class="t pl">Toaleta</span><span class="t en">Toilet</span></div>
-            <div class="feature"><span class="t de">Gemütliche Atmosphäre</span><span class="t pl">Kameralna atmosfera</span><span class="t en">Cozy atmosphere</span></div>
-            <div class="feature"><span class="t de">Für Gruppen geeignet</span><span class="t pl">Dobre dla grup</span><span class="t en">Good for groups</span></div>
-            <div class="feature"><span class="t de">Kinderfreundlich</span><span class="t pl">Przyjazne dzieciom</span><span class="t en">Kid-friendly</span></div>
-            <div class="feature"><span class="t de">Rollstuhlgerechter Eingang</span><span class="t pl">Wejście dla wózków</span><span class="t en">Wheelchair-accessible entrance</span></div>
-            <div class="feature"><span class="t de">Rollstuhlgerechter Parkplatz</span><span class="t pl">Parking dla wózków</span><span class="t en">Wheelchair-accessible parking</span></div>
-            <div class="feature"><span class="t de">Nur Barzahlung</span><span class="t pl">Tylko gotówka</span><span class="t en">Cash only</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="wrap">
-        <div class="panel">
-          <strong style="display:block;margin-bottom:8px;color:#fff;">Kutscherstube</strong>
-          <div>
-            <span class="t de">Digitale Speisekarte – mobil optimiert.</span>
-            <span class="t pl">Cyfrowe menu – zoptymalizowane pod telefon.</span>
-            <span class="t en">Digital menu – optimized for mobile.</span>
-          </div>
-        </div>
-      </div>
-    </footer>
+    </div>
   </main>
 
+  <footer class="footer">
+    <div class="wrap">
+      <span id="footerText">Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931</span>
+    </div>
+  </footer>
+
   <script>
-    (function () {
-      const body = document.body;
-      const buttons = document.querySelectorAll('.lang-btn');
-      const statusText = document.getElementById('statusText');
-
-      function updateStatus() {
-        const lang = body.classList.contains('lang-pl') ? 'pl' :
-                     body.classList.contains('lang-en') ? 'en' : 'de';
-
-        const now = new Date();
-        const day = now.getDay(); // 0 niedziela, 6 sobota
-        const mins = now.getHours() * 60 + now.getMinutes();
-        const open = day >= 1 && day <= 5 && mins >= 480 && mins < 1200;
-
-        if (open) {
-          if (lang === 'de') statusText.textContent = 'Jetzt geöffnet';
-          if (lang === 'pl') statusText.textContent = 'Teraz otwarte';
-          if (lang === 'en') statusText.textContent = 'Open now';
-        } else {
-          if (lang === 'de') statusText.textContent = 'Jetzt geschlossen';
-          if (lang === 'pl') statusText.textContent = 'Teraz zamknięte';
-          if (lang === 'en') statusText.textContent = 'Closed now';
-        }
+    const translations = {
+      de: {
+        motto: "Essen mit besonderer Note",
+        heroTitle: "Kutscherstube",
+        heroText: "Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost.",
+        btnMenu: "Zur Speisekarte",
+        btnHours: "Öffnungszeiten",
+        btnCall: "Anrufen",
+        btnRoute: "Anfahrt",
+        labelStatus: "Status",
+        statusText: "Geöffnet · Schließt um 20:00",
+        labelPhone: "Telefon",
+        labelService: "Service",
+        serviceText: "Vor Ort · Zum Mitnehmen · WhatsApp",
+        labelNote: "Hinweis",
+        noteText: "Nur Barzahlung",
+        menuHeading: "Speisekarte",
+        tabs: {
+          fruehstueck: "Frühstück",
+          schnitzel: "Schnitzel",
+          salat: "Salat",
+          snacks: "Snacks",
+          hausgerichte: "Hausgerichte",
+          getraenke: "Getränke",
+          zeiten: "Zeiten"
+        },
+        sectionTitles: {
+          fruehstueck: "Frühstück",
+          schnitzel: "Schnitzel",
+          salat: "Salat",
+          snacks: "Snacks",
+          hausgerichte: "Hausgerichte",
+          getraenke: "Getränke",
+          zeiten: "Öffnungszeiten"
+        },
+        noteBreakfast: "Tylko pozycje z widoczną ceną.",
+        noteHouse: "Tylko pozycje z widoczną ceną ze screenów Google Menu.",
+        days: ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"],
+        closed: "Geschlossen",
+        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
+      },
+      pl: {
+        motto: "Jedzenie z wyjątkową nutą",
+        heroTitle: "Kutscherstube",
+        heroText: "Tradycyjna kuchnia, śniadania, sznycle i klasyczne domowe jedzenie.",
+        btnMenu: "Do menu",
+        btnHours: "Godziny otwarcia",
+        btnCall: "Zadzwoń",
+        btnRoute: "Dojazd",
+        labelStatus: "Status",
+        statusText: "Otwarte · Zamknięcie o 20:00",
+        labelPhone: "Telefon",
+        labelService: "Serwis",
+        serviceText: "Na miejscu · Na wynos · WhatsApp",
+        labelNote: "Informacja",
+        noteText: "Tylko gotówka",
+        menuHeading: "Menu",
+        tabs: {
+          fruehstueck: "Śniadania",
+          schnitzel: "Sznycle",
+          salat: "Sałatki",
+          snacks: "Przekąski",
+          hausgerichte: "Dania domowe",
+          getraenke: "Napoje",
+          zeiten: "Godziny"
+        },
+        sectionTitles: {
+          fruehstueck: "Śniadania",
+          schnitzel: "Sznycle",
+          salat: "Sałatki",
+          snacks: "Przekąski",
+          hausgerichte: "Dania domowe",
+          getraenke: "Napoje",
+          zeiten: "Godziny otwarcia"
+        },
+        noteBreakfast: "Tylko pozycje z widoczną ceną.",
+        noteHouse: "Tylko pozycje z widoczną ceną z widocznych screenów Google Menu.",
+        days: ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"],
+        closed: "Zamknięte",
+        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
+      },
+      en: {
+        motto: "Food with a special note",
+        heroTitle: "Kutscherstube",
+        heroText: "Traditional cuisine, breakfast, schnitzels and classic home-style dishes.",
+        btnMenu: "View menu",
+        btnHours: "Opening hours",
+        btnCall: "Call",
+        btnRoute: "Directions",
+        labelStatus: "Status",
+        statusText: "Open · Closes at 20:00",
+        labelPhone: "Phone",
+        labelService: "Service",
+        serviceText: "Dine in · Takeaway · WhatsApp",
+        labelNote: "Note",
+        noteText: "Cash only",
+        menuHeading: "Menu",
+        tabs: {
+          fruehstueck: "Breakfast",
+          schnitzel: "Schnitzels",
+          salat: "Salads",
+          snacks: "Snacks",
+          hausgerichte: "House dishes",
+          getraenke: "Drinks",
+          zeiten: "Hours"
+        },
+        sectionTitles: {
+          fruehstueck: "Breakfast",
+          schnitzel: "Schnitzels",
+          salat: "Salads",
+          snacks: "Snacks",
+          hausgerichte: "House dishes",
+          getraenke: "Drinks",
+          zeiten: "Opening hours"
+        },
+        noteBreakfast: "Only items with a visible price are included.",
+        noteHouse: "Only items with a visible price from the Google Menu screenshots are included.",
+        days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        closed: "Closed",
+        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
       }
+    };
 
-      function setLang(lang) {
-        body.classList.remove('lang-de', 'lang-pl', 'lang-en');
-        body.classList.add('lang-' + lang);
-        buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
-        updateStatus();
-      }
+    const langButtons = document.querySelectorAll(".lang-btn");
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const observedSections = [
+      "fruehstueck",
+      "schnitzel",
+      "salat",
+      "snacks",
+      "hausgerichte",
+      "getraenke",
+      "oeffnungszeiten"
+    ].map(id => document.getElementById(id));
 
-      buttons.forEach(btn => {
-        btn.addEventListener('click', function () {
-          setLang(this.dataset.lang);
-        });
+    function setLanguage(lang){
+      const t = translations[lang];
+      document.documentElement.lang = lang;
+
+      document.getElementById("motto").textContent = t.motto;
+      document.getElementById("heroTitle").textContent = t.heroTitle;
+      document.getElementById("heroText").textContent = t.heroText;
+      document.getElementById("btnMenu").textContent = t.btnMenu;
+      document.getElementById("btnHours").textContent = t.btnHours;
+      document.getElementById("btnCall").textContent = t.btnCall;
+      document.getElementById("btnRoute").textContent = t.btnRoute;
+      document.getElementById("labelStatus").textContent = t.labelStatus;
+      document.getElementById("statusText").textContent = t.statusText;
+      document.getElementById("labelPhone").textContent = t.labelPhone;
+      document.getElementById("labelService").textContent = t.labelService;
+      document.getElementById("serviceText").textContent = t.serviceText;
+      document.getElementById("labelNote").textContent = t.labelNote;
+      document.getElementById("noteText").textContent = t.noteText;
+      document.getElementById("menuHeading").textContent = t.menuHeading;
+
+      document.getElementById("tab-fruehstueck").textContent = t.tabs.fruehstueck;
+      document.getElementById("tab-schnitzel").textContent = t.tabs.schnitzel;
+      document.getElementById("tab-salat").textContent = t.tabs.salat;
+      document.getElementById("tab-snacks").textContent = t.tabs.snacks;
+      document.getElementById("tab-hausgerichte").textContent = t.tabs.hausgerichte;
+      document.getElementById("tab-getraenke").textContent = t.tabs.getraenke;
+      document.getElementById("tab-oeffnungszeiten").textContent = t.tabs.zeiten;
+
+      document.getElementById("cat-fruehstueck").textContent = t.sectionTitles.fruehstueck;
+      document.getElementById("cat-schnitzel").textContent = t.sectionTitles.schnitzel;
+      document.getElementById("cat-salat").textContent = t.sectionTitles.salat;
+      document.getElementById("cat-snacks").textContent = t.sectionTitles.snacks;
+      document.getElementById("cat-hausgerichte").textContent = t.sectionTitles.hausgerichte;
+      document.getElementById("cat-getraenke").textContent = t.sectionTitles.getraenke;
+      document.getElementById("cat-zeiten").textContent = t.sectionTitles.zeiten;
+
+      document.getElementById("note-fruehstueck").textContent = t.noteBreakfast;
+      document.getElementById("note-hausgerichte").textContent = t.noteHouse;
+
+      document.getElementById("day-mon").textContent = t.days[0];
+      document.getElementById("day-tue").textContent = t.days[1];
+      document.getElementById("day-wed").textContent = t.days[2];
+      document.getElementById("day-thu").textContent = t.days[3];
+      document.getElementById("day-fri").textContent = t.days[4];
+      document.getElementById("day-sat").textContent = t.days[5];
+      document.getElementById("day-sun").textContent = t.days[6];
+      document.getElementById("closed-sat").textContent = t.closed;
+      document.getElementById("closed-sun").textContent = t.closed;
+      document.getElementById("footerText").textContent = t.footer;
+
+      langButtons.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.lang === lang);
       });
+    }
 
-      setLang('de');
-    })();
+    function centerActiveTab(button){
+      button.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest"
+      });
+    }
+
+    tabButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const target = document.getElementById(button.dataset.target);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const activeId = entry.target.id;
+          tabButtons.forEach(btn => {
+            const isActive = btn.dataset.target === activeId;
+            btn.classList.toggle("active", isActive);
+            if (isActive) centerActiveTab(btn);
+          });
+        }
+      });
+    }, {
+      rootMargin: "-20% 0px -65% 0px",
+      threshold: 0.02
+    });
+
+    observedSections.forEach(section => observer.observe(section));
+
+    langButtons.forEach(btn => {
+      btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+    });
+
+    setLanguage("de");
   </script>
 </body>
 </html>
