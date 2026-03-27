@@ -4,355 +4,578 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kutscherstube – Speisekarte</title>
+  <!-- Eleganckie i nowoczesne czcionki Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
   <style>
-    :root{
-      --bg:#070504;
-      --bg-soft:#0d0907;
-      --panel:#120d0a;
-      --line:#3a2818;
-      --line-soft:#24180f;
-      --text:#f0e6d6;
-      --muted:#cdbda7;
-      --gold:#c7a56c;
-      --paper:#ece2d0;
-      --dark:#17110c;
-      --ok:#b8d8a8;
+    :root {
+      /* Karczemna Fioletowa Paleta */
+      --tavern-dark: #160b1e;      /* Głęboki mrok karczmy */
+      --purple-deep: #251336;      /* Główne tło */
+      --purple-main: #3d2459;      /* Karty i tła */
+      --purple-light: #6a4c8a;     /* Akcenty */
+      
+      /* Drewno, złoto i świece (Ciepły kontrast) */
+      --gold-primary: #d4af37;     /* Stare złoto */
+      --gold-light: #f3e5ab;       /* Jasne złoto/pergamin */
+      --wood-dark: #2c1a12;
+      --wood-accent: #8b5a2b;
+      
+      /* Tekst */
+      --text-main: #fdf8f5;        /* Jasny pergaminowy */
+      --text-muted: #bdaab9;
+      
+      /* Detale */
+      --border-gold: 1px solid rgba(212, 175, 55, 0.3);
+      --shadow-tavern: 0 10px 40px rgba(0, 0, 0, 0.6);
+      --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      background:
-        radial-gradient(circle at top, rgba(140,100,50,.06), transparent 24%),
-        linear-gradient(180deg, #080605 0%, #050403 100%);
-      color:var(--text);
-      font-family: Georgia, "Times New Roman", serif;
-      line-height:1.5;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background-color: var(--tavern-dark);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(61, 36, 89, 0.5) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(139, 90, 43, 0.15) 0%, transparent 50%); /* Efekt blasku kominka/świec */
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-attachment: fixed;
     }
 
-    a{color:inherit;text-decoration:none}
-    .wrap{width:min(1120px, calc(100% - 28px)); margin:0 auto}
+    h1, h2, h3 { font-family: 'Cinzel', serif; font-weight: 700; }
+    h4 { font-family: 'Cormorant Garamond', serif; }
 
-    .hero{
-      padding:24px 0 18px;
-      border-bottom:1px solid var(--line-soft);
+    /* ========== TŁO: MOTYW WOŹNICY (SVG) ========== */
+    .bg-decorations {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.04;
+    }
+    .wheel {
+      position: absolute;
+      width: 40vw; max-width: 400px;
+      animation: slowSpin 60s linear infinite;
+      fill: var(--gold-light);
+    }
+    .wheel-1 { top: -10%; left: -10%; }
+    .wheel-2 { bottom: -10%; right: -10%; animation-direction: reverse; }
+    
+    @keyframes slowSpin { 100% { transform: rotate(360deg); } }
+
+    /* ========== LOADING ANIMATION - KUCHARZ MIESZAJĄCY ZUPĘ ========== */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--tavern-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.8s ease, visibility 0.8s;
     }
 
-    .hero-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
+    #loader.hidden { opacity: 0; visibility: hidden; }
+
+    .soup-scene {
+      position: relative;
+      width: 150px;
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
     }
 
-    .brand h1{
-      margin:0;
-      font-size:clamp(2.4rem, 5.6vw, 4.4rem);
-      line-height:1;
-      color:var(--text);
-      font-weight:700;
+    /* Czapka kucharza unosząca się w oparach */
+    .chef-hat-loader {
+      position: absolute;
+      top: 0;
+      width: 50px; height: 40px;
+      background: #fff;
+      border-radius: 10px 10px 0 0;
+      animation: hatFloat 3s ease-in-out infinite;
+    }
+    .chef-hat-loader::before, .chef-hat-loader::after {
+      content: ''; position: absolute; background: #fff; border-radius: 50%;
+    }
+    .chef-hat-loader::before { width: 30px; height: 30px; top: -15px; left: -10px; }
+    .chef-hat-loader::after { width: 40px; height: 40px; top: -20px; right: -10px; }
+
+    /* Para wodna */
+    .steam {
+      position: absolute;
+      width: 10px; height: 30px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      filter: blur(4px);
+      bottom: 60px;
+      opacity: 0;
+    }
+    .steam:nth-child(2) { left: 40px; animation: rise 2s infinite 0.5s; }
+    .steam:nth-child(3) { right: 40px; animation: rise 2s infinite 1.2s; }
+    .steam:nth-child(4) { left: 70px; animation: rise 2s infinite 0s; }
+
+    /* Łyżka i ręka kucharza */
+    .spoon-wrapper {
+      position: absolute;
+      bottom: 50px;
+      width: 100px;
+      height: 20px;
+      transform-origin: center right;
+      animation: stir 1.5s linear infinite;
+      z-index: 2;
+    }
+    .spoon {
+      position: absolute;
+      right: 0; top: 0;
+      width: 80px; height: 6px;
+      background: var(--wood-accent);
+      border-radius: 5px;
+      transform: rotate(-20deg);
+    }
+    .chef-hand {
+      position: absolute;
+      right: -10px; top: -15px;
+      width: 30px; height: 30px;
+      background: #ffdbac;
+      border-radius: 50%;
+      box-shadow: inset -5px -5px 0 rgba(0,0,0,0.1);
     }
 
-    .motto{
-      margin:8px 0 0;
-      font-size:clamp(1rem, 2vw, 1.45rem);
-      color:var(--muted);
-      font-style:italic;
+    /* Kociołek / Garnek */
+    .pot {
+      position: relative;
+      width: 120px; height: 70px;
+      background: linear-gradient(to bottom, #333, #111);
+      border-radius: 10px 10px 40px 40px;
+      border-top: 8px solid #444;
+      z-index: 3;
+      box-shadow: 0 15px 20px rgba(0,0,0,0.8);
+    }
+    .pot::before, .pot::after {
+      content: ''; position: absolute;
+      top: 10px; width: 20px; height: 15px;
+      border: 4px solid #444;
+      border-radius: 50%;
+      z-index: -1;
+    }
+    .pot::before { left: -15px; }
+    .pot::after { right: -15px; }
+
+    .loader-text {
+      margin-top: 30px;
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: var(--gold-primary);
+      letter-spacing: 2px;
+      animation: pulseText 2s infinite;
     }
 
-    .lang-switch{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      margin-top:4px;
+    @keyframes rise {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-50px) scale(2); opacity: 0; }
+    }
+    @keyframes stir {
+      0% { transform: scaleX(1) translateX(0); z-index: 2; }
+      25% { transform: scaleX(0.8) translateX(-15px); z-index: 2; }
+      50% { transform: scaleX(1) translateX(-30px); z-index: 4; }
+      75% { transform: scaleX(1.2) translateX(-15px); z-index: 4; }
+      100% { transform: scaleX(1) translateX(0); z-index: 2; }
+    }
+    @keyframes hatFloat {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-10px) rotate(2deg); }
+    }
+    @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+    /* ========== WSPÓLNE ========== */
+    .wrap {
+      width: min(1000px, calc(100% - 40px));
+      margin: 0 auto;
+      position: relative;
+    }
+    a { color: var(--gold-primary); text-decoration: none; transition: var(--transition); }
+    a:hover { color: var(--gold-light); }
+
+    /* ========== HEADER / HERO (Szyld Karczmy) ========== */
+    .hero {
+      padding: 50px 0 40px;
+      position: relative;
+    }
+    
+    .hero-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 15px;
+      margin-bottom: 40px;
     }
 
-    .lang-btn{
-      appearance:none;
-      border:1px solid var(--line);
-      background:transparent;
-      color:var(--text);
-      min-width:52px;
-      height:38px;
-      padding:0 12px;
-      font:inherit;
-      font-size:.92rem;
-      font-weight:700;
-      cursor:pointer;
-      transition:.2s ease;
+    /* Elegancki symbol nad logo */
+    .hero-icon {
+      width: 50px; height: 50px;
+      fill: var(--gold-primary);
+      margin-bottom: -10px;
     }
 
-    .lang-btn.active,
-    .lang-btn:hover{
-      background:var(--paper);
-      color:var(--dark);
-      border-color:var(--paper);
+    .brand h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      color: var(--gold-primary);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
+      margin: 0;
     }
 
-    .hero-card{
-      margin-top:18px;
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.015), rgba(255,255,255,0)), var(--panel);
-      padding:24px;
+    .motto {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: var(--text-muted);
+      font-style: italic;
+      letter-spacing: 1px;
     }
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.3fr .9fr;
-      gap:24px;
+    .lang-switch {
+      display: flex;
+      gap: 5px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 5px;
+      border-radius: 30px;
+      border: var(--border-gold);
+      margin-top: 15px;
     }
 
-    .hero-title{
-      margin:0 0 10px;
-      font-size:clamp(1.85rem, 4vw, 2.8rem);
-      line-height:1.05;
-      color:var(--text);
+    .lang-btn {
+      background: transparent; border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: var(--transition);
     }
 
-    .hero-text{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size:1.06rem;
-      max-width:700px;
+    .lang-btn.active, .lang-btn:hover {
+      background: var(--gold-primary);
+      color: var(--tavern-dark);
+      font-weight: 600;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
-    .address{
-      font-size:1.1rem;
-      color:var(--text);
-      margin-bottom:18px;
+    /* Karta Informacyjna (Górny Panel) */
+    .hero-card {
+      background: rgba(37, 19, 54, 0.6);
+      border: var(--border-gold);
+      border-radius: 12px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-tavern);
+      position: relative;
+    }
+    
+    /* Dekoracyjne rogi w karcie */
+    .hero-card::before, .hero-card::after {
+      content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid var(--gold-primary);
+    }
+    .hero-card::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+    .hero-card::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 40px;
+      align-items: center;
     }
 
-    .cta-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
+    .hero-text {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 25px;
     }
 
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:46px;
-      padding:0 18px;
-      border:1px solid var(--line);
-      background:transparent;
-      color:var(--text);
-      font:inherit;
-      font-size:.96rem;
-      font-weight:700;
-      cursor:pointer;
-      transition:.2s ease;
+    .address {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      color: var(--gold-light);
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .btn:hover{transform:translateY(-1px)}
-    .btn-primary{
-      background:var(--paper);
-      color:var(--dark);
-      border-color:var(--paper);
+    .cta-row { display: flex; flex-wrap: wrap; gap: 15px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 24px;
+      border: var(--border-gold);
+      background: transparent;
+      color: var(--gold-light);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--gold-primary);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+      z-index: -1;
+    }
+    .btn:hover { color: var(--tavern-dark); border-color: var(--gold-primary); }
+    .btn:hover::before { transform: scaleX(1); }
+    
+    .btn-primary { background: var(--gold-primary); color: var(--tavern-dark); font-weight: 600; }
+    .btn-primary:hover { background: var(--gold-light); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+
+    .info-panel {
+      border-left: 1px solid rgba(212, 175, 55, 0.2);
+      padding-left: 30px;
     }
 
-    .info-panel{
-      border:1px solid var(--line);
-      background:#0f0b08;
+    .info-row { margin-bottom: 20px; }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-label {
+      font-family: 'Cinzel', serif;
+      color: var(--gold-primary);
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .info-value { font-size: 1.05rem; color: var(--text-main); font-weight: 300; }
+
+    .status-open { color: #2ecc71; display: flex; align-items: center; gap: 8px; font-weight: 500;}
+    .status-open::before {
+      content: ''; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px #2ecc71;
     }
 
-    .info-row{
-      padding:18px 20px;
-      border-bottom:1px solid var(--line);
+    /* ========== MENU KATEGORIE ========== */
+    .menu-page { padding: 40px 0 80px; }
+
+    .section-head { text-align: center; margin-bottom: 30px; }
+    .section-head h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--gold-primary);
+      display: flex; align-items: center; justify-content: center; gap: 15px;
+    }
+    .section-head h2::before, .section-head h2::after {
+      content: ''; height: 1px; width: 60px; background: var(--gold-primary); opacity: 0.5;
     }
 
-    .info-row:last-child{border-bottom:none}
-
-    .info-label{
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:2px;
-      font-size:.82rem;
-      margin-bottom:7px;
+    /* Przyklejone zakładki */
+    .sticky-categories {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(22, 11, 30, 0.95);
+      border-bottom: var(--border-gold);
+      padding: 15px 0;
+      backdrop-filter: blur(10px);
+      margin-bottom: 50px;
     }
 
-    .info-value{
-      font-size:1.08rem;
-      font-weight:700;
-      color:var(--text);
+    .category-tabs {
+      display: flex; gap: 15px; overflow-x: auto; scrollbar-width: none;
+      padding: 0 10px; justify-content: center;
+    }
+    .category-tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex: 0 0 auto;
+      background: transparent; border: none;
+      color: var(--text-muted);
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem; letter-spacing: 1px;
+      padding: 10px 5px; cursor: pointer;
+      position: relative; transition: var(--transition);
+    }
+    .tab-btn::after {
+      content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px;
+      background: var(--gold-primary); transition: var(--transition); transform: translateX(-50%);
+    }
+    .tab-btn.active, .tab-btn:hover { color: var(--gold-primary); }
+    .tab-btn.active::after, .tab-btn:hover::after { width: 100%; }
+
+    /* ========== LISTA DAŃ (Elegancki klasyczny styl) ========== */
+    .category {
+      scroll-margin-top: 120px;
+      margin-bottom: 60px;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .category.visible { opacity: 1; transform: translateY(0); }
+
+    .category-title {
+      font-size: 2.2rem;
+      color: var(--text-main);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .category-note {
+      text-align: center; color: var(--text-muted);
+      font-style: italic; font-size: 0.9rem; margin-bottom: 30px;
     }
 
-    .status-open{color:var(--ok)}
-
-    .menu-page{padding:28px 0 70px}
-
-    .section-head h2{
-      margin:0 0 14px;
-      font-size:clamp(2rem, 4.8vw, 3rem);
-      color:var(--text);
+    .menu-list {
+      background: rgba(37, 19, 54, 0.4);
+      border: var(--border-gold);
+      border-radius: 8px;
+      padding: 30px 40px;
     }
 
-    .sticky-categories{
-      position:sticky;
-      top:0;
-      z-index:999;
-      background:rgba(7,5,4,.97);
-      border-top:1px solid var(--line-soft);
-      border-bottom:1px solid var(--line-soft);
-      box-shadow:0 8px 16px rgba(0,0,0,.45);
-      padding:8px 0;
-      margin:0 0 24px;
-      backdrop-filter:blur(4px);
+    .dish {
+      padding: 20px 0;
+      border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
+      cursor: pointer;
+      transition: var(--transition);
+      group: dish;
+    }
+    .dish:last-child { border-bottom: none; }
+    .dish:hover { background: rgba(212, 175, 55, 0.03); padding-left: 10px; padding-right: 10px; }
+
+    .dish-head {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 15px;
     }
 
-    .category-tabs{
-      display:flex;
-      gap:8px;
-      overflow-x:auto;
-      scrollbar-width:none;
-      scroll-behavior:smooth;
-      padding:2px 0;
+    .dish-name {
+      font-size: 1.6rem;
+      color: var(--gold-light);
+      margin: 0; font-weight: 500;
+      display: flex; flex-grow: 1; align-items: baseline;
+    }
+    /* Klasyczne kropki oddzielające nazwę od ceny */
+    .dish-name::after {
+      content: ''; flex-grow: 1;
+      border-bottom: 1px dotted rgba(212, 175, 55, 0.3);
+      margin: 0 15px; position: relative; top: -6px;
     }
 
-    .category-tabs::-webkit-scrollbar{display:none}
-
-    .tab-btn{
-      flex:0 0 auto;
-      min-width:auto;
-      height:40px;
-      border:1px solid var(--line);
-      background:#0f0b08;
-      color:var(--text);
-      font:inherit;
-      font-size:.9rem;
-      font-weight:700;
-      cursor:pointer;
-      transition:.2s ease;
-      padding:0 14px;
-      white-space:nowrap;
+    .dish-price {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      color: var(--gold-primary);
+      font-weight: 700; white-space: nowrap;
     }
 
-    .tab-btn.active,
-    .tab-btn:hover{
-      background:#1a120d;
-      color:var(--gold);
-      border-color:#5a3f27;
+    .dish-desc {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-height: 0; overflow: hidden; opacity: 0;
+      transition: all 0.4s ease;
+      margin-top: 0;
+      padding-right: 50px; /* Miejsce na cenę */
     }
+    
+    .dish.expanded .dish-desc { max-height: 150px; opacity: 1; margin-top: 10px; }
+    .dish.expanded .dish-name { color: var(--gold-primary); }
 
-    .category{
-      scroll-margin-top:84px;
-      margin-bottom:36px;
+    /* ========== GODZINY OTWARCIA ========== */
+    .hours-list {
+      max-width: 500px; margin: 0 auto;
+      background: rgba(37, 19, 54, 0.4);
+      border: var(--border-gold); border-radius: 8px; padding: 30px;
     }
-
-    .category-title{
-      margin:0 0 12px;
-      padding-bottom:12px;
-      border-bottom:1px solid var(--line);
-      font-size:clamp(1.8rem, 4vw, 2.5rem);
-      color:var(--gold);
+    .hours-row {
+      display: flex; justify-content: space-between;
+      padding: 12px 0; border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
     }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day { font-family: 'Cinzel', serif; color: var(--gold-light); }
+    .hours-time { color: var(--text-muted); }
 
-    .category-note{
-      margin:-2px 0 12px;
-      color:var(--muted);
-      font-size:.96rem;
-      font-style:italic;
+    /* ========== STOPKA ========== */
+    .footer {
+      text-align: center; padding: 40px 0;
+      border-top: var(--border-gold);
+      background: #0f0714;
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--text-muted);
+      font-size: 1.1rem;
     }
+    .footer-icon { width: 30px; height: 30px; fill: var(--gold-primary); margin-bottom: 10px; opacity: 0.6; }
 
-    .menu-list{
-      border-top:1px solid var(--line-soft);
+    /* ========== RESPONSYWNOŚĆ ========== */
+    @media (max-width: 850px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 20px; }
+      .info-panel { border-left: none; border-top: 1px solid rgba(212,175,55,0.2); padding-left: 0; padding-top: 20px; }
+      .category-tabs { justify-content: flex-start; }
+      .menu-list { padding: 20px; }
     }
-
-    .dish{
-      padding:18px 0 18px;
-      border-bottom:1px solid var(--line-soft);
-    }
-
-    .dish-head{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:6px;
-    }
-
-    .dish-name{
-      margin:0;
-      font-size:1.38rem;
-      line-height:1.18;
-      color:var(--text);
-      font-weight:700;
-    }
-
-    .dish-price{
-      white-space:nowrap;
-      color:var(--gold);
-      font-size:1.28rem;
-      font-weight:700;
-    }
-
-    .dish-desc{
-      margin:0;
-      color:var(--muted);
-      font-size:1rem;
-    }
-
-    .hours-list{
-      border-top:1px solid var(--line-soft);
-    }
-
-    .hours-row{
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:14px;
-      padding:16px 0;
-      border-bottom:1px solid var(--line-soft);
-    }
-
-    .hours-day{
-      color:var(--text);
-      font-size:1.06rem;
-      font-weight:700;
-    }
-
-    .hours-time{
-      color:var(--muted);
-      font-size:1.06rem;
-      text-align:right;
-    }
-
-    .footer{
-      border-top:1px solid var(--line-soft);
-      padding:22px 0 32px;
-      color:var(--muted);
-      font-size:.96rem;
-    }
-
-    @media (max-width: 900px){
-      .hero-grid{grid-template-columns:1fr}
-      .dish-head{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:4px;
-      }
-    }
-
-    @media (max-width: 640px){
-      .hero{padding-top:18px}
-      .hero-card{padding:18px}
-      .btn{width:100%}
-      .dish-name{font-size:1.22rem}
-      .dish-price{font-size:1.16rem}
-      .dish-desc{font-size:.96rem}
-      .hours-row{grid-template-columns:1fr}
-      .hours-time{text-align:left}
+    @media (max-width: 600px) {
+      .hero-card { padding: 25px 20px; }
+      .btn { width: 100%; }
+      .dish-name { font-size: 1.3rem; flex-direction: column; align-items: flex-start; }
+      .dish-name::after { display: none; }
+      .dish-head { flex-direction: column; align-items: flex-start; gap: 5px; }
+      .dish-desc { padding-right: 0; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ========== TŁO WEKTOROWE (Koła od wozu) ========== -->
+  <svg class="bg-decorations" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="wagon-wheel" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="6"/>
+      <circle cx="50" cy="50" r="10" fill="currentColor"/>
+      <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" stroke-width="4"/>
+      <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="4"/>
+      <line x1="18" y1="18" x2="82" y2="82" stroke="currentColor" stroke-width="4"/>
+      <line x1="18" y1="82" x2="82" y2="18" stroke="currentColor" stroke-width="4"/>
+    </symbol>
+    <use href="#wagon-wheel" class="wheel wheel-1" />
+    <use href="#wagon-wheel" class="wheel wheel-2" />
+  </svg>
+
+  <!-- ========== LOADING SCREEN (Zupa w Karczmie) ========== -->
+  <div id="loader">
+    <div class="soup-scene">
+      <div class="steam"></div>
+      <div class="steam"></div>
+      <div class="steam"></div>
+      <div class="chef-hat-loader"></div>
+      <div class="pot"></div>
+      <div class="spoon-wrapper">
+        <div class="spoon"></div>
+        <div class="chef-hand"></div>
+      </div>
+    </div>
+    <div class="loader-text">Zubereitung...</div>
+  </div>
+
+  <!-- ========== HEADER / HERO ========== -->
   <header class="hero">
     <div class="wrap">
       <div class="hero-top">
+        <!-- Elegancka ikona podkowy -->
+        <svg class="hero-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.17 1.05-.1 1.22-.6.17-.5-.1-1.05-.6-1.22C6.26 18.6 4 15.57 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 3.57-2.26 6.6-5.46 7.68-.5.17-.77.72-.6 1.22.17.5.72.77 1.22.6C19.13 20.17 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
+          <path d="M12 6c-3.31 0-6 2.69-6 6 0 2.22 1.21 4.15 3 5.19V11h6v6.19c1.79-1.04 3-2.97 3-5.19 0-3.31-2.69-6-6-6z"/>
+        </svg>
         <div class="brand">
-          <h1>Kutscherstube</h1>
+          <h1 id="heroTitle">Kutscherstube</h1>
           <p class="motto" id="motto">Essen mit besonderer Note</p>
         </div>
 
@@ -366,17 +589,14 @@
       <div class="hero-card">
         <div class="hero-grid">
           <div>
-            <h2 class="hero-title" id="heroTitle">Kutscherstube</h2>
-            <p class="hero-text" id="heroText">Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost.</p>
-
+            <p class="hero-text" id="heroText">Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost. Treten Sie ein in unsere gemütliche Stube.</p>
             <div class="address" id="addressBlock">
-              Großmoorbogen 11A<br>
-              21079 Hamburg
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              Großmoorbogen 11A, 21079 Hamburg
             </div>
 
             <div class="cta-row">
               <a href="#speisekarte" class="btn btn-primary" id="btnMenu">Zur Speisekarte</a>
-              <a href="#oeffnungszeiten" class="btn" id="btnHours">Öffnungszeiten</a>
               <a href="tel:01756803931" class="btn" id="btnCall">Anrufen</a>
               <a href="https://maps.google.com/?q=Großmoorbogen+11A,+21079+Hamburg" target="_blank" class="btn" id="btnRoute">Anfahrt</a>
             </div>
@@ -393,7 +613,7 @@
             </div>
             <div class="info-row">
               <div class="info-label" id="labelService">Service</div>
-              <div class="info-value" id="serviceText">Vor Ort · Zum Mitnehmen · WhatsApp</div>
+              <div class="info-value" id="serviceText">Vor Ort · Zum Mitnehmen</div>
             </div>
             <div class="info-row">
               <div class="info-label" id="labelNote">Hinweis</div>
@@ -405,6 +625,7 @@
     </div>
   </header>
 
+  <!-- ========== MENU ========== -->
   <main class="menu-page" id="speisekarte">
     <div class="wrap">
       <div class="section-head">
@@ -412,9 +633,10 @@
       </div>
     </div>
 
+    <!-- Przyklejona nawigacja -->
     <div class="sticky-categories">
       <div class="wrap">
-        <nav class="category-tabs" id="categoryTabs" aria-label="Menükategorien">
+        <nav class="category-tabs" id="categoryTabs">
           <button class="tab-btn active" data-target="fruehstueck" id="tab-fruehstueck">Frühstück</button>
           <button class="tab-btn" data-target="schnitzel" id="tab-schnitzel">Schnitzel</button>
           <button class="tab-btn" data-target="salat" id="tab-salat">Salat</button>
@@ -428,430 +650,328 @@
 
     <div class="wrap">
 
-      <section class="category" id="fruehstueck">
+      <!-- Frühstück -->
+      <section class="category visible" id="fruehstueck">
         <h3 class="category-title" id="cat-fruehstueck">Frühstück</h3>
         <p class="category-note" id="note-fruehstueck">Tylko pozycje z widoczną ceną.</p>
         <div class="menu-list">
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Rührei mit Schinken und Zwiebeln</h4>
               <div class="dish-price">7,00 €</div>
             </div>
+            <p class="dish-desc">Fluffiges Rührei, zubereitet mit geräuchertem Schinken und karamellisierten Zwiebeln. Serviert mit frischem Brot.</p>
           </article>
 
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Rundstück warm</h4>
               <div class="dish-price">10,50 €</div>
             </div>
+            <p class="dish-desc">Hamburger Klassiker: Warmes Brötchen mit zartem Rindfleisch, Gurke und einer würzigen Sauce.</p>
           </article>
 
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Polnische Wurst</h4>
               <div class="dish-price">7,00 €</div>
             </div>
-            <p class="dish-desc">Mit geschmolzenen Zwiebeln, Brötchen</p>
+            <p class="dish-desc">Traditionelle polnische Wurst mit geschmolzenen Zwiebeln, serviert mit frischem Brötchen und Senf.</p>
           </article>
 
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Bratkartoffeln</h4>
-              <div class="dish-price">11,00 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Bauernfrühstück</h4>
               <div class="dish-price">10,00 €</div>
             </div>
+            <p class="dish-desc">Deftige Kombination aus Bratkartoffeln, Eiern, Speck und Zwiebeln – perfekt für einen starken Start in den Tag.</p>
           </article>
-
-          <article class="dish">
+          
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">3 Spiegeleier</h4>
               <div class="dish-price">7,00 €</div>
             </div>
+            <p class="dish-desc">Drei frisch gebratene Spiegeleier, wahlweise mit Speck oder Schinken. Dazu frisches Brot.</p>
           </article>
 
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Bratkartoffeln / Krautsalat</h4>
               <div class="dish-price">9,00 €</div>
             </div>
+            <p class="dish-desc">Knusprige Bratkartoffeln serviert mit hausgemachtem Krautsalat – eine erfrischende Kombination.</p>
           </article>
 
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Pommes</h4>
-              <div class="dish-price">4,00 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Rührei</h4>
-              <div class="dish-price">2,30 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Mett</h4>
-              <div class="dish-price">2,30 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Schweinebraten</h4>
-              <div class="dish-price">2,30 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Lachs</h4>
               <div class="dish-price">2,80 €</div>
             </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Matjes</h4>
-              <div class="dish-price">2,80 €</div>
-            </div>
+            <p class="dish-desc">Räucherlachs von höchster Qualität, serviert mit Frischkäse und Zitrone.</p>
           </article>
         </div>
       </section>
 
+      <!-- Schnitzel -->
       <section class="category" id="schnitzel">
         <h3 class="category-title" id="cat-schnitzel">Schnitzel</h3>
         <div class="menu-list">
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Jäger Schnitzel</h4>
               <div class="dish-price">15,00 €</div>
             </div>
+            <p class="dish-desc">Zartes Schweineschnitzel mit cremiger Pilz-Rahm-Sauce, Speck und frischen Kräutern. Dazu Pommes oder Spätzle.</p>
           </article>
 
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Zigeuner Schnitzel</h4>
               <div class="dish-price">15,00 €</div>
             </div>
+            <p class="dish-desc">Knuspriges Schnitzel mit würziger Paprika-Tomaten-Sauce, Paprika, Zwiebeln und Champignons.</p>
           </article>
 
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Hamburger Schnitzel</h4>
               <div class="dish-price">15,00 €</div>
             </div>
+            <p class="dish-desc">Lokale Spezialität: Schnitzel mit Spiegelei, Gurke und Remouladen-Sauce – ein Hamburger Original.</p>
           </article>
 
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Hawai Schnitzel</h4>
-              <div class="dish-price">15,00 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Schnitzel Wiener Art</h4>
               <div class="dish-price">14,00 €</div>
             </div>
-            <p class="dish-desc">Beilagen: Pommes, Salat, Bratkartoffeln</p>
+            <p class="dish-desc">Klassisches paniertes Schnitzel nach Wiener Art, goldbraun gebraten. Beilagen: Pommes, Salat oder Bratkartoffeln.</p>
           </article>
         </div>
       </section>
 
+      <!-- Salat -->
       <section class="category" id="salat">
         <h3 class="category-title" id="cat-salat">Salat</h3>
         <div class="menu-list">
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Salat mit Hähnchenbrust</h4>
               <div class="dish-price">13,00 €</div>
             </div>
-            <p class="dish-desc">Oliven, Baguette</p>
+            <p class="dish-desc">Frischer gemischter Salat mit gegrillter Hähnchenbrust, Oliven, Tomaten, Gurken und hausgemachtem Dressing. Dazu knuspriges Baguette.</p>
           </article>
         </div>
       </section>
 
+      <!-- Snacks -->
       <section class="category" id="snacks">
         <h3 class="category-title" id="cat-snacks">Snacks</h3>
         <div class="menu-list">
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
-              <h4 class="dish-name">Curry Wurst &amp; Pommes</h4>
+              <h4 class="dish-name">Curry Wurst & Pommes</h4>
               <div class="dish-price">8,50 €</div>
             </div>
+            <p class="dish-desc">Berliner Klassiker: Saftige Bratwurst mit würziger Curry-Ketchup-Sauce und knusprigen Pommes Frites.</p>
           </article>
 
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
-              <h4 class="dish-name">Frikadelle + Brötchen</h4>
-              <div class="dish-price">4,50 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">2 Frikadellen + Kartoffelsalat + Krautsalat</h4>
+              <h4 class="dish-name">2 Frikadellen + Kartoffel- & Krautsalat</h4>
               <div class="dish-price">11,00 €</div>
             </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Ketchup, Majo</h4>
-              <div class="dish-price">0,50 €</div>
-            </div>
+            <p class="dish-desc">Deftige Kombination: Zwei saftige Frikadellen mit hausgemachtem Kartoffel- und Krautsalat – ein wahrer Genuss.</p>
           </article>
         </div>
       </section>
 
+      <!-- Hausgerichte -->
       <section class="category" id="hausgerichte">
         <h3 class="category-title" id="cat-hausgerichte">Hausgerichte</h3>
         <p class="category-note" id="note-hausgerichte">Tylko pozycje z widoczną ceną ze screenów Google Menu.</p>
         <div class="menu-list">
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Halbe Braten</h4>
-              <div class="dish-price">14,00 €</div>
-            </div>
-            <p class="dish-desc">Bohnen, Salzkartoffeln</p>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Hackbraten</h4>
-              <div class="dish-price">14,00 €</div>
-            </div>
-            <p class="dish-desc">Bohnen, Salzkartoffeln</p>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Königsberger Klops</h4>
-              <div class="dish-price">14,00 €</div>
-            </div>
-            <p class="dish-desc">Bohnen, Salzkartoffeln</p>
-          </article>
-
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Krustenbraten</h4>
               <div class="dish-price">15,00 €</div>
             </div>
-            <p class="dish-desc">Rotkohl, Klösschen</p>
+            <p class="dish-desc">Knuspriger Schweinebraten mit perfekter Kruste, dazu Rotkohl und hausgemachte Klößchen – ein Sonntagsklassiker.</p>
           </article>
 
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
-              <h4 class="dish-name">Schweinerippchen</h4>
-              <div class="dish-price">15,00 €</div>
+              <h4 class="dish-name">Königsberger Klops</h4>
+              <div class="dish-price">14,00 €</div>
             </div>
-            <p class="dish-desc">Rotkohl, Salzkartoffeln</p>
+            <p class="dish-desc">Traditionelle Hackfleischklößchen in cremiger Kapern-Sauce, serviert mit Bohnen und Salzkartoffeln.</p>
           </article>
 
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Grützwurst</h4>
               <div class="dish-price">14,00 €</div>
             </div>
-            <p class="dish-desc">(Polnisch) Püree</p>
+            <p class="dish-desc">(Polnisch) Traditionelle Grützwurst mit cremigem Kartoffelpüree und karamellisierten Zwiebeln.</p>
           </article>
 
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">2 Kohlrouladen</h4>
-              <div class="dish-price">15,00 €</div>
-            </div>
-            <p class="dish-desc">Püree, Tomaten-Sahne-Sauce</p>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Salzgurken Suppe</h4>
-              <div class="dish-price">10,00 €</div>
-            </div>
-            <p class="dish-desc">(Polnisch) Brötchen</p>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Hühnersuppe mit Graupen</h4>
-              <div class="dish-price">10,00 €</div>
-            </div>
-            <p class="dish-desc">Brot</p>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Rahmgulasch</h4>
-              <div class="dish-price">15,00 €</div>
-            </div>
-            <p class="dish-desc">Bohnen, Spätzle</p>
-          </article>
-
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Hühnerfrikassee</h4>
               <div class="dish-price">18,00 €</div>
             </div>
-            <p class="dish-desc">Mischgemüse, Reis</p>
+            <p class="dish-desc">Cremiges Hühnerfrikassee mit zartem Hühnchen, Mischgemüse und Reis – ein klassisches Wohlfühlgericht.</p>
           </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Steinpilze-Sahnesauce</h4>
-              <div class="dish-price">13,00 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Spinat</h4>
-              <div class="dish-price">13,00 €</div>
-            </div>
-            <p class="dish-desc">Salzkartoffeln, 3 Spiegeleier</p>
-          </article>
-
-          <article class="dish">
+          
+          <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Schweineleber</h4>
               <div class="dish-price">17,00 €</div>
             </div>
-            <p class="dish-desc">Mischgemüse, Püree</p>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">LachsFilet</h4>
-              <div class="dish-price">17,00 €</div>
-            </div>
-            <p class="dish-desc">Kraut, Sahnesauce</p>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Hawaiischnitzel</h4>
-              <div class="dish-price">14,00 €</div>
-            </div>
+            <p class="dish-desc">Zarte Schweineleber nach Berliner Art, mit Mischgemüse und cremigem Püree. Für Kenner!</p>
           </article>
         </div>
       </section>
 
+      <!-- Getränke -->
       <section class="category" id="getraenke">
         <h3 class="category-title" id="cat-getraenke">Getränke</h3>
         <div class="menu-list">
-          <article class="dish">
+          <article class="dish" tabindex="0">
             <div class="dish-head">
-              <h4 class="dish-name">Becher Kaffee</h4>
+              <h4 class="dish-name">Becher Kaffee / Tee / Kakao</h4>
               <div class="dish-price">2,50 €</div>
             </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Becher Tee</h4>
-              <div class="dish-price">2,50 €</div>
-            </div>
-          </article>
-
-          <article class="dish">
-            <div class="dish-head">
-              <h4 class="dish-name">Becher Kakao</h4>
-              <div class="dish-price">2,50 €</div>
-            </div>
+            <p class="dish-desc">Heiße Getränke für einen gemütlichen Moment.</p>
           </article>
         </div>
       </section>
 
+      <!-- Öffnungszeiten -->
       <section class="category" id="oeffnungszeiten">
         <h3 class="category-title" id="cat-zeiten">Öffnungszeiten</h3>
         <div class="hours-list">
-          <div class="hours-row">
-            <div class="hours-day" id="day-mon">Montag</div>
-            <div class="hours-time">08:00–20:00</div>
-          </div>
-          <div class="hours-row">
-            <div class="hours-day" id="day-tue">Dienstag</div>
-            <div class="hours-time">08:00–20:00</div>
-          </div>
-          <div class="hours-row">
-            <div class="hours-day" id="day-wed">Mittwoch</div>
-            <div class="hours-time">08:00–20:00</div>
-          </div>
-          <div class="hours-row">
-            <div class="hours-day" id="day-thu">Donnerstag</div>
-            <div class="hours-time">08:00–20:00</div>
-          </div>
-          <div class="hours-row">
-            <div class="hours-day" id="day-fri">Freitag</div>
-            <div class="hours-time">08:00–20:00</div>
-          </div>
-          <div class="hours-row">
-            <div class="hours-day" id="day-sat">Samstag</div>
-            <div class="hours-time" id="closed-sat">Geschlossen</div>
-          </div>
-          <div class="hours-row">
-            <div class="hours-day" id="day-sun">Sonntag</div>
-            <div class="hours-time" id="closed-sun">Geschlossen</div>
-          </div>
+          <div class="hours-row"><span class="hours-day" id="day-mon">Montag</span><span class="hours-time">08:00–20:00</span></div>
+          <div class="hours-row"><span class="hours-day" id="day-tue">Dienstag</span><span class="hours-time">08:00–20:00</span></div>
+          <div class="hours-row"><span class="hours-day" id="day-wed">Mittwoch</span><span class="hours-time">08:00–20:00</span></div>
+          <div class="hours-row"><span class="hours-day" id="day-thu">Donnerstag</span><span class="hours-time">08:00–20:00</span></div>
+          <div class="hours-row"><span class="hours-day" id="day-fri">Freitag</span><span class="hours-time">08:00–20:00</span></div>
+          <div class="hours-row"><span class="hours-day" id="day-sat">Samstag</span><span class="hours-time" id="closed-sat">Geschlossen</span></div>
+          <div class="hours-row"><span class="hours-day" id="day-sun">Sonntag</span><span class="hours-time" id="closed-sun">Geschlossen</span></div>
         </div>
       </section>
 
     </div>
   </main>
 
+  <!-- ========== FOOTER ========== -->
   <footer class="footer">
     <div class="wrap">
+      <svg class="footer-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+      </svg><br>
       <span id="footerText">Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931</span>
     </div>
   </footer>
 
+  <!-- ========== JAVASCRIPT ========== -->
   <script>
+    // ========== LOADER ==========
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+      }, 2000); // Skrócony czas ładowania dla lepszego UX
+    });
+
+    // ========== ROZWIJANIE DAŃ (Akordeon) ==========
+    document.querySelectorAll('.dish').forEach(dish => {
+      dish.addEventListener('click', function(e) {
+        if (e.target.closest('.dish-price')) return;
+        
+        document.querySelectorAll('.dish.expanded').forEach(other => {
+          if (other !== this) other.classList.remove('expanded');
+        });
+        
+        this.classList.toggle('expanded');
+      });
+      
+      dish.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
+      });
+    });
+
+    // ========== ANIMACJA SCROLL (Intersection Observer) ==========
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.category').forEach(section => {
+      sectionObserver.observe(section);
+    });
+
+    // ========== STICKY TABS - aktywne kategorie ==========
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const observedSections = [
+      "fruehstueck", "schnitzel", "salat", "snacks", 
+      "hausgerichte", "getraenke", "oeffnungszeiten"
+    ].map(id => document.getElementById(id));
+
+    function centerActiveTab(button) {
+      button.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+
+    tabButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const target = document.getElementById(button.dataset.target);
+        if (target) {
+          const y = target.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({top: y, behavior: 'smooth'});
+        }
+      });
+    });
+
+    const tabObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const activeId = entry.target.id;
+          tabButtons.forEach(btn => {
+            const isActive = btn.dataset.target === activeId;
+            btn.classList.toggle("active", isActive);
+            if (isActive) centerActiveTab(btn);
+          });
+        }
+      });
+    }, { rootMargin: "-30% 0px -70% 0px", threshold: 0 });
+
+    observedSections.forEach(section => tabObserver.observe(section));
+
+    // ========== TŁUMACZENIA ==========
     const translations = {
       de: {
         motto: "Essen mit besonderer Note",
         heroTitle: "Kutscherstube",
-        heroText: "Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost.",
+        heroText: "Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost. Treten Sie ein in unsere gemütliche Stube.",
         btnMenu: "Zur Speisekarte",
-        btnHours: "Öffnungszeiten",
         btnCall: "Anrufen",
         btnRoute: "Anfahrt",
         labelStatus: "Status",
         statusText: "Geöffnet · Schließt um 20:00",
         labelPhone: "Telefon",
         labelService: "Service",
-        serviceText: "Vor Ort · Zum Mitnehmen · WhatsApp",
+        serviceText: "Vor Ort · Zum Mitnehmen",
         labelNote: "Hinweis",
         noteText: "Nur Barzahlung",
         menuHeading: "Speisekarte",
-        tabs: {
-          fruehstueck: "Frühstück",
-          schnitzel: "Schnitzel",
-          salat: "Salat",
-          snacks: "Snacks",
-          hausgerichte: "Hausgerichte",
-          getraenke: "Getränke",
-          zeiten: "Zeiten"
-        },
-        sectionTitles: {
-          fruehstueck: "Frühstück",
-          schnitzel: "Schnitzel",
-          salat: "Salat",
-          snacks: "Snacks",
-          hausgerichte: "Hausgerichte",
-          getraenke: "Getränke",
-          zeiten: "Öffnungszeiten"
-        },
-        noteBreakfast: "Tylko pozycje z widoczną ceną.",
-        noteHouse: "Tylko pozycje z widoczną ceną ze screenów Google Menu.",
+        tabs: { fruehstueck: "Frühstück", schnitzel: "Schnitzel", salat: "Salat", snacks: "Snacks", hausgerichte: "Hausgerichte", getraenke: "Getränke", zeiten: "Zeiten" },
+        noteBreakfast: "Nur Artikel mit sichtbarem Preis.",
+        noteHouse: "Nur Artikel mit sichtbarem Preis.",
         days: ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"],
         closed: "Geschlossen",
         footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
@@ -859,39 +979,21 @@
       pl: {
         motto: "Jedzenie z wyjątkową nutą",
         heroTitle: "Kutscherstube",
-        heroText: "Tradycyjna kuchnia, śniadania, sznycle i klasyczne domowe jedzenie.",
-        btnMenu: "Do menu",
-        btnHours: "Godziny otwarcia",
+        heroText: "Tradycyjna kuchnia, śniadania, sznycle i klasyczne domowe jedzenie. Rozgość się w naszej karczmie.",
+        btnMenu: "Zobacz menu",
         btnCall: "Zadzwoń",
         btnRoute: "Dojazd",
         labelStatus: "Status",
         statusText: "Otwarte · Zamknięcie o 20:00",
         labelPhone: "Telefon",
-        labelService: "Serwis",
-        serviceText: "Na miejscu · Na wynos · WhatsApp",
+        labelService: "Obsługa",
+        serviceText: "Na miejscu · Na wynos",
         labelNote: "Informacja",
         noteText: "Tylko gotówka",
         menuHeading: "Menu",
-        tabs: {
-          fruehstueck: "Śniadania",
-          schnitzel: "Sznycle",
-          salat: "Sałatki",
-          snacks: "Przekąski",
-          hausgerichte: "Dania domowe",
-          getraenke: "Napoje",
-          zeiten: "Godziny"
-        },
-        sectionTitles: {
-          fruehstueck: "Śniadania",
-          schnitzel: "Sznycle",
-          salat: "Sałatki",
-          snacks: "Przekąski",
-          hausgerichte: "Dania domowe",
-          getraenke: "Napoje",
-          zeiten: "Godziny otwarcia"
-        },
+        tabs: { fruehstueck: "Śniadania", schnitzel: "Sznycle", salat: "Sałatki", snacks: "Przekąski", hausgerichte: "Dania domowe", getraenke: "Napoje", zeiten: "Godziny" },
         noteBreakfast: "Tylko pozycje z widoczną ceną.",
-        noteHouse: "Tylko pozycje z widoczną ceną z widocznych screenów Google Menu.",
+        noteHouse: "Tylko pozycje z widoczną ceną ze screenów.",
         days: ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"],
         closed: "Zamknięte",
         footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
@@ -899,39 +1001,21 @@
       en: {
         motto: "Food with a special note",
         heroTitle: "Kutscherstube",
-        heroText: "Traditional cuisine, breakfast, schnitzels and classic home-style dishes.",
+        heroText: "Traditional cuisine, breakfasts, schnitzels and classic home-style food. Step into our cozy tavern.",
         btnMenu: "View menu",
-        btnHours: "Opening hours",
-        btnCall: "Call",
+        btnCall: "Call us",
         btnRoute: "Directions",
         labelStatus: "Status",
         statusText: "Open · Closes at 20:00",
         labelPhone: "Phone",
         labelService: "Service",
-        serviceText: "Dine in · Takeaway · WhatsApp",
+        serviceText: "Dine in · Takeaway",
         labelNote: "Note",
         noteText: "Cash only",
         menuHeading: "Menu",
-        tabs: {
-          fruehstueck: "Breakfast",
-          schnitzel: "Schnitzels",
-          salat: "Salads",
-          snacks: "Snacks",
-          hausgerichte: "House dishes",
-          getraenke: "Drinks",
-          zeiten: "Hours"
-        },
-        sectionTitles: {
-          fruehstueck: "Breakfast",
-          schnitzel: "Schnitzels",
-          salat: "Salads",
-          snacks: "Snacks",
-          hausgerichte: "House dishes",
-          getraenke: "Drinks",
-          zeiten: "Opening hours"
-        },
-        noteBreakfast: "Only items with a visible price are included.",
-        noteHouse: "Only items with a visible price from the Google Menu screenshots are included.",
+        tabs: { fruehstueck: "Breakfast", schnitzel: "Schnitzels", salat: "Salads", snacks: "Snacks", hausgerichte: "House dishes", getraenke: "Drinks", zeiten: "Hours" },
+        noteBreakfast: "Only items with visible prices.",
+        noteHouse: "Only items with visible prices.",
         days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
         closed: "Closed",
         footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
@@ -939,18 +1023,8 @@
     };
 
     const langButtons = document.querySelectorAll(".lang-btn");
-    const tabButtons = document.querySelectorAll(".tab-btn");
-    const observedSections = [
-      "fruehstueck",
-      "schnitzel",
-      "salat",
-      "snacks",
-      "hausgerichte",
-      "getraenke",
-      "oeffnungszeiten"
-    ].map(id => document.getElementById(id));
 
-    function setLanguage(lang){
+    function setLanguage(lang) {
       const t = translations[lang];
       document.documentElement.lang = lang;
 
@@ -958,7 +1032,6 @@
       document.getElementById("heroTitle").textContent = t.heroTitle;
       document.getElementById("heroText").textContent = t.heroText;
       document.getElementById("btnMenu").textContent = t.btnMenu;
-      document.getElementById("btnHours").textContent = t.btnHours;
       document.getElementById("btnCall").textContent = t.btnCall;
       document.getElementById("btnRoute").textContent = t.btnRoute;
       document.getElementById("labelStatus").textContent = t.labelStatus;
@@ -978,13 +1051,13 @@
       document.getElementById("tab-getraenke").textContent = t.tabs.getraenke;
       document.getElementById("tab-oeffnungszeiten").textContent = t.tabs.zeiten;
 
-      document.getElementById("cat-fruehstueck").textContent = t.sectionTitles.fruehstueck;
-      document.getElementById("cat-schnitzel").textContent = t.sectionTitles.schnitzel;
-      document.getElementById("cat-salat").textContent = t.sectionTitles.salat;
-      document.getElementById("cat-snacks").textContent = t.sectionTitles.snacks;
-      document.getElementById("cat-hausgerichte").textContent = t.sectionTitles.hausgerichte;
-      document.getElementById("cat-getraenke").textContent = t.sectionTitles.getraenke;
-      document.getElementById("cat-zeiten").textContent = t.sectionTitles.zeiten;
+      document.getElementById("cat-fruehstueck").textContent = t.tabs.fruehstueck;
+      document.getElementById("cat-schnitzel").textContent = t.tabs.schnitzel;
+      document.getElementById("cat-salat").textContent = t.tabs.salat;
+      document.getElementById("cat-snacks").textContent = t.tabs.snacks;
+      document.getElementById("cat-hausgerichte").textContent = t.tabs.hausgerichte;
+      document.getElementById("cat-getraenke").textContent = t.tabs.getraenke;
+      document.getElementById("cat-zeiten").textContent = t.tabs.zeiten;
 
       document.getElementById("note-fruehstueck").textContent = t.noteBreakfast;
       document.getElementById("note-hausgerichte").textContent = t.noteHouse;
@@ -1004,41 +1077,6 @@
         btn.classList.toggle("active", btn.dataset.lang === lang);
       });
     }
-
-    function centerActiveTab(button){
-      button.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest"
-      });
-    }
-
-    tabButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        const target = document.getElementById(button.dataset.target);
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      });
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const activeId = entry.target.id;
-          tabButtons.forEach(btn => {
-            const isActive = btn.dataset.target === activeId;
-            btn.classList.toggle("active", isActive);
-            if (isActive) centerActiveTab(btn);
-          });
-        }
-      });
-    }, {
-      rootMargin: "-20% 0px -65% 0px",
-      threshold: 0.02
-    });
-
-    observedSections.forEach(section => observer.observe(section));
 
     langButtons.forEach(btn => {
       btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
