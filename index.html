@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kutscherstube – Speisekarte</title>
-  <!-- Eleganckie i nowoczesne czcionki Google Fonts -->
+  
+  <!-- Eleganckie czcionki -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -12,19 +13,18 @@
   <style>
     :root {
       /* Karczemna Fioletowa Paleta */
-      --tavern-dark: #160b1e;      /* Głęboki mrok karczmy */
-      --purple-deep: #251336;      /* Główne tło */
-      --purple-main: #3d2459;      /* Karty i tła */
-      --purple-light: #6a4c8a;     /* Akcenty */
+      --tavern-dark: #160b1e;      
+      --purple-deep: #251336;      
+      --purple-main: #3d2459;      
+      --purple-light: #6a4c8a;     
       
-      /* Drewno, złoto i świece (Ciepły kontrast) */
-      --gold-primary: #d4af37;     /* Stare złoto */
-      --gold-light: #f3e5ab;       /* Jasne złoto/pergamin */
+      /* Złoto i drewno */
+      --gold-primary: #d4af37;     
+      --gold-light: #f3e5ab;       
       --wood-dark: #2c1a12;
-      --wood-accent: #8b5a2b;
       
       /* Tekst */
-      --text-main: #fdf8f5;        /* Jasny pergaminowy */
+      --text-main: #fdf8f5;        
       --text-muted: #bdaab9;
       
       /* Detale */
@@ -41,7 +41,7 @@
       background-color: var(--tavern-dark);
       background-image: 
         radial-gradient(circle at 50% 0%, rgba(61, 36, 89, 0.5) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(139, 90, 43, 0.15) 0%, transparent 50%); /* Efekt blasku kominka/świec */
+        radial-gradient(circle at 100% 100%, rgba(139, 90, 43, 0.15) 0%, transparent 50%);
       color: var(--text-main);
       font-family: 'Outfit', sans-serif;
       line-height: 1.6;
@@ -71,7 +71,7 @@
     
     @keyframes slowSpin { 100% { transform: rotate(360deg); } }
 
-    /* ========== LOADING ANIMATION - KUCHARZ MIESZAJĄCY ZUPĘ ========== */
+    /* ========== LOADING ANIMATION - ELEGANCKI KLOSZ ========== */
     #loader {
       position: fixed;
       inset: 0;
@@ -86,118 +86,95 @@
 
     #loader.hidden { opacity: 0; visibility: hidden; }
 
-    .soup-scene {
+    .cloche-scene {
       position: relative;
-      width: 150px;
-      height: 180px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
     }
 
-    /* Czapka kucharza unosząca się w oparach */
-    .chef-hat-loader {
+    /* Talerz bazowy */
+    .plate {
       position: absolute;
-      top: 0;
-      width: 50px; height: 40px;
-      background: #fff;
-      border-radius: 10px 10px 0 0;
-      animation: hatFloat 3s ease-in-out infinite;
-    }
-    .chef-hat-loader::before, .chef-hat-loader::after {
-      content: ''; position: absolute; background: #fff; border-radius: 50%;
-    }
-    .chef-hat-loader::before { width: 30px; height: 30px; top: -15px; left: -10px; }
-    .chef-hat-loader::after { width: 40px; height: 40px; top: -20px; right: -10px; }
-
-    /* Para wodna */
-    .steam {
-      position: absolute;
-      width: 10px; height: 30px;
-      background: rgba(255, 255, 255, 0.4);
-      border-radius: 10px;
-      filter: blur(4px);
-      bottom: 60px;
-      opacity: 0;
-    }
-    .steam:nth-child(2) { left: 40px; animation: rise 2s infinite 0.5s; }
-    .steam:nth-child(3) { right: 40px; animation: rise 2s infinite 1.2s; }
-    .steam:nth-child(4) { left: 70px; animation: rise 2s infinite 0s; }
-
-    /* Łyżka i ręka kucharza */
-    .spoon-wrapper {
-      position: absolute;
-      bottom: 50px;
-      width: 100px;
-      height: 20px;
-      transform-origin: center right;
-      animation: stir 1.5s linear infinite;
-      z-index: 2;
-    }
-    .spoon {
-      position: absolute;
-      right: 0; top: 0;
-      width: 80px; height: 6px;
-      background: var(--wood-accent);
-      border-radius: 5px;
-      transform: rotate(-20deg);
-    }
-    .chef-hand {
-      position: absolute;
-      right: -10px; top: -15px;
-      width: 30px; height: 30px;
-      background: #ffdbac;
+      bottom: 10px;
+      left: 10%;
+      width: 80%;
+      height: 12px;
+      background: linear-gradient(to right, #a68427, #f3e5ab, #a68427);
       border-radius: 50%;
-      box-shadow: inset -5px -5px 0 rgba(0,0,0,0.1);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.8);
+      z-index: 1;
     }
 
-    /* Kociołek / Garnek */
-    .pot {
-      position: relative;
-      width: 120px; height: 70px;
-      background: linear-gradient(to bottom, #333, #111);
-      border-radius: 10px 10px 40px 40px;
-      border-top: 8px solid #444;
+    /* Unoszący się klosz */
+    .cloche {
+      position: absolute;
+      bottom: 16px;
+      left: 15%;
+      width: 70%;
+      height: 60px;
+      background: linear-gradient(135deg, rgba(243, 229, 171, 0.1), rgba(212, 175, 55, 0.9));
+      border-radius: 50px 50px 0 0;
+      border: 1px solid var(--gold-light);
+      border-bottom: 3px solid #a68427;
       z-index: 3;
-      box-shadow: 0 15px 20px rgba(0,0,0,0.8);
+      transform-origin: bottom center;
+      animation: liftCloche 2.5s ease-in-out infinite;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     }
-    .pot::before, .pot::after {
-      content: ''; position: absolute;
-      top: 10px; width: 20px; height: 15px;
-      border: 4px solid #444;
+    
+    /* Uchwyt klosza */
+    .cloche::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 16px;
+      background: radial-gradient(circle, #f3e5ab, #a68427);
       border-radius: 50%;
-      z-index: -1;
     }
-    .pot::before { left: -15px; }
-    .pot::after { right: -15px; }
+
+    /* Elegancka, wektorowa para */
+    .elegant-steam {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 60px;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeSteam 2.5s ease-in-out infinite;
+    }
+    .elegant-steam path {
+      fill: none;
+      stroke: var(--gold-light);
+      stroke-width: 2;
+      stroke-linecap: round;
+      filter: blur(1px);
+    }
 
     .loader-text {
-      margin-top: 30px;
       font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: var(--gold-primary);
-      letter-spacing: 2px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
       animation: pulseText 2s infinite;
     }
 
-    @keyframes rise {
-      0% { transform: translateY(0) scale(1); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-50px) scale(2); opacity: 0; }
+    @keyframes liftCloche {
+      0%, 100% { transform: translateY(0); }
+      40%, 60% { transform: translateY(-40px) rotate(5deg); }
     }
-    @keyframes stir {
-      0% { transform: scaleX(1) translateX(0); z-index: 2; }
-      25% { transform: scaleX(0.8) translateX(-15px); z-index: 2; }
-      50% { transform: scaleX(1) translateX(-30px); z-index: 4; }
-      75% { transform: scaleX(1.2) translateX(-15px); z-index: 4; }
-      100% { transform: scaleX(1) translateX(0); z-index: 2; }
+    @keyframes fadeSteam {
+      0%, 20% { opacity: 0; transform: translate(-50%, 10px) scale(0.8); }
+      50% { opacity: 0.8; transform: translate(-50%, -20px) scale(1.1); }
+      80%, 100% { opacity: 0; transform: translate(-50%, -40px) scale(1.3); }
     }
-    @keyframes hatFloat {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50% { transform: translateY(-10px) rotate(2deg); }
-    }
-    @keyframes pulseText { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+    @keyframes pulseText { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
     /* ========== WSPÓLNE ========== */
     .wrap {
@@ -208,7 +185,7 @@
     a { color: var(--gold-primary); text-decoration: none; transition: var(--transition); }
     a:hover { color: var(--gold-light); }
 
-    /* ========== HEADER / HERO (Szyld Karczmy) ========== */
+    /* ========== HEADER / HERO ========== */
     .hero {
       padding: 50px 0 40px;
       position: relative;
@@ -219,32 +196,38 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 15px;
+      gap: 10px;
       margin-bottom: 40px;
     }
 
-    /* Elegancki symbol nad logo */
     .hero-icon {
-      width: 50px; height: 50px;
+      width: 45px; height: 45px;
       fill: var(--gold-primary);
-      margin-bottom: -10px;
+      margin-bottom: -5px;
     }
 
+    /* Zmieniony, w pełni responsywny baner z efektem złotego napisu */
     .brand h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      color: var(--gold-primary);
+      font-size: clamp(1.8rem, 8vw, 4rem); /* Idealne skalowanie na telefony */
+      color: transparent;
+      background: linear-gradient(to bottom, #fff8d6, #d4af37, #997312);
+      -webkit-background-clip: text;
+      background-clip: text;
       text-transform: uppercase;
-      letter-spacing: 4px;
-      text-shadow: 2px 4px 10px rgba(0,0,0,0.5);
+      letter-spacing: 1px;
       margin: 0;
+      line-height: 1.1;
+      filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.6));
+      word-break: keep-all; /* Zapobiega łamaniu słowa w pół na skrajnie małych ekranach */
     }
 
     .motto {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-size: clamp(1.1rem, 4vw, 1.5rem);
       color: var(--text-muted);
       font-style: italic;
       letter-spacing: 1px;
+      margin-top: 5px;
     }
 
     .lang-switch {
@@ -276,7 +259,7 @@
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
-    /* Karta Informacyjna (Górny Panel) */
+    /* Karta Informacyjna */
     .hero-card {
       background: rgba(37, 19, 54, 0.6);
       border: var(--border-gold);
@@ -287,7 +270,6 @@
       position: relative;
     }
     
-    /* Dekoracyjne rogi w karcie */
     .hero-card::before, .hero-card::after {
       content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid var(--gold-primary);
     }
@@ -365,9 +347,17 @@
     }
     .info-value { font-size: 1.05rem; color: var(--text-main); font-weight: 300; }
 
-    .status-open { color: #2ecc71; display: flex; align-items: center; gap: 8px; font-weight: 500;}
+    /* Dynamiczne statusy */
+    .status-open, .status-closed {
+      display: flex; align-items: center; gap: 8px; font-weight: 500;
+    }
+    .status-open { color: #2ecc71; }
     .status-open::before {
       content: ''; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px #2ecc71;
+    }
+    .status-closed { color: #e74c3c; }
+    .status-closed::before {
+      content: ''; width: 8px; height: 8px; background: #e74c3c; border-radius: 50%; box-shadow: 0 0 10px #e74c3c;
     }
 
     /* ========== MENU KATEGORIE ========== */
@@ -383,7 +373,6 @@
       content: ''; height: 1px; width: 60px; background: var(--gold-primary); opacity: 0.5;
     }
 
-    /* Przyklejone zakładki */
     .sticky-categories {
       position: sticky; top: 0; z-index: 100;
       background: rgba(22, 11, 30, 0.95);
@@ -415,7 +404,7 @@
     .tab-btn.active, .tab-btn:hover { color: var(--gold-primary); }
     .tab-btn.active::after, .tab-btn:hover::after { width: 100%; }
 
-    /* ========== LISTA DAŃ (Elegancki klasyczny styl) ========== */
+    /* ========== LISTA DAŃ ========== */
     .category {
       scroll-margin-top: 120px;
       margin-bottom: 60px;
@@ -425,30 +414,21 @@
     .category.visible { opacity: 1; transform: translateY(0); }
 
     .category-title {
-      font-size: 2.2rem;
-      color: var(--text-main);
-      text-align: center;
-      margin-bottom: 10px;
+      font-size: 2.2rem; color: var(--text-main); text-align: center; margin-bottom: 10px;
     }
-    
     .category-note {
-      text-align: center; color: var(--text-muted);
-      font-style: italic; font-size: 0.9rem; margin-bottom: 30px;
+      text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.9rem; margin-bottom: 30px;
     }
 
     .menu-list {
       background: rgba(37, 19, 54, 0.4);
-      border: var(--border-gold);
-      border-radius: 8px;
-      padding: 30px 40px;
+      border: var(--border-gold); border-radius: 8px; padding: 30px 40px;
     }
 
     .dish {
       padding: 20px 0;
       border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
-      cursor: pointer;
-      transition: var(--transition);
-      group: dish;
+      cursor: pointer; transition: var(--transition);
     }
     .dish:last-child { border-bottom: none; }
     .dish:hover { background: rgba(212, 175, 55, 0.03); padding-left: 10px; padding-right: 10px; }
@@ -458,34 +438,23 @@
     }
 
     .dish-name {
-      font-size: 1.6rem;
-      color: var(--gold-light);
-      margin: 0; font-weight: 500;
+      font-size: 1.6rem; color: var(--gold-light); margin: 0; font-weight: 500;
       display: flex; flex-grow: 1; align-items: baseline;
     }
-    /* Klasyczne kropki oddzielające nazwę od ceny */
     .dish-name::after {
-      content: ''; flex-grow: 1;
-      border-bottom: 1px dotted rgba(212, 175, 55, 0.3);
+      content: ''; flex-grow: 1; border-bottom: 1px dotted rgba(212, 175, 55, 0.3);
       margin: 0 15px; position: relative; top: -6px;
     }
 
     .dish-price {
-      font-family: 'Cinzel', serif;
-      font-size: 1.3rem;
-      color: var(--gold-primary);
+      font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold-primary);
       font-weight: 700; white-space: nowrap;
     }
 
     .dish-desc {
-      font-family: 'Outfit', sans-serif;
-      font-weight: 300;
-      color: var(--text-muted);
-      font-size: 1rem;
-      max-height: 0; overflow: hidden; opacity: 0;
-      transition: all 0.4s ease;
-      margin-top: 0;
-      padding-right: 50px; /* Miejsce na cenę */
+      font-family: 'Outfit', sans-serif; font-weight: 300; color: var(--text-muted);
+      font-size: 1rem; max-height: 0; overflow: hidden; opacity: 0;
+      transition: all 0.4s ease; margin-top: 0; padding-right: 50px;
     }
     
     .dish.expanded .dish-desc { max-height: 150px; opacity: 1; margin-top: 10px; }
@@ -507,12 +476,9 @@
 
     /* ========== STOPKA ========== */
     .footer {
-      text-align: center; padding: 40px 0;
-      border-top: var(--border-gold);
-      background: #0f0714;
-      font-family: 'Cormorant Garamond', serif;
-      color: var(--text-muted);
-      font-size: 1.1rem;
+      text-align: center; padding: 40px 0; border-top: var(--border-gold);
+      background: #0f0714; font-family: 'Cormorant Garamond', serif;
+      color: var(--text-muted); font-size: 1.1rem;
     }
     .footer-icon { width: 30px; height: 30px; fill: var(--gold-primary); margin-bottom: 10px; opacity: 0.6; }
 
@@ -526,7 +492,7 @@
     @media (max-width: 600px) {
       .hero-card { padding: 25px 20px; }
       .btn { width: 100%; }
-      .dish-name { font-size: 1.3rem; flex-direction: column; align-items: flex-start; }
+      .dish-name { font-size: 1.25rem; flex-direction: column; align-items: flex-start; }
       .dish-name::after { display: none; }
       .dish-head { flex-direction: column; align-items: flex-start; gap: 5px; }
       .dish-desc { padding-right: 0; }
@@ -535,7 +501,7 @@
 </head>
 <body>
 
-  <!-- ========== TŁO WEKTOROWE (Koła od wozu) ========== -->
+  <!-- Tło (Koła od wozu) -->
   <svg class="bg-decorations" xmlns="http://www.w3.org/2000/svg">
     <symbol id="wagon-wheel" viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="6"/>
@@ -549,27 +515,25 @@
     <use href="#wagon-wheel" class="wheel wheel-2" />
   </svg>
 
-  <!-- ========== LOADING SCREEN (Zupa w Karczmie) ========== -->
+  <!-- LOADING SCREEN (Elegancki Klosz) -->
   <div id="loader">
-    <div class="soup-scene">
-      <div class="steam"></div>
-      <div class="steam"></div>
-      <div class="steam"></div>
-      <div class="chef-hat-loader"></div>
-      <div class="pot"></div>
-      <div class="spoon-wrapper">
-        <div class="spoon"></div>
-        <div class="chef-hand"></div>
-      </div>
+    <div class="cloche-scene">
+      <!-- Unosząca się para -->
+      <svg class="elegant-steam" viewBox="0 0 40 60">
+        <path d="M10,60 C10,40 20,30 20,10" />
+        <path d="M20,60 C20,45 10,35 10,5" opacity="0.6"/>
+        <path d="M30,55 C30,35 25,25 30,0" opacity="0.8"/>
+      </svg>
+      <div class="cloche"></div>
+      <div class="plate"></div>
     </div>
     <div class="loader-text">Zubereitung...</div>
   </div>
 
-  <!-- ========== HEADER / HERO ========== -->
+  <!-- HEADER -->
   <header class="hero">
     <div class="wrap">
       <div class="hero-top">
-        <!-- Elegancka ikona podkowy -->
         <svg class="hero-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.17 1.05-.1 1.22-.6.17-.5-.1-1.05-.6-1.22C6.26 18.6 4 15.57 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 3.57-2.26 6.6-5.46 7.68-.5.17-.77.72-.6 1.22.17.5.72.77 1.22.6C19.13 20.17 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
           <path d="M12 6c-3.31 0-6 2.69-6 6 0 2.22 1.21 4.15 3 5.19V11h6v6.19c1.79-1.04 3-2.97 3-5.19 0-3.31-2.69-6-6-6z"/>
@@ -605,7 +569,8 @@
           <aside class="info-panel">
             <div class="info-row">
               <div class="info-label" id="labelStatus">Status</div>
-              <div class="info-value status-open" id="statusText">Geöffnet · Schließt um 20:00</div>
+              <!-- Status klasy będzie nadawany dynamicznie z JS -->
+              <div class="info-value" id="statusText">Lädt...</div> 
             </div>
             <div class="info-row">
               <div class="info-label" id="labelPhone">Telefon</div>
@@ -625,15 +590,12 @@
     </div>
   </header>
 
-  <!-- ========== MENU ========== -->
+  <!-- MENU -->
   <main class="menu-page" id="speisekarte">
     <div class="wrap">
-      <div class="section-head">
-        <h2 id="menuHeading">Speisekarte</h2>
-      </div>
+      <div class="section-head"><h2 id="menuHeading">Speisekarte</h2></div>
     </div>
 
-    <!-- Przyklejona nawigacja -->
     <div class="sticky-categories">
       <div class="wrap">
         <nav class="category-tabs" id="categoryTabs">
@@ -649,7 +611,6 @@
     </div>
 
     <div class="wrap">
-
       <!-- Frühstück -->
       <section class="category visible" id="fruehstueck">
         <h3 class="category-title" id="cat-fruehstueck">Frühstück</h3>
@@ -662,7 +623,6 @@
             </div>
             <p class="dish-desc">Fluffiges Rührei, zubereitet mit geräuchertem Schinken und karamellisierten Zwiebeln. Serviert mit frischem Brot.</p>
           </article>
-
           <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Rundstück warm</h4>
@@ -670,7 +630,6 @@
             </div>
             <p class="dish-desc">Hamburger Klassiker: Warmes Brötchen mit zartem Rindfleisch, Gurke und einer würzigen Sauce.</p>
           </article>
-
           <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Polnische Wurst</h4>
@@ -678,7 +637,6 @@
             </div>
             <p class="dish-desc">Traditionelle polnische Wurst mit geschmolzenen Zwiebeln, serviert mit frischem Brötchen und Senf.</p>
           </article>
-
           <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Bauernfrühstück</h4>
@@ -686,7 +644,6 @@
             </div>
             <p class="dish-desc">Deftige Kombination aus Bratkartoffeln, Eiern, Speck und Zwiebeln – perfekt für einen starken Start in den Tag.</p>
           </article>
-          
           <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">3 Spiegeleier</h4>
@@ -694,7 +651,6 @@
             </div>
             <p class="dish-desc">Drei frisch gebratene Spiegeleier, wahlweise mit Speck oder Schinken. Dazu frisches Brot.</p>
           </article>
-
           <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Bratkartoffeln / Krautsalat</h4>
@@ -702,7 +658,6 @@
             </div>
             <p class="dish-desc">Knusprige Bratkartoffeln serviert mit hausgemachtem Krautsalat – eine erfrischende Kombination.</p>
           </article>
-
           <article class="dish" tabindex="0">
             <div class="dish-head">
               <h4 class="dish-name">Lachs</h4>
@@ -718,35 +673,20 @@
         <h3 class="category-title" id="cat-schnitzel">Schnitzel</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Jäger Schnitzel</h4>
-              <div class="dish-price">15,00 €</div>
-            </div>
-            <p class="dish-desc">Zartes Schweineschnitzel mit cremiger Pilz-Rahm-Sauce, Speck und frischen Kräutern. Dazu Pommes oder Spätzle.</p>
+            <div class="dish-head"><h4 class="dish-name">Jäger Schnitzel</h4><div class="dish-price">15,00 €</div></div>
+            <p class="dish-desc">Zartes Schweineschnitzel mit cremiger Pilz-Rahm-Sauce, Speck und frischen Kräutern.</p>
           </article>
-
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Zigeuner Schnitzel</h4>
-              <div class="dish-price">15,00 €</div>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Zigeuner Schnitzel</h4><div class="dish-price">15,00 €</div></div>
             <p class="dish-desc">Knuspriges Schnitzel mit würziger Paprika-Tomaten-Sauce, Paprika, Zwiebeln und Champignons.</p>
           </article>
-
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Hamburger Schnitzel</h4>
-              <div class="dish-price">15,00 €</div>
-            </div>
-            <p class="dish-desc">Lokale Spezialität: Schnitzel mit Spiegelei, Gurke und Remouladen-Sauce – ein Hamburger Original.</p>
+            <div class="dish-head"><h4 class="dish-name">Hamburger Schnitzel</h4><div class="dish-price">15,00 €</div></div>
+            <p class="dish-desc">Lokale Spezialität: Schnitzel mit Spiegelei, Gurke und Remouladen-Sauce.</p>
           </article>
-
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Schnitzel Wiener Art</h4>
-              <div class="dish-price">14,00 €</div>
-            </div>
-            <p class="dish-desc">Klassisches paniertes Schnitzel nach Wiener Art, goldbraun gebraten. Beilagen: Pommes, Salat oder Bratkartoffeln.</p>
+            <div class="dish-head"><h4 class="dish-name">Schnitzel Wiener Art</h4><div class="dish-price">14,00 €</div></div>
+            <p class="dish-desc">Klassisches paniertes Schnitzel nach Wiener Art, goldbraun gebraten.</p>
           </article>
         </div>
       </section>
@@ -756,11 +696,8 @@
         <h3 class="category-title" id="cat-salat">Salat</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Salat mit Hähnchenbrust</h4>
-              <div class="dish-price">13,00 €</div>
-            </div>
-            <p class="dish-desc">Frischer gemischter Salat mit gegrillter Hähnchenbrust, Oliven, Tomaten, Gurken und hausgemachtem Dressing. Dazu knuspriges Baguette.</p>
+            <div class="dish-head"><h4 class="dish-name">Salat mit Hähnchenbrust</h4><div class="dish-price">13,00 €</div></div>
+            <p class="dish-desc">Frischer gemischter Salat mit gegrillter Hähnchenbrust, Oliven, Tomaten, Gurken und hausgemachtem Dressing.</p>
           </article>
         </div>
       </section>
@@ -770,19 +707,12 @@
         <h3 class="category-title" id="cat-snacks">Snacks</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Curry Wurst & Pommes</h4>
-              <div class="dish-price">8,50 €</div>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Curry Wurst & Pommes</h4><div class="dish-price">8,50 €</div></div>
             <p class="dish-desc">Berliner Klassiker: Saftige Bratwurst mit würziger Curry-Ketchup-Sauce und knusprigen Pommes Frites.</p>
           </article>
-
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">2 Frikadellen + Kartoffel- & Krautsalat</h4>
-              <div class="dish-price">11,00 €</div>
-            </div>
-            <p class="dish-desc">Deftige Kombination: Zwei saftige Frikadellen mit hausgemachtem Kartoffel- und Krautsalat – ein wahrer Genuss.</p>
+            <div class="dish-head"><h4 class="dish-name">2 Frikadellen + Kartoffel- & Krautsalat</h4><div class="dish-price">11,00 €</div></div>
+            <p class="dish-desc">Deftige Kombination: Zwei saftige Frikadellen z sałatkami.</p>
           </article>
         </div>
       </section>
@@ -793,42 +723,23 @@
         <p class="category-note" id="note-hausgerichte">Tylko pozycje z widoczną ceną ze screenów Google Menu.</p>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Krustenbraten</h4>
-              <div class="dish-price">15,00 €</div>
-            </div>
-            <p class="dish-desc">Knuspriger Schweinebraten mit perfekter Kruste, dazu Rotkohl und hausgemachte Klößchen – ein Sonntagsklassiker.</p>
+            <div class="dish-head"><h4 class="dish-name">Krustenbraten</h4><div class="dish-price">15,00 €</div></div>
+            <p class="dish-desc">Knuspriger Schweinebraten mit perfekter Kruste, dazu Rotkohl und hausgemachte Klößchen.</p>
           </article>
-
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Königsberger Klops</h4>
-              <div class="dish-price">14,00 €</div>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Königsberger Klops</h4><div class="dish-price">14,00 €</div></div>
             <p class="dish-desc">Traditionelle Hackfleischklößchen in cremiger Kapern-Sauce, serviert mit Bohnen und Salzkartoffeln.</p>
           </article>
-
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Grützwurst</h4>
-              <div class="dish-price">14,00 €</div>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Grützwurst</h4><div class="dish-price">14,00 €</div></div>
             <p class="dish-desc">(Polnisch) Traditionelle Grützwurst mit cremigem Kartoffelpüree und karamellisierten Zwiebeln.</p>
           </article>
-
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Hühnerfrikassee</h4>
-              <div class="dish-price">18,00 €</div>
-            </div>
-            <p class="dish-desc">Cremiges Hühnerfrikassee mit zartem Hühnchen, Mischgemüse und Reis – ein klassisches Wohlfühlgericht.</p>
+            <div class="dish-head"><h4 class="dish-name">Hühnerfrikassee</h4><div class="dish-price">18,00 €</div></div>
+            <p class="dish-desc">Cremiges Hühnerfrikassee mit zartem Hühnchen, Mischgemüse und Reis.</p>
           </article>
-          
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Schweineleber</h4>
-              <div class="dish-price">17,00 €</div>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Schweineleber</h4><div class="dish-price">17,00 €</div></div>
             <p class="dish-desc">Zarte Schweineleber nach Berliner Art, mit Mischgemüse und cremigem Püree. Für Kenner!</p>
           </article>
         </div>
@@ -839,10 +750,7 @@
         <h3 class="category-title" id="cat-getraenke">Getränke</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Becher Kaffee / Tee / Kakao</h4>
-              <div class="dish-price">2,50 €</div>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Becher Kaffee / Tee / Kakao</h4><div class="dish-price">2,50 €</div></div>
             <p class="dish-desc">Heiße Getränke für einen gemütlichen Moment.</p>
           </article>
         </div>
@@ -865,7 +773,7 @@
     </div>
   </main>
 
-  <!-- ========== FOOTER ========== -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="wrap">
       <svg class="footer-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -875,27 +783,24 @@
     </div>
   </footer>
 
-  <!-- ========== JAVASCRIPT ========== -->
+  <!-- JAVASCRIPT -->
   <script>
     // ========== LOADER ==========
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
-      }, 2000); // Skrócony czas ładowania dla lepszego UX
+      }, 2000); 
     });
 
-    // ========== ROZWIJANIE DAŃ (Akordeon) ==========
+    // ========== ROZWIJANIE DAŃ ==========
     document.querySelectorAll('.dish').forEach(dish => {
       dish.addEventListener('click', function(e) {
         if (e.target.closest('.dish-price')) return;
-        
         document.querySelectorAll('.dish.expanded').forEach(other => {
           if (other !== this) other.classList.remove('expanded');
         });
-        
         this.classList.toggle('expanded');
       });
-      
       dish.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -904,19 +809,18 @@
       });
     });
 
-    // ========== ANIMACJA SCROLL (Intersection Observer) ==========
+    // ========== ANIMACJA SCROLL ==========
     const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
       });
     }, observerOptions);
-
     document.querySelectorAll('.category').forEach(section => {
       sectionObserver.observe(section);
     });
 
-    // ========== STICKY TABS - aktywne kategorie ==========
+    // ========== STICKY TABS ==========
     const tabButtons = document.querySelectorAll('.tab-btn');
     const observedSections = [
       "fruehstueck", "schnitzel", "salat", "snacks", 
@@ -949,8 +853,37 @@
         }
       });
     }, { rootMargin: "-30% 0px -70% 0px", threshold: 0 });
-
     observedSections.forEach(section => tabObserver.observe(section));
+
+    // ========== DYNAMICZNY STATUS OTWARCIA ==========
+    function updateOpeningStatus() {
+      const now = new Date();
+      const day = now.getDay(); // 0 = Niedziela, 1 = Poniedziałek ... 6 = Sobota
+      const hour = now.getHours();
+
+      // Czynne od Poniedziałku (1) do Piątku (5) w godzinach 08:00 - 19:59
+      const isOpen = (day >= 1 && day <= 5) && (hour >= 8 && hour < 20);
+      
+      const statusEl = document.getElementById("statusText");
+      const lang = document.documentElement.lang || "de";
+
+      const texts = {
+        de: { open: "Geöffnet · Schließt um 20:00", closed: "Geschlossen" },
+        pl: { open: "Otwarte · Zamknięcie o 20:00", closed: "Zamknięte" },
+        en: { open: "Open · Closes at 20:00", closed: "Closed" }
+      };
+
+      if (isOpen) {
+        statusEl.textContent = texts[lang].open;
+        statusEl.className = "info-value status-open";
+      } else {
+        statusEl.textContent = texts[lang].closed;
+        statusEl.className = "info-value status-closed";
+      }
+    }
+
+    // Aktualizuj status co 1 minutę
+    setInterval(updateOpeningStatus, 60000);
 
     // ========== TŁUMACZENIA ==========
     const translations = {
@@ -962,7 +895,6 @@
         btnCall: "Anrufen",
         btnRoute: "Anfahrt",
         labelStatus: "Status",
-        statusText: "Geöffnet · Schließt um 20:00",
         labelPhone: "Telefon",
         labelService: "Service",
         serviceText: "Vor Ort · Zum Mitnehmen",
@@ -984,7 +916,6 @@
         btnCall: "Zadzwoń",
         btnRoute: "Dojazd",
         labelStatus: "Status",
-        statusText: "Otwarte · Zamknięcie o 20:00",
         labelPhone: "Telefon",
         labelService: "Obsługa",
         serviceText: "Na miejscu · Na wynos",
@@ -1006,7 +937,6 @@
         btnCall: "Call us",
         btnRoute: "Directions",
         labelStatus: "Status",
-        statusText: "Open · Closes at 20:00",
         labelPhone: "Phone",
         labelService: "Service",
         serviceText: "Dine in · Takeaway",
@@ -1035,7 +965,6 @@
       document.getElementById("btnCall").textContent = t.btnCall;
       document.getElementById("btnRoute").textContent = t.btnRoute;
       document.getElementById("labelStatus").textContent = t.labelStatus;
-      document.getElementById("statusText").textContent = t.statusText;
       document.getElementById("labelPhone").textContent = t.labelPhone;
       document.getElementById("labelService").textContent = t.labelService;
       document.getElementById("serviceText").textContent = t.serviceText;
@@ -1076,12 +1005,16 @@
       langButtons.forEach(btn => {
         btn.classList.toggle("active", btn.dataset.lang === lang);
       });
+
+      // Zaktualizuj status (biorąc pod uwagę aktualny wybrany język)
+      updateOpeningStatus();
     }
 
     langButtons.forEach(btn => {
       btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
     });
 
+    // Inicjalizacja
     setLanguage("de");
   </script>
 </body>
