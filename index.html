@@ -92,7 +92,6 @@
       margin-bottom: 20px;
     }
 
-    /* Talerz bazowy */
     .plate {
       position: absolute;
       bottom: 10px;
@@ -105,7 +104,6 @@
       z-index: 1;
     }
 
-    /* Unoszący się klosz */
     .cloche {
       position: absolute;
       bottom: 16px;
@@ -122,7 +120,6 @@
       box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     }
     
-    /* Uchwyt klosza */
     .cloche::before {
       content: '';
       position: absolute;
@@ -135,7 +132,6 @@
       border-radius: 50%;
     }
 
-    /* Elegancka, wektorowa para */
     .elegant-steam {
       position: absolute;
       bottom: 20px;
@@ -176,309 +172,92 @@
     @keyframes pulseText { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
     /* ========== WSPÓLNE ========== */
-    .wrap {
-      width: min(1000px, calc(100% - 40px));
-      margin: 0 auto;
-      position: relative;
-    }
+    .wrap { width: min(1000px, calc(100% - 40px)); margin: 0 auto; position: relative; }
     a { color: var(--gold-primary); text-decoration: none; transition: var(--transition); }
     a:hover { color: var(--gold-light); }
 
     /* ========== HEADER / HERO ========== */
-    .hero {
-      padding: 50px 0 40px;
-      position: relative;
-    }
-    
-    .hero-top {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 10px;
-      margin-bottom: 40px;
-    }
+    .hero { padding: 50px 0 40px; position: relative; }
+    .hero-top { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; margin-bottom: 40px; }
+    .hero-icon { width: 45px; height: 45px; fill: var(--gold-primary); margin-bottom: -5px; }
+    .brand h1 { font-size: clamp(1.8rem, 8vw, 4rem); color: transparent; background: linear-gradient(to bottom, #fff8d6, #d4af37, #997312); -webkit-background-clip: text; background-clip: text; text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1.1; filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.6)); word-break: keep-all; }
+    .motto { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 4vw, 1.5rem); color: var(--text-muted); font-style: italic; letter-spacing: 1px; margin-top: 5px; }
 
-    .hero-icon {
-      width: 45px; height: 45px;
-      fill: var(--gold-primary);
-      margin-bottom: -5px;
-    }
+    .lang-switch { display: flex; gap: 5px; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 30px; border: var(--border-gold); margin-top: 15px; }
+    .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 8px 16px; font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; border-radius: 20px; transition: var(--transition); }
+    .lang-btn.active, .lang-btn:hover { background: var(--gold-primary); color: var(--tavern-dark); font-weight: 600; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
 
-    .brand h1 {
-      font-size: clamp(1.8rem, 8vw, 4rem);
-      color: transparent;
-      background: linear-gradient(to bottom, #fff8d6, #d4af37, #997312);
-      -webkit-background-clip: text;
-      background-clip: text;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin: 0;
-      line-height: 1.1;
-      filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.6));
-      word-break: keep-all; 
-    }
-
-    .motto {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.1rem, 4vw, 1.5rem);
-      color: var(--text-muted);
-      font-style: italic;
-      letter-spacing: 1px;
-      margin-top: 5px;
-    }
-
-    .lang-switch {
-      display: flex;
-      gap: 5px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 5px;
-      border-radius: 30px;
-      border: var(--border-gold);
-      margin-top: 15px;
-    }
-
-    .lang-btn {
-      background: transparent; border: none;
-      color: var(--text-muted);
-      padding: 8px 16px;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 500;
-      font-size: 0.9rem;
-      cursor: pointer;
-      border-radius: 20px;
-      transition: var(--transition);
-    }
-
-    .lang-btn.active, .lang-btn:hover {
-      background: var(--gold-primary);
-      color: var(--tavern-dark);
-      font-weight: 600;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-    }
-
-    .hero-card {
-      background: rgba(37, 19, 54, 0.6);
-      border: var(--border-gold);
-      border-radius: 12px;
-      padding: 40px;
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow-tavern);
-      position: relative;
-    }
-    
-    .hero-card::before, .hero-card::after {
-      content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid var(--gold-primary);
-    }
+    .hero-card { background: rgba(37, 19, 54, 0.6); border: var(--border-gold); border-radius: 12px; padding: 40px; backdrop-filter: blur(10px); box-shadow: var(--shadow-tavern); position: relative; }
+    .hero-card::before, .hero-card::after { content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid var(--gold-primary); }
     .hero-card::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
     .hero-card::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .hero-text {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      margin-bottom: 25px;
-    }
-
-    .address {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      color: var(--gold-light);
-      margin-bottom: 30px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
+    .hero-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: center; }
+    .hero-text { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 25px; }
+    .address { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--gold-light); margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
     .cta-row { display: flex; flex-wrap: wrap; gap: 15px; }
 
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 12px 24px;
-      border: var(--border-gold);
-      background: transparent;
-      color: var(--gold-light);
-      font-family: 'Outfit', sans-serif;
-      font-weight: 500;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-    .btn::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--gold-primary);
-      transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
-      z-index: -1;
-    }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; border: var(--border-gold); background: transparent; color: var(--gold-light); font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 0.95rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: var(--transition); position: relative; overflow: hidden; }
+    .btn::before { content: ''; position: absolute; inset: 0; background: var(--gold-primary); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; z-index: -1; }
     .btn:hover { color: var(--tavern-dark); border-color: var(--gold-primary); }
     .btn:hover::before { transform: scaleX(1); }
-    
     .btn-primary { background: var(--gold-primary); color: var(--tavern-dark); font-weight: 600; }
     .btn-primary:hover { background: var(--gold-light); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
-    .info-panel {
-      border-left: 1px solid rgba(212, 175, 55, 0.2);
-      padding-left: 30px;
-    }
-
+    .info-panel { border-left: 1px solid rgba(212, 175, 55, 0.2); padding-left: 30px; }
     .info-row { margin-bottom: 20px; }
     .info-row:last-child { margin-bottom: 0; }
-    .info-label {
-      font-family: 'Cinzel', serif;
-      color: var(--gold-primary);
-      font-size: 0.8rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
+    .info-label { font-family: 'Cinzel', serif; color: var(--gold-primary); font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
     .info-value { font-size: 1.05rem; color: var(--text-main); font-weight: 300; }
 
-    .status-open, .status-closed {
-      display: flex; align-items: center; gap: 8px; font-weight: 500;
-    }
+    .status-open, .status-closed { display: flex; align-items: center; gap: 8px; font-weight: 500; }
     .status-open { color: #2ecc71; }
-    .status-open::before {
-      content: ''; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px #2ecc71;
-    }
+    .status-open::before { content: ''; width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px #2ecc71; }
     .status-closed { color: #e74c3c; }
-    .status-closed::before {
-      content: ''; width: 8px; height: 8px; background: #e74c3c; border-radius: 50%; box-shadow: 0 0 10px #e74c3c;
-    }
+    .status-closed::before { content: ''; width: 8px; height: 8px; background: #e74c3c; border-radius: 50%; box-shadow: 0 0 10px #e74c3c; }
 
     /* ========== MENU KATEGORIE ========== */
     .menu-page { padding: 40px 0 80px; }
-
     .section-head { text-align: center; margin-bottom: 30px; }
-    .section-head h2 {
-      font-size: clamp(2rem, 5vw, 3rem);
-      color: var(--gold-primary);
-      display: flex; align-items: center; justify-content: center; gap: 15px;
-    }
-    .section-head h2::before, .section-head h2::after {
-      content: ''; height: 1px; width: 60px; background: var(--gold-primary); opacity: 0.5;
-    }
+    .section-head h2 { font-size: clamp(2rem, 5vw, 3rem); color: var(--gold-primary); display: flex; align-items: center; justify-content: center; gap: 15px; }
+    .section-head h2::before, .section-head h2::after { content: ''; height: 1px; width: 60px; background: var(--gold-primary); opacity: 0.5; }
 
-    .sticky-categories {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(22, 11, 30, 0.95);
-      border-bottom: var(--border-gold);
-      padding: 15px 0;
-      backdrop-filter: blur(10px);
-      margin-bottom: 50px;
-    }
-
-    .category-tabs {
-      display: flex; gap: 15px; overflow-x: auto; scrollbar-width: none;
-      padding: 0 10px; justify-content: center;
-    }
+    .sticky-categories { position: sticky; top: 0; z-index: 100; background: rgba(22, 11, 30, 0.95); border-bottom: var(--border-gold); padding: 15px 0; backdrop-filter: blur(10px); margin-bottom: 50px; }
+    .category-tabs { display: flex; gap: 15px; overflow-x: auto; scrollbar-width: none; padding: 0 10px; justify-content: center; }
     .category-tabs::-webkit-scrollbar { display: none; }
-
-    .tab-btn {
-      flex: 0 0 auto;
-      background: transparent; border: none;
-      color: var(--text-muted);
-      font-family: 'Cinzel', serif;
-      font-size: 0.95rem; letter-spacing: 1px;
-      padding: 10px 5px; cursor: pointer;
-      position: relative; transition: var(--transition);
-    }
-    .tab-btn::after {
-      content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px;
-      background: var(--gold-primary); transition: var(--transition); transform: translateX(-50%);
-    }
+    .tab-btn { flex: 0 0 auto; background: transparent; border: none; color: var(--text-muted); font-family: 'Cinzel', serif; font-size: 0.95rem; letter-spacing: 1px; padding: 10px 5px; cursor: pointer; position: relative; transition: var(--transition); }
+    .tab-btn::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: var(--gold-primary); transition: var(--transition); transform: translateX(-50%); }
     .tab-btn.active, .tab-btn:hover { color: var(--gold-primary); }
     .tab-btn.active::after, .tab-btn:hover::after { width: 100%; }
 
     /* ========== LISTA DAŃ ========== */
-    .category {
-      scroll-margin-top: 120px;
-      margin-bottom: 60px;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
+    .category { scroll-margin-top: 120px; margin-bottom: 60px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .category.visible { opacity: 1; transform: translateY(0); }
-
-    .category-title {
-      font-size: 2.2rem; color: var(--text-main); text-align: center; margin-bottom: 10px;
-    }
-    .category-note {
-      text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.9rem; margin-bottom: 30px;
-    }
-
-    .menu-list {
-      background: rgba(37, 19, 54, 0.4);
-      border: var(--border-gold); border-radius: 8px; padding: 30px 40px;
-    }
-
-    .dish {
-      padding: 20px 0;
-      border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
-      cursor: pointer; transition: var(--transition);
-    }
+    .category-title { font-size: 2.2rem; color: var(--text-main); text-align: center; margin-bottom: 10px; }
+    .category-note { text-align: center; color: var(--text-muted); font-style: italic; font-size: 0.9rem; margin-bottom: 30px; }
+    .menu-list { background: rgba(37, 19, 54, 0.4); border: var(--border-gold); border-radius: 8px; padding: 30px 40px; }
+    
+    .dish { padding: 20px 0; border-bottom: 1px dashed rgba(212, 175, 55, 0.2); cursor: pointer; transition: var(--transition); }
     .dish:last-child { border-bottom: none; }
     .dish:hover { background: rgba(212, 175, 55, 0.03); padding-left: 10px; padding-right: 10px; }
 
-    .dish-head {
-      display: flex; align-items: flex-end; justify-content: space-between; gap: 15px;
-    }
-
-    .dish-name {
-      font-size: 1.6rem; color: var(--gold-light); margin: 0; font-weight: 500;
-      display: flex; flex-grow: 1; align-items: baseline;
-    }
-    .dish-name::after {
-      content: ''; flex-grow: 1; border-bottom: 1px dotted rgba(212, 175, 55, 0.3);
-      margin: 0 15px; position: relative; top: -6px;
-    }
-
-    .dish-price {
-      font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold-primary);
-      font-weight: 700; white-space: nowrap;
-    }
-
-    .dish-desc {
-      font-family: 'Outfit', sans-serif; font-weight: 300; color: var(--text-muted);
-      font-size: 1rem; max-height: 0; overflow: hidden; opacity: 0;
-      transition: all 0.4s ease; margin-top: 0; padding-right: 50px;
-    }
-    
+    .dish-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 15px; }
+    .dish-name { font-size: 1.6rem; color: var(--gold-light); margin: 0; font-weight: 500; display: flex; flex-grow: 1; align-items: baseline; }
+    .dish-name::after { content: ''; flex-grow: 1; border-bottom: 1px dotted rgba(212, 175, 55, 0.3); margin: 0 15px; position: relative; top: -6px; }
+    .dish-price { font-family: 'Cinzel', serif; font-size: 1.3rem; color: var(--gold-primary); font-weight: 700; white-space: nowrap; }
+    .dish-desc { font-family: 'Outfit', sans-serif; font-weight: 300; color: var(--text-muted); font-size: 1rem; max-height: 0; overflow: hidden; opacity: 0; transition: all 0.4s ease; margin-top: 0; padding-right: 50px; }
     .dish.expanded .dish-desc { max-height: 150px; opacity: 1; margin-top: 10px; }
     .dish.expanded .dish-name { color: var(--gold-primary); }
 
-    /* ========== GODZINY OTWARCIA ========== */
-    .hours-list {
-      max-width: 500px; margin: 0 auto;
-      background: rgba(37, 19, 54, 0.4);
-      border: var(--border-gold); border-radius: 8px; padding: 30px;
-    }
-    .hours-row {
-      display: flex; justify-content: space-between;
-      padding: 12px 0; border-bottom: 1px dashed rgba(212, 175, 55, 0.2);
-    }
+    .hours-list { max-width: 500px; margin: 0 auto; background: rgba(37, 19, 54, 0.4); border: var(--border-gold); border-radius: 8px; padding: 30px; }
+    .hours-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed rgba(212, 175, 55, 0.2); }
     .hours-row:last-child { border-bottom: none; }
     .hours-day { font-family: 'Cinzel', serif; color: var(--gold-light); }
     .hours-time { color: var(--text-muted); }
 
-    /* ========== STOPKA ========== */
-    .footer {
-      text-align: center; padding: 40px 0; border-top: var(--border-gold);
-      background: #0f0714; font-family: 'Cormorant Garamond', serif;
-      color: var(--text-muted); font-size: 1.1rem;
-    }
+    .footer { text-align: center; padding: 40px 0; border-top: var(--border-gold); background: #0f0714; font-family: 'Cormorant Garamond', serif; color: var(--text-muted); font-size: 1.1rem; }
     .footer-icon { width: 30px; height: 30px; fill: var(--gold-primary); margin-bottom: 10px; opacity: 0.6; }
 
-    /* ========== RESPONSYWNOŚĆ ========== */
     @media (max-width: 850px) {
       .hero-grid { grid-template-columns: 1fr; gap: 20px; }
       .info-panel { border-left: none; border-top: 1px solid rgba(212,175,55,0.2); padding-left: 0; padding-top: 20px; }
@@ -494,72 +273,70 @@
       .dish-desc { padding-right: 0; }
     }
 
-    /* ========== STYLE KOSZYKA (NOWE) ========== */
+    /* ========== STYLE KOSZYKA Z ZAKŁADKI (DODAJ) ========== */
     .add-to-cart {
-      background: var(--gold-primary);
-      color: var(--tavern-dark);
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-weight: bold;
-      font-size: 1.2rem;
-      cursor: pointer;
-      margin-left: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      flex-shrink: 0; /* Zapobiega spłaszczaniu na małych ekranach */
+      background: var(--gold-primary); color: var(--tavern-dark); border: none; border-radius: 50%;
+      width: 32px; height: 32px; font-weight: bold; font-size: 1.2rem; cursor: pointer;
+      margin-left: 15px; display: flex; align-items: center; justify-content: center;
+      transition: var(--transition); box-shadow: 0 2px 10px rgba(0,0,0,0.3); flex-shrink: 0;
     }
-
-    .add-to-cart:hover {
-      transform: scale(1.1);
-      background: var(--gold-light);
-    }
+    .add-to-cart:hover { transform: scale(1.1); background: var(--gold-light); }
 
     #cart-floating-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #25d366; /* Kolor WhatsApp */
-      color: white;
-      padding: 15px 25px;
-      border-radius: 50px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      display: none; /* Ukryty, dopóki koszyk jest pusty */
-      z-index: 2000;
-      cursor: pointer;
-      font-family: 'Cinzel', serif;
-      border: 2px solid white;
-      align-items: center;
-      gap: 12px;
-      animation: slideIn 0.5s ease-out;
+      position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white;
+      padding: 15px 25px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: none; z-index: 2000; cursor: pointer; font-family: 'Cinzel', serif;
+      border: 2px solid white; align-items: center; gap: 12px; animation: slideIn 0.5s ease-out;
     }
-
-    @keyframes slideIn { 
-      from { transform: translateY(100px); opacity: 0; } 
-      to { transform: translateY(0); opacity: 1; } 
-    }
-
-    .cart-count {
-      background: white;
-      color: #25d366;
-      border-radius: 50%;
-      padding: 2px 10px;
-      font-weight: bold;
-      font-family: 'Outfit', sans-serif;
-    }
+    @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .cart-count { background: white; color: #25d366; border-radius: 50%; padding: 2px 10px; font-weight: bold; font-family: 'Outfit', sans-serif; }
 
     @media (max-width: 600px) {
-      #cart-floating-btn {
-        width: calc(100% - 40px);
-        left: 20px;
-        bottom: 20px;
-        justify-content: center;
-      }
+      #cart-floating-btn { width: calc(100% - 40px); left: 20px; bottom: 20px; justify-content: center; }
     }
+
+    /* ========== MODAL (NOWE - EKRAN KOSZYKA) ========== */
+    .cart-modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+      display: none; justify-content: center; align-items: center; z-index: 3000;
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .cart-modal-overlay.active { display: flex; opacity: 1; }
+    
+    .cart-modal {
+      background: var(--tavern-dark); border: var(--border-gold); border-radius: 12px;
+      width: 90%; max-width: 500px; max-height: 85vh;
+      display: flex; flex-direction: column; box-shadow: var(--shadow-tavern);
+      transform: translateY(20px); transition: transform 0.3s ease;
+    }
+    .cart-modal-overlay.active .cart-modal { transform: translateY(0); }
+
+    .cart-modal-header { padding: 20px; border-bottom: var(--border-gold); display: flex; justify-content: space-between; align-items: center; }
+    .cart-modal-header h3 { color: var(--gold-primary); margin: 0; font-size: 1.5rem; }
+    .cart-modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 2rem; cursor: pointer; line-height: 1; transition: 0.3s; }
+    .cart-modal-close:hover { color: var(--gold-light); }
+
+    .cart-modal-body { padding: 20px; overflow-y: auto; flex-grow: 1; }
+    .cart-modal-body::-webkit-scrollbar { width: 6px; }
+    .cart-modal-body::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 10px; }
+
+    .cart-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(212, 175, 55, 0.2); }
+    .cart-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    
+    .cart-row-info { flex-grow: 1; padding-right: 15px; }
+    .cart-row-title { color: var(--gold-light); font-weight: 500; font-size: 1.1rem; line-height: 1.3; margin-bottom: 5px; }
+    .cart-row-price { color: var(--text-muted); font-family: 'Cinzel', serif; }
+    
+    .cart-btn-remove {
+      background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.4);
+      border-radius: 4px; padding: 6px 12px; font-weight: 600; cursor: pointer; transition: 0.3s;
+      white-space: nowrap; font-family: 'Outfit', sans-serif;
+    }
+    .cart-btn-remove:hover { background: #e74c3c; color: white; }
+
+    .cart-modal-footer { padding: 20px; border-top: var(--border-gold); background: rgba(0,0,0,0.2); }
+    .cart-total-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-family: 'Cinzel', serif; color: var(--gold-primary); font-size: 1.4rem; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -579,11 +356,7 @@
 
   <div id="loader">
     <div class="cloche-scene">
-      <svg class="elegant-steam" viewBox="0 0 40 60">
-        <path d="M10,60 C10,40 20,30 20,10" />
-        <path d="M20,60 C20,45 10,35 10,5" opacity="0.6"/>
-        <path d="M30,55 C30,35 25,25 30,0" opacity="0.8"/>
-      </svg>
+      <svg class="elegant-steam" viewBox="0 0 40 60"><path d="M10,60 C10,40 20,30 20,10" /><path d="M20,60 C20,45 10,35 10,5" opacity="0.6"/><path d="M30,55 C30,35 25,25 30,0" opacity="0.8"/></svg>
       <div class="cloche"></div>
       <div class="plate"></div>
     </div>
@@ -597,11 +370,7 @@
           <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.17 1.05-.1 1.22-.6.17-.5-.1-1.05-.6-1.22C6.26 18.6 4 15.57 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 3.57-2.26 6.6-5.46 7.68-.5.17-.77.72-.6 1.22.17.5.72.77 1.22.6C19.13 20.17 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
           <path d="M12 6c-3.31 0-6 2.69-6 6 0 2.22 1.21 4.15 3 5.19V11h6v6.19c1.79-1.04 3-2.97 3-5.19 0-3.31-2.69-6-6-6z"/>
         </svg>
-        <div class="brand">
-          <h1 id="heroTitle">Kutscherstube</h1>
-          <p class="motto" id="motto">Essen mit besonderer Note</p>
-        </div>
-
+        <div class="brand"><h1 id="heroTitle">Kutscherstube</h1><p class="motto" id="motto">Essen mit besonderer Note</p></div>
         <div class="lang-switch" aria-label="Sprachauswahl">
           <button class="lang-btn active" data-lang="de">DE</button>
           <button class="lang-btn" data-lang="pl">PL</button>
@@ -613,35 +382,14 @@
         <div class="hero-grid">
           <div>
             <p class="hero-text" id="heroText">Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost. Treten Sie ein in unsere gemütliche Stube.</p>
-            <div class="address" id="addressBlock">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-              Großmoorbogen 11A, 21079 Hamburg
-            </div>
-
-            <div class="cta-row">
-              <a href="#speisekarte" class="btn btn-primary" id="btnMenu">Zur Speisekarte</a>
-              <a href="tel:01756803931" class="btn" id="btnCall">Anrufen</a>
-              <a href="https://maps.google.com/?q=Großmoorbogen+11A,+21079+Hamburg" target="_blank" class="btn" id="btnRoute">Anfahrt</a>
-            </div>
+            <div class="address" id="addressBlock"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>Großmoorbogen 11A, 21079 Hamburg</div>
+            <div class="cta-row"><a href="#speisekarte" class="btn btn-primary" id="btnMenu">Zur Speisekarte</a><a href="tel:01756803931" class="btn" id="btnCall">Anrufen</a><a href="https://maps.google.com/?q=Großmoorbogen+11A,+21079+Hamburg" target="_blank" class="btn" id="btnRoute">Anfahrt</a></div>
           </div>
-
           <aside class="info-panel">
-            <div class="info-row">
-              <div class="info-label" id="labelStatus">Status</div>
-              <div class="info-value" id="statusText">Lädt...</div> 
-            </div>
-            <div class="info-row">
-              <div class="info-label" id="labelPhone">Telefon</div>
-              <div class="info-value">0175 6803931</div>
-            </div>
-            <div class="info-row">
-              <div class="info-label" id="labelService">Service</div>
-              <div class="info-value" id="serviceText">Vor Ort · Zum Mitnehmen</div>
-            </div>
-            <div class="info-row">
-              <div class="info-label" id="labelNote">Hinweis</div>
-              <div class="info-value" id="noteText">Nur Barzahlung</div>
-            </div>
+            <div class="info-row"><div class="info-label" id="labelStatus">Status</div><div class="info-value" id="statusText">Lädt...</div></div>
+            <div class="info-row"><div class="info-label" id="labelPhone">Telefon</div><div class="info-value">0175 6803931</div></div>
+            <div class="info-row"><div class="info-label" id="labelService">Service</div><div class="info-value" id="serviceText">Vor Ort · Zum Mitnehmen</div></div>
+            <div class="info-row"><div class="info-label" id="labelNote">Hinweis</div><div class="info-value" id="noteText">Nur Barzahlung</div></div>
           </aside>
         </div>
       </div>
@@ -649,10 +397,7 @@
   </header>
 
   <main class="menu-page" id="speisekarte">
-    <div class="wrap">
-      <div class="section-head"><h2 id="menuHeading">Speisekarte</h2></div>
-    </div>
-
+    <div class="wrap"><div class="section-head"><h2 id="menuHeading">Speisekarte</h2></div></div>
     <div class="sticky-categories">
       <div class="wrap">
         <nav class="category-tabs" id="categoryTabs">
@@ -673,59 +418,31 @@
         <p class="category-note" id="note-fruehstueck">Tylko pozycje z widoczną ceną.</p>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Rührei mit Schinken und Zwiebeln</h4>
-              <div class="dish-price">7,00 €</div>
-              <button class="add-to-cart" data-name="Rührei mit Schinken und Zwiebeln" data-price="7.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Rührei mit Schinken und Zwiebeln</h4><div class="dish-price">7,00 €</div><button class="add-to-cart" data-name="Rührei mit Schinken und Zwiebeln" data-price="7.00">+</button></div>
             <p class="dish-desc">Fluffiges Rührei, zubereitet mit geräuchertem Schinken und karamellisierten Zwiebeln. Serviert mit frischem Brot.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Rundstück warm</h4>
-              <div class="dish-price">10,50 €</div>
-              <button class="add-to-cart" data-name="Rundstück warm" data-price="10.50">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Rundstück warm</h4><div class="dish-price">10,50 €</div><button class="add-to-cart" data-name="Rundstück warm" data-price="10.50">+</button></div>
             <p class="dish-desc">Hamburger Klassiker: Warmes Brötchen mit zartem Rindfleisch, Gurke und einer würzigen Sauce.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Polnische Wurst</h4>
-              <div class="dish-price">7,00 €</div>
-              <button class="add-to-cart" data-name="Polnische Wurst" data-price="7.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Polnische Wurst</h4><div class="dish-price">7,00 €</div><button class="add-to-cart" data-name="Polnische Wurst" data-price="7.00">+</button></div>
             <p class="dish-desc">Traditionelle polnische Wurst mit geschmolzenen Zwiebeln, serviert mit frischem Brötchen und Senf.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Bauernfrühstück</h4>
-              <div class="dish-price">10,00 €</div>
-              <button class="add-to-cart" data-name="Bauernfrühstück" data-price="10.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Bauernfrühstück</h4><div class="dish-price">10,00 €</div><button class="add-to-cart" data-name="Bauernfrühstück" data-price="10.00">+</button></div>
             <p class="dish-desc">Deftige Kombination aus Bratkartoffeln, Eiern, Speck und Zwiebeln – perfekt für einen starken Start in den Tag.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">3 Spiegeleier</h4>
-              <div class="dish-price">7,00 €</div>
-              <button class="add-to-cart" data-name="3 Spiegeleier" data-price="7.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">3 Spiegeleier</h4><div class="dish-price">7,00 €</div><button class="add-to-cart" data-name="3 Spiegeleier" data-price="7.00">+</button></div>
             <p class="dish-desc">Drei frisch gebratene Spiegeleier, wahlweise mit Speck oder Schinken. Dazu frisches Brot.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Bratkartoffeln / Krautsalat</h4>
-              <div class="dish-price">9,00 €</div>
-              <button class="add-to-cart" data-name="Bratkartoffeln / Krautsalat" data-price="9.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Bratkartoffeln / Krautsalat</h4><div class="dish-price">9,00 €</div><button class="add-to-cart" data-name="Bratkartoffeln / Krautsalat" data-price="9.00">+</button></div>
             <p class="dish-desc">Knusprige Bratkartoffeln serviert mit hausgemachtem Krautsalat – eine erfrischende Kombination.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Lachs</h4>
-              <div class="dish-price">2,80 €</div>
-              <button class="add-to-cart" data-name="Lachs" data-price="2.80">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Lachs</h4><div class="dish-price">2,80 €</div><button class="add-to-cart" data-name="Lachs" data-price="2.80">+</button></div>
             <p class="dish-desc">Räucherlachs von höchster Qualität, serviert mit Frischkäse und Zitrone.</p>
           </article>
         </div>
@@ -735,35 +452,19 @@
         <h3 class="category-title" id="cat-schnitzel">Schnitzel</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Jäger Schnitzel</h4>
-              <div class="dish-price">15,00 €</div>
-              <button class="add-to-cart" data-name="Jäger Schnitzel" data-price="15.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Jäger Schnitzel</h4><div class="dish-price">15,00 €</div><button class="add-to-cart" data-name="Jäger Schnitzel" data-price="15.00">+</button></div>
             <p class="dish-desc">Zartes Schweineschnitzel mit cremiger Pilz-Rahm-Sauce, Speck und frischen Kräutern.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Zigeuner Schnitzel</h4>
-              <div class="dish-price">15,00 €</div>
-              <button class="add-to-cart" data-name="Zigeuner Schnitzel" data-price="15.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Zigeuner Schnitzel</h4><div class="dish-price">15,00 €</div><button class="add-to-cart" data-name="Zigeuner Schnitzel" data-price="15.00">+</button></div>
             <p class="dish-desc">Knuspriges Schnitzel mit würziger Paprika-Tomaten-Sauce, Paprika, Zwiebeln und Champignons.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Hamburger Schnitzel</h4>
-              <div class="dish-price">15,00 €</div>
-              <button class="add-to-cart" data-name="Hamburger Schnitzel" data-price="15.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Hamburger Schnitzel</h4><div class="dish-price">15,00 €</div><button class="add-to-cart" data-name="Hamburger Schnitzel" data-price="15.00">+</button></div>
             <p class="dish-desc">Lokale Spezialität: Schnitzel mit Spiegelei, Gurke und Remouladen-Sauce.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Schnitzel Wiener Art</h4>
-              <div class="dish-price">14,00 €</div>
-              <button class="add-to-cart" data-name="Schnitzel Wiener Art" data-price="14.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Schnitzel Wiener Art</h4><div class="dish-price">14,00 €</div><button class="add-to-cart" data-name="Schnitzel Wiener Art" data-price="14.00">+</button></div>
             <p class="dish-desc">Klassisches paniertes Schnitzel nach Wiener Art, goldbraun gebraten.</p>
           </article>
         </div>
@@ -773,11 +474,7 @@
         <h3 class="category-title" id="cat-salat">Salat</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Salat mit Hähnchenbrust</h4>
-              <div class="dish-price">13,00 €</div>
-              <button class="add-to-cart" data-name="Salat mit Hähnchenbrust" data-price="13.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Salat mit Hähnchenbrust</h4><div class="dish-price">13,00 €</div><button class="add-to-cart" data-name="Salat mit Hähnchenbrust" data-price="13.00">+</button></div>
             <p class="dish-desc">Frischer gemischter Salat mit gegrillter Hähnchenbrust, Oliven, Tomaten, Gurken und hausgemachtem Dressing.</p>
           </article>
         </div>
@@ -787,19 +484,11 @@
         <h3 class="category-title" id="cat-snacks">Snacks</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Curry Wurst & Pommes</h4>
-              <div class="dish-price">8,50 €</div>
-              <button class="add-to-cart" data-name="Curry Wurst & Pommes" data-price="8.50">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Curry Wurst & Pommes</h4><div class="dish-price">8,50 €</div><button class="add-to-cart" data-name="Curry Wurst & Pommes" data-price="8.50">+</button></div>
             <p class="dish-desc">Berliner Klassiker: Saftige Bratwurst mit würziger Curry-Ketchup-Sauce und knusprigen Pommes Frites.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">2 Frikadellen + Kartoffel- & Krautsalat</h4>
-              <div class="dish-price">11,00 €</div>
-              <button class="add-to-cart" data-name="2 Frikadellen + Kartoffel- & Krautsalat" data-price="11.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">2 Frikadellen + Kartoffel- & Krautsalat</h4><div class="dish-price">11,00 €</div><button class="add-to-cart" data-name="2 Frikadellen + Kartoffel- & Krautsalat" data-price="11.00">+</button></div>
             <p class="dish-desc">Deftige Kombination: Zwei saftige Frikadellen z sałatkami.</p>
           </article>
         </div>
@@ -810,43 +499,23 @@
         <p class="category-note" id="note-hausgerichte">Tylko pozycje z widoczną ceną ze screenów Google Menu.</p>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Krustenbraten</h4>
-              <div class="dish-price">15,00 €</div>
-              <button class="add-to-cart" data-name="Krustenbraten" data-price="15.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Krustenbraten</h4><div class="dish-price">15,00 €</div><button class="add-to-cart" data-name="Krustenbraten" data-price="15.00">+</button></div>
             <p class="dish-desc">Knuspriger Schweinebraten mit perfekter Kruste, dazu Rotkohl und hausgemachte Klößchen.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Königsberger Klops</h4>
-              <div class="dish-price">14,00 €</div>
-              <button class="add-to-cart" data-name="Königsberger Klops" data-price="14.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Königsberger Klops</h4><div class="dish-price">14,00 €</div><button class="add-to-cart" data-name="Königsberger Klops" data-price="14.00">+</button></div>
             <p class="dish-desc">Traditionelle Hackfleischklößchen in cremiger Kapern-Sauce, serviert mit Bohnen und Salzkartoffeln.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Grützwurst</h4>
-              <div class="dish-price">14,00 €</div>
-              <button class="add-to-cart" data-name="Grützwurst" data-price="14.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Grützwurst</h4><div class="dish-price">14,00 €</div><button class="add-to-cart" data-name="Grützwurst" data-price="14.00">+</button></div>
             <p class="dish-desc">(Polnisch) Traditionelle Grützwurst mit cremigem Kartoffelpüree und karamellisierten Zwiebeln.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Hühnerfrikassee</h4>
-              <div class="dish-price">18,00 €</div>
-              <button class="add-to-cart" data-name="Hühnerfrikassee" data-price="18.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Hühnerfrikassee</h4><div class="dish-price">18,00 €</div><button class="add-to-cart" data-name="Hühnerfrikassee" data-price="18.00">+</button></div>
             <p class="dish-desc">Cremiges Hühnerfrikassee mit zartem Hühnchen, Mischgemüse und Reis.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Schweineleber</h4>
-              <div class="dish-price">17,00 €</div>
-              <button class="add-to-cart" data-name="Schweineleber" data-price="17.00">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Schweineleber</h4><div class="dish-price">17,00 €</div><button class="add-to-cart" data-name="Schweineleber" data-price="17.00">+</button></div>
             <p class="dish-desc">Zarte Schweineleber nach Berliner Art, mit Mischgemüse und cremigem Püree. Für Kenner!</p>
           </article>
         </div>
@@ -856,11 +525,7 @@
         <h3 class="category-title" id="cat-getraenke">Getränke</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head">
-              <h4 class="dish-name">Becher Kaffee / Tee / Kakao</h4>
-              <div class="dish-price">2,50 €</div>
-              <button class="add-to-cart" data-name="Becher Kaffee / Tee / Kakao" data-price="2.50">+</button>
-            </div>
+            <div class="dish-head"><h4 class="dish-name">Becher Kaffee / Tee / Kakao</h4><div class="dish-price">2,50 €</div><button class="add-to-cart" data-name="Becher Kaffee / Tee / Kakao" data-price="2.50">+</button></div>
             <p class="dish-desc">Heiße Getränke für einen gemütlichen Moment.</p>
           </article>
         </div>
@@ -882,9 +547,30 @@
     </div>
   </main>
 
-  <div id="cart-floating-btn" onclick="sendWhatsApp()">
-    <span id="cartLabelBtn">BESTELLEN (WhatsApp)</span>
+  <div id="cart-floating-btn" onclick="openCartModal()">
+    <span id="cartLabelBtn">BESTELLEN</span>
     <span class="cart-count" id="cart-counter">0</span>
+  </div>
+
+  <div class="cart-modal-overlay" id="cartModalOverlay" onclick="closeCartModal(event)">
+    <div class="cart-modal" onclick="event.stopPropagation()">
+      <div class="cart-modal-header">
+        <h3 id="modalTitleText">Ihre Bestellung</h3>
+        <button class="cart-modal-close" onclick="closeCartModal()">&times;</button>
+      </div>
+      <div class="cart-modal-body" id="cartModalBody">
+        </div>
+      <div class="cart-modal-footer">
+        <div class="cart-total-row">
+          <span id="modalTotalLabel">Gesamt:</span>
+          <span id="cartModalTotal">0.00 €</span>
+        </div>
+        <button class="btn btn-primary" style="width: 100%; background: #25d366; color: white; border-color: #25d366; font-size: 1.1rem; gap: 8px;" onclick="sendWhatsApp()">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 21.122l-1.464-.396c-1.896-.513-3.64-1.492-5.06-2.834L2 22l4.137-3.414c1.378 1.134 3.084 1.874 4.894 2.14l1.01.148c5.44.802 10.45-3.08 11.252-8.52C24.1 6.914 20.222 1.905 14.78 1.103c-5.44-.802-10.45 3.08-11.25 8.52-.16 1.077-.12 2.17.11 3.23l.16.736-2.43 1.996c-.36-1.554-.42-3.17-.18-4.78C2.175 4.086 8.355-.694 15.05.29c6.696.985 11.478 7.166 10.493 13.86-1.012 6.87-7.237 11.75-14.11 10.74l.6-3.768zM16.5 15.5c-1.45-1.45-3.8-1.45-5.25 0l-1.5 1.5c-.83-.83-1.66-1.66-2.5-2.5l1.5-1.5c1.45-1.45 1.45-3.8 0-5.25l-.75-.75c-1.45-1.45-3.8-1.45-5.25 0l-.75.75c-1.45 1.45-1.45 3.8 0 5.25l4.5 4.5c1.45 1.45 3.8 1.45 5.25 0l.75-.75c1.45-1.45 1.45-3.8 0-5.25l-.75-.75z"/></svg>
+          <span id="modalSendBtnText">Bestellung senden</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <footer class="footer">
@@ -899,9 +585,7 @@
   <script>
     // ========== LOADER ==========
     window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-      }, 2000); 
+      setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); 
     });
 
     // ========== ROZWIJANIE DAŃ ==========
@@ -914,34 +598,21 @@
         this.classList.toggle('expanded');
       });
       dish.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          this.click();
-        }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
       });
     });
 
-    // ========== ANIMACJA SCROLL ==========
+    // ========== ANIMACJA SCROLL & TABS ==========
     const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, observerOptions);
-    document.querySelectorAll('.category').forEach(section => {
-      sectionObserver.observe(section);
-    });
+    document.querySelectorAll('.category').forEach(section => { sectionObserver.observe(section); });
 
-    // ========== STICKY TABS ==========
     const tabButtons = document.querySelectorAll('.tab-btn');
-    const observedSections = [
-      "fruehstueck", "schnitzel", "salat", "snacks", 
-      "hausgerichte", "getraenke", "oeffnungszeiten"
-    ].map(id => document.getElementById(id));
+    const observedSections = ["fruehstueck", "schnitzel", "salat", "snacks", "hausgerichte", "getraenke", "oeffnungszeiten"].map(id => document.getElementById(id));
 
-    function centerActiveTab(button) {
-      button.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-    }
+    function centerActiveTab(button) { button.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); }
 
     tabButtons.forEach(button => {
       button.addEventListener("click", () => {
@@ -972,9 +643,7 @@
       const now = new Date();
       const day = now.getDay(); 
       const hour = now.getHours();
-
       const isOpen = (day >= 1 && day <= 5) && (hour >= 8 && hour < 20);
-      
       const statusEl = document.getElementById("statusText");
       const lang = document.documentElement.lang || "de";
 
@@ -994,37 +663,102 @@
     }
     setInterval(updateOpeningStatus, 60000);
 
-    // ========== KOSZYK WHATSAPP ==========
+    // ========== KOSZYK WHATSAPP Z PODGLĄDEM ==========
     let cart = [];
     const WHATSAPP_NUMBER = "491756803931";
 
+    // Dodawanie do koszyka
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', (e) => {
-        e.stopPropagation(); // Blokuje rozwijanie się opisu dania
-        
+        e.stopPropagation(); 
         const name = button.getAttribute('data-name');
         const price = parseFloat(button.getAttribute('data-price'));
-        
         cart.push({ name, price });
         updateCartUI();
       });
     });
 
+    // Aktualizacja ikonki na dole
     function updateCartUI() {
       const btn = document.getElementById('cart-floating-btn');
       const counter = document.getElementById('cart-counter');
-      
       if (cart.length > 0) {
         btn.style.display = 'flex';
         counter.textContent = cart.length;
       } else {
         btn.style.display = 'none';
+        closeCartModal(); // Zamknij modal, jeśli usunięto ostatni element
       }
     }
 
+    // Otwieranie Modalu Koszyka
+    function openCartModal() {
+      renderCartItems();
+      const modal = document.getElementById('cartModalOverlay');
+      modal.style.display = 'flex';
+      // Krótkie opóźnienie dla płynnej animacji pojawiania się
+      setTimeout(() => { modal.classList.add('active'); }, 10);
+      document.body.style.overflow = 'hidden'; // Blokada przewijania tła
+    }
+
+    // Zamykanie Modalu
+    function closeCartModal(e) {
+      if(e && e.target !== document.getElementById('cartModalOverlay')) return; // Zamknij tylko przy kliknięciu w tło lub krzyżyk
+      
+      const modal = document.getElementById('cartModalOverlay');
+      modal.classList.remove('active');
+      setTimeout(() => { 
+        modal.style.display = 'none'; 
+        document.body.style.overflow = 'auto'; // Odblokowanie przewijania
+      }, 300);
+    }
+
+    // Usuwanie 1 sztuki danego przedmiotu z koszyka
+    function removeOneItem(name) {
+      const index = cart.findIndex(item => item.name === name);
+      if (index > -1) {
+        cart.splice(index, 1);
+        updateCartUI();
+        renderCartItems();
+      }
+    }
+
+    // Renderowanie listy wewnątrz Modalu
+    function renderCartItems() {
+      const body = document.getElementById('cartModalBody');
+      const totalEl = document.getElementById('cartModalTotal');
+      let total = 0;
+      let summary = {};
+      
+      // Grupowanie przedmiotów
+      cart.forEach(item => {
+        summary[item.name] = summary[item.name] || { price: item.price, qty: 0 };
+        summary[item.name].qty++;
+        total += item.price;
+      });
+
+      body.innerHTML = '';
+      const lang = document.documentElement.lang || "de";
+      const removeBtnText = translations[lang].removeBtn;
+
+      for (const [name, data] of Object.entries(summary)) {
+        const subtotal = data.price * data.qty;
+        body.innerHTML += `
+          <div class="cart-row">
+            <div class="cart-row-info">
+              <div class="cart-row-title">${data.qty}x ${name}</div>
+              <div class="cart-row-price">${subtotal.toFixed(2)} €</div>
+            </div>
+            <button class="cart-btn-remove" onclick="removeOneItem('${name}')">${removeBtnText}</button>
+          </div>
+        `;
+      }
+      totalEl.textContent = total.toFixed(2) + ' €';
+    }
+
+    // Finalne wysłanie wiadomości na WhatsApp
     function sendWhatsApp() {
       if (cart.length === 0) return;
-
       let total = 0;
       let summary = {};
       
@@ -1046,7 +780,6 @@
       }
 
       let message = msgIntro;
-
       for (const [name, qty] of Object.entries(summary)) {
         const itemPrice = cart.find(i => i.name === name).price;
         const subtotal = itemPrice * qty;
@@ -1054,79 +787,49 @@
       }
 
       message += `${msgTotal}${total.toFixed(2)} €`;
-
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      
+      closeCartModal();
       window.open(whatsappUrl, '_blank');
     }
-
 
     // ========== TŁUMACZENIA ==========
     const translations = {
       de: {
-        motto: "Essen mit besonderer Note",
-        heroTitle: "Kutscherstube",
+        motto: "Essen mit besonderer Note", heroTitle: "Kutscherstube",
         heroText: "Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost. Treten Sie ein in unsere gemütliche Stube.",
-        btnMenu: "Zur Speisekarte",
-        btnCall: "Anrufen",
-        btnRoute: "Anfahrt",
-        labelStatus: "Status",
-        labelPhone: "Telefon",
-        labelService: "Service",
-        serviceText: "Vor Ort · Zum Mitnehmen",
-        labelNote: "Hinweis",
-        noteText: "Nur Barzahlung",
-        menuHeading: "Speisekarte",
+        btnMenu: "Zur Speisekarte", btnCall: "Anrufen", btnRoute: "Anfahrt",
+        labelStatus: "Status", labelPhone: "Telefon", labelService: "Service", serviceText: "Vor Ort · Zum Mitnehmen",
+        labelNote: "Hinweis", noteText: "Nur Barzahlung", menuHeading: "Speisekarte",
         tabs: { fruehstueck: "Frühstück", schnitzel: "Schnitzel", salat: "Salat", snacks: "Snacks", hausgerichte: "Hausgerichte", getraenke: "Getränke", zeiten: "Zeiten" },
-        noteBreakfast: "Nur Artikel mit sichtbarem Preis.",
-        noteHouse: "Nur Artikel mit sichtbarem Preis.",
-        days: ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"],
-        closed: "Geschlossen",
+        noteBreakfast: "Nur Artikel mit sichtbarem Preis.", noteHouse: "Nur Artikel mit sichtbarem Preis.",
+        days: ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"], closed: "Geschlossen",
         footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931",
-        cartBtn: "BESTELLEN (WhatsApp)"
+        cartBtn: "KORB", modalTitle: "Ihre Bestellung", modalTotal: "Gesamt:", modalSendBtn: "Bestellung senden", removeBtn: "− 1 Entf"
       },
       pl: {
-        motto: "Jedzenie z wyjątkową nutą",
-        heroTitle: "Kutscherstube",
+        motto: "Jedzenie z wyjątkową nutą", heroTitle: "Kutscherstube",
         heroText: "Tradycyjna kuchnia, śniadania, sznycle i klasyczne domowe jedzenie. Rozgość się w naszej karczmie.",
-        btnMenu: "Zobacz menu",
-        btnCall: "Zadzwoń",
-        btnRoute: "Dojazd",
-        labelStatus: "Status",
-        labelPhone: "Telefon",
-        labelService: "Obsługa",
-        serviceText: "Na miejscu · Na wynos",
-        labelNote: "Informacja",
-        noteText: "Tylko gotówka",
-        menuHeading: "Menu",
+        btnMenu: "Zobacz menu", btnCall: "Zadzwoń", btnRoute: "Dojazd",
+        labelStatus: "Status", labelPhone: "Telefon", labelService: "Obsługa", serviceText: "Na miejscu · Na wynos",
+        labelNote: "Informacja", noteText: "Tylko gotówka", menuHeading: "Menu",
         tabs: { fruehstueck: "Śniadania", schnitzel: "Sznycle", salat: "Sałatki", snacks: "Przekąski", hausgerichte: "Dania domowe", getraenke: "Napoje", zeiten: "Godziny" },
-        noteBreakfast: "Tylko pozycje z widoczną ceną.",
-        noteHouse: "Tylko pozycje z widoczną ceną ze screenów.",
-        days: ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"],
-        closed: "Zamknięte",
+        noteBreakfast: "Tylko pozycje z widoczną ceną.", noteHouse: "Tylko pozycje z widoczną ceną ze screenów.",
+        days: ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"], closed: "Zamknięte",
         footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931",
-        cartBtn: "ZAMÓW (WhatsApp)"
+        cartBtn: "KOSZYK", modalTitle: "Twój Koszyk", modalTotal: "Suma:", modalSendBtn: "Wyślij zamówienie", removeBtn: "− 1 Usuń"
       },
       en: {
-        motto: "Food with a special note",
-        heroTitle: "Kutscherstube",
+        motto: "Food with a special note", heroTitle: "Kutscherstube",
         heroText: "Traditional cuisine, breakfasts, schnitzels and classic home-style food. Step into our cozy tavern.",
-        btnMenu: "View menu",
-        btnCall: "Call us",
-        btnRoute: "Directions",
-        labelStatus: "Status",
-        labelPhone: "Phone",
-        labelService: "Service",
-        serviceText: "Dine in · Takeaway",
-        labelNote: "Note",
-        noteText: "Cash only",
-        menuHeading: "Menu",
+        btnMenu: "View menu", btnCall: "Call us", btnRoute: "Directions",
+        labelStatus: "Status", labelPhone: "Phone", labelService: "Service", serviceText: "Dine in · Takeaway",
+        labelNote: "Note", noteText: "Cash only", menuHeading: "Menu",
         tabs: { fruehstueck: "Breakfast", schnitzel: "Schnitzels", salat: "Salads", snacks: "Snacks", hausgerichte: "House dishes", getraenke: "Drinks", zeiten: "Hours" },
-        noteBreakfast: "Only items with visible prices.",
-        noteHouse: "Only items with visible prices.",
-        days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
-        closed: "Closed",
+        noteBreakfast: "Only items with visible prices.", noteHouse: "Only items with visible prices.",
+        days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], closed: "Closed",
         footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931",
-        cartBtn: "ORDER (WhatsApp)"
+        cartBtn: "CART", modalTitle: "Your Order", modalTotal: "Total:", modalSendBtn: "Send Order", removeBtn: "− 1 Rmv"
       }
     };
 
@@ -1180,21 +883,20 @@
       document.getElementById("closed-sun").textContent = t.closed;
       document.getElementById("footerText").textContent = t.footer;
       
-      // Tłumaczenie przycisku WhatsApp
+      // Tłumaczenia Koszyka
       document.getElementById("cartLabelBtn").textContent = t.cartBtn;
+      document.getElementById("modalTitleText").textContent = t.modalTitle;
+      document.getElementById("modalTotalLabel").textContent = t.modalTotal;
+      document.getElementById("modalSendBtnText").textContent = t.modalSendBtn;
 
-      langButtons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.lang === lang);
-      });
+      langButtons.forEach(btn => { btn.classList.toggle("active", btn.dataset.lang === lang); });
 
       updateOpeningStatus();
+      if(cart.length > 0) renderCartItems(); // Przeładuj teksty przycisków "Usuń" w aktywnym koszyku
     }
 
-    langButtons.forEach(btn => {
-      btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
-    });
+    langButtons.forEach(btn => { btn.addEventListener("click", () => setLanguage(btn.dataset.lang)); });
 
-    // Inicjalizacja
     setLanguage("de");
   </script>
 </body>
