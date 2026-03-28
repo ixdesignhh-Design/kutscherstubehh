@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kutscherstube – Speisekarte</title>
   
-  <!-- Eleganckie czcionki -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -206,9 +205,8 @@
       margin-bottom: -5px;
     }
 
-    /* Zmieniony, w pełni responsywny baner z efektem złotego napisu */
     .brand h1 {
-      font-size: clamp(1.8rem, 8vw, 4rem); /* Idealne skalowanie na telefony */
+      font-size: clamp(1.8rem, 8vw, 4rem);
       color: transparent;
       background: linear-gradient(to bottom, #fff8d6, #d4af37, #997312);
       -webkit-background-clip: text;
@@ -218,7 +216,7 @@
       margin: 0;
       line-height: 1.1;
       filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.6));
-      word-break: keep-all; /* Zapobiega łamaniu słowa w pół na skrajnie małych ekranach */
+      word-break: keep-all; 
     }
 
     .motto {
@@ -259,7 +257,6 @@
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
-    /* Karta Informacyjna */
     .hero-card {
       background: rgba(37, 19, 54, 0.6);
       border: var(--border-gold);
@@ -347,7 +344,6 @@
     }
     .info-value { font-size: 1.05rem; color: var(--text-main); font-weight: 300; }
 
-    /* Dynamiczne statusy */
     .status-open, .status-closed {
       display: flex; align-items: center; gap: 8px; font-weight: 500;
     }
@@ -497,11 +493,77 @@
       .dish-head { flex-direction: column; align-items: flex-start; gap: 5px; }
       .dish-desc { padding-right: 0; }
     }
+
+    /* ========== STYLE KOSZYKA (NOWE) ========== */
+    .add-to-cart {
+      background: var(--gold-primary);
+      color: var(--tavern-dark);
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      flex-shrink: 0; /* Zapobiega spłaszczaniu na małych ekranach */
+    }
+
+    .add-to-cart:hover {
+      transform: scale(1.1);
+      background: var(--gold-light);
+    }
+
+    #cart-floating-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #25d366; /* Kolor WhatsApp */
+      color: white;
+      padding: 15px 25px;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: none; /* Ukryty, dopóki koszyk jest pusty */
+      z-index: 2000;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      border: 2px solid white;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn { 
+      from { transform: translateY(100px); opacity: 0; } 
+      to { transform: translateY(0); opacity: 1; } 
+    }
+
+    .cart-count {
+      background: white;
+      color: #25d366;
+      border-radius: 50%;
+      padding: 2px 10px;
+      font-weight: bold;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    @media (max-width: 600px) {
+      #cart-floating-btn {
+        width: calc(100% - 40px);
+        left: 20px;
+        bottom: 20px;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Tło (Koła od wozu) -->
   <svg class="bg-decorations" xmlns="http://www.w3.org/2000/svg">
     <symbol id="wagon-wheel" viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="6"/>
@@ -515,10 +577,8 @@
     <use href="#wagon-wheel" class="wheel wheel-2" />
   </svg>
 
-  <!-- LOADING SCREEN (Elegancki Klosz) -->
   <div id="loader">
     <div class="cloche-scene">
-      <!-- Unosząca się para -->
       <svg class="elegant-steam" viewBox="0 0 40 60">
         <path d="M10,60 C10,40 20,30 20,10" />
         <path d="M20,60 C20,45 10,35 10,5" opacity="0.6"/>
@@ -530,7 +590,6 @@
     <div class="loader-text">Zubereitung...</div>
   </div>
 
-  <!-- HEADER -->
   <header class="hero">
     <div class="wrap">
       <div class="hero-top">
@@ -569,7 +628,6 @@
           <aside class="info-panel">
             <div class="info-row">
               <div class="info-label" id="labelStatus">Status</div>
-              <!-- Status klasy będzie nadawany dynamicznie z JS -->
               <div class="info-value" id="statusText">Lädt...</div> 
             </div>
             <div class="info-row">
@@ -590,7 +648,6 @@
     </div>
   </header>
 
-  <!-- MENU -->
   <main class="menu-page" id="speisekarte">
     <div class="wrap">
       <div class="section-head"><h2 id="menuHeading">Speisekarte</h2></div>
@@ -611,7 +668,6 @@
     </div>
 
     <div class="wrap">
-      <!-- Frühstück -->
       <section class="category visible" id="fruehstueck">
         <h3 class="category-title" id="cat-fruehstueck">Frühstück</h3>
         <p class="category-note" id="note-fruehstueck">Tylko pozycje z widoczną ceną.</p>
@@ -620,6 +676,7 @@
             <div class="dish-head">
               <h4 class="dish-name">Rührei mit Schinken und Zwiebeln</h4>
               <div class="dish-price">7,00 €</div>
+              <button class="add-to-cart" data-name="Rührei mit Schinken und Zwiebeln" data-price="7.00">+</button>
             </div>
             <p class="dish-desc">Fluffiges Rührei, zubereitet mit geräuchertem Schinken und karamellisierten Zwiebeln. Serviert mit frischem Brot.</p>
           </article>
@@ -627,6 +684,7 @@
             <div class="dish-head">
               <h4 class="dish-name">Rundstück warm</h4>
               <div class="dish-price">10,50 €</div>
+              <button class="add-to-cart" data-name="Rundstück warm" data-price="10.50">+</button>
             </div>
             <p class="dish-desc">Hamburger Klassiker: Warmes Brötchen mit zartem Rindfleisch, Gurke und einer würzigen Sauce.</p>
           </article>
@@ -634,6 +692,7 @@
             <div class="dish-head">
               <h4 class="dish-name">Polnische Wurst</h4>
               <div class="dish-price">7,00 €</div>
+              <button class="add-to-cart" data-name="Polnische Wurst" data-price="7.00">+</button>
             </div>
             <p class="dish-desc">Traditionelle polnische Wurst mit geschmolzenen Zwiebeln, serviert mit frischem Brötchen und Senf.</p>
           </article>
@@ -641,6 +700,7 @@
             <div class="dish-head">
               <h4 class="dish-name">Bauernfrühstück</h4>
               <div class="dish-price">10,00 €</div>
+              <button class="add-to-cart" data-name="Bauernfrühstück" data-price="10.00">+</button>
             </div>
             <p class="dish-desc">Deftige Kombination aus Bratkartoffeln, Eiern, Speck und Zwiebeln – perfekt für einen starken Start in den Tag.</p>
           </article>
@@ -648,6 +708,7 @@
             <div class="dish-head">
               <h4 class="dish-name">3 Spiegeleier</h4>
               <div class="dish-price">7,00 €</div>
+              <button class="add-to-cart" data-name="3 Spiegeleier" data-price="7.00">+</button>
             </div>
             <p class="dish-desc">Drei frisch gebratene Spiegeleier, wahlweise mit Speck oder Schinken. Dazu frisches Brot.</p>
           </article>
@@ -655,6 +716,7 @@
             <div class="dish-head">
               <h4 class="dish-name">Bratkartoffeln / Krautsalat</h4>
               <div class="dish-price">9,00 €</div>
+              <button class="add-to-cart" data-name="Bratkartoffeln / Krautsalat" data-price="9.00">+</button>
             </div>
             <p class="dish-desc">Knusprige Bratkartoffeln serviert mit hausgemachtem Krautsalat – eine erfrischende Kombination.</p>
           </article>
@@ -662,101 +724,148 @@
             <div class="dish-head">
               <h4 class="dish-name">Lachs</h4>
               <div class="dish-price">2,80 €</div>
+              <button class="add-to-cart" data-name="Lachs" data-price="2.80">+</button>
             </div>
             <p class="dish-desc">Räucherlachs von höchster Qualität, serviert mit Frischkäse und Zitrone.</p>
           </article>
         </div>
       </section>
 
-      <!-- Schnitzel -->
       <section class="category" id="schnitzel">
         <h3 class="category-title" id="cat-schnitzel">Schnitzel</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Jäger Schnitzel</h4><div class="dish-price">15,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Jäger Schnitzel</h4>
+              <div class="dish-price">15,00 €</div>
+              <button class="add-to-cart" data-name="Jäger Schnitzel" data-price="15.00">+</button>
+            </div>
             <p class="dish-desc">Zartes Schweineschnitzel mit cremiger Pilz-Rahm-Sauce, Speck und frischen Kräutern.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Zigeuner Schnitzel</h4><div class="dish-price">15,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Zigeuner Schnitzel</h4>
+              <div class="dish-price">15,00 €</div>
+              <button class="add-to-cart" data-name="Zigeuner Schnitzel" data-price="15.00">+</button>
+            </div>
             <p class="dish-desc">Knuspriges Schnitzel mit würziger Paprika-Tomaten-Sauce, Paprika, Zwiebeln und Champignons.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Hamburger Schnitzel</h4><div class="dish-price">15,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Hamburger Schnitzel</h4>
+              <div class="dish-price">15,00 €</div>
+              <button class="add-to-cart" data-name="Hamburger Schnitzel" data-price="15.00">+</button>
+            </div>
             <p class="dish-desc">Lokale Spezialität: Schnitzel mit Spiegelei, Gurke und Remouladen-Sauce.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Schnitzel Wiener Art</h4><div class="dish-price">14,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Schnitzel Wiener Art</h4>
+              <div class="dish-price">14,00 €</div>
+              <button class="add-to-cart" data-name="Schnitzel Wiener Art" data-price="14.00">+</button>
+            </div>
             <p class="dish-desc">Klassisches paniertes Schnitzel nach Wiener Art, goldbraun gebraten.</p>
           </article>
         </div>
       </section>
 
-      <!-- Salat -->
       <section class="category" id="salat">
         <h3 class="category-title" id="cat-salat">Salat</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Salat mit Hähnchenbrust</h4><div class="dish-price">13,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Salat mit Hähnchenbrust</h4>
+              <div class="dish-price">13,00 €</div>
+              <button class="add-to-cart" data-name="Salat mit Hähnchenbrust" data-price="13.00">+</button>
+            </div>
             <p class="dish-desc">Frischer gemischter Salat mit gegrillter Hähnchenbrust, Oliven, Tomaten, Gurken und hausgemachtem Dressing.</p>
           </article>
         </div>
       </section>
 
-      <!-- Snacks -->
       <section class="category" id="snacks">
         <h3 class="category-title" id="cat-snacks">Snacks</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Curry Wurst & Pommes</h4><div class="dish-price">8,50 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Curry Wurst & Pommes</h4>
+              <div class="dish-price">8,50 €</div>
+              <button class="add-to-cart" data-name="Curry Wurst & Pommes" data-price="8.50">+</button>
+            </div>
             <p class="dish-desc">Berliner Klassiker: Saftige Bratwurst mit würziger Curry-Ketchup-Sauce und knusprigen Pommes Frites.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">2 Frikadellen + Kartoffel- & Krautsalat</h4><div class="dish-price">11,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">2 Frikadellen + Kartoffel- & Krautsalat</h4>
+              <div class="dish-price">11,00 €</div>
+              <button class="add-to-cart" data-name="2 Frikadellen + Kartoffel- & Krautsalat" data-price="11.00">+</button>
+            </div>
             <p class="dish-desc">Deftige Kombination: Zwei saftige Frikadellen z sałatkami.</p>
           </article>
         </div>
       </section>
 
-      <!-- Hausgerichte -->
       <section class="category" id="hausgerichte">
         <h3 class="category-title" id="cat-hausgerichte">Hausgerichte</h3>
         <p class="category-note" id="note-hausgerichte">Tylko pozycje z widoczną ceną ze screenów Google Menu.</p>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Krustenbraten</h4><div class="dish-price">15,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Krustenbraten</h4>
+              <div class="dish-price">15,00 €</div>
+              <button class="add-to-cart" data-name="Krustenbraten" data-price="15.00">+</button>
+            </div>
             <p class="dish-desc">Knuspriger Schweinebraten mit perfekter Kruste, dazu Rotkohl und hausgemachte Klößchen.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Königsberger Klops</h4><div class="dish-price">14,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Königsberger Klops</h4>
+              <div class="dish-price">14,00 €</div>
+              <button class="add-to-cart" data-name="Königsberger Klops" data-price="14.00">+</button>
+            </div>
             <p class="dish-desc">Traditionelle Hackfleischklößchen in cremiger Kapern-Sauce, serviert mit Bohnen und Salzkartoffeln.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Grützwurst</h4><div class="dish-price">14,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Grützwurst</h4>
+              <div class="dish-price">14,00 €</div>
+              <button class="add-to-cart" data-name="Grützwurst" data-price="14.00">+</button>
+            </div>
             <p class="dish-desc">(Polnisch) Traditionelle Grützwurst mit cremigem Kartoffelpüree und karamellisierten Zwiebeln.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Hühnerfrikassee</h4><div class="dish-price">18,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Hühnerfrikassee</h4>
+              <div class="dish-price">18,00 €</div>
+              <button class="add-to-cart" data-name="Hühnerfrikassee" data-price="18.00">+</button>
+            </div>
             <p class="dish-desc">Cremiges Hühnerfrikassee mit zartem Hühnchen, Mischgemüse und Reis.</p>
           </article>
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Schweineleber</h4><div class="dish-price">17,00 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Schweineleber</h4>
+              <div class="dish-price">17,00 €</div>
+              <button class="add-to-cart" data-name="Schweineleber" data-price="17.00">+</button>
+            </div>
             <p class="dish-desc">Zarte Schweineleber nach Berliner Art, mit Mischgemüse und cremigem Püree. Für Kenner!</p>
           </article>
         </div>
       </section>
 
-      <!-- Getränke -->
       <section class="category" id="getraenke">
         <h3 class="category-title" id="cat-getraenke">Getränke</h3>
         <div class="menu-list">
           <article class="dish" tabindex="0">
-            <div class="dish-head"><h4 class="dish-name">Becher Kaffee / Tee / Kakao</h4><div class="dish-price">2,50 €</div></div>
+            <div class="dish-head">
+              <h4 class="dish-name">Becher Kaffee / Tee / Kakao</h4>
+              <div class="dish-price">2,50 €</div>
+              <button class="add-to-cart" data-name="Becher Kaffee / Tee / Kakao" data-price="2.50">+</button>
+            </div>
             <p class="dish-desc">Heiße Getränke für einen gemütlichen Moment.</p>
           </article>
         </div>
       </section>
 
-      <!-- Öffnungszeiten -->
       <section class="category" id="oeffnungszeiten">
         <h3 class="category-title" id="cat-zeiten">Öffnungszeiten</h3>
         <div class="hours-list">
@@ -773,7 +882,11 @@
     </div>
   </main>
 
-  <!-- FOOTER -->
+  <div id="cart-floating-btn" onclick="sendWhatsApp()">
+    <span id="cartLabelBtn">BESTELLEN (WhatsApp)</span>
+    <span class="cart-count" id="cart-counter">0</span>
+  </div>
+
   <footer class="footer">
     <div class="wrap">
       <svg class="footer-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -783,7 +896,6 @@
     </div>
   </footer>
 
-  <!-- JAVASCRIPT -->
   <script>
     // ========== LOADER ==========
     window.addEventListener('load', () => {
@@ -795,7 +907,7 @@
     // ========== ROZWIJANIE DAŃ ==========
     document.querySelectorAll('.dish').forEach(dish => {
       dish.addEventListener('click', function(e) {
-        if (e.target.closest('.dish-price')) return;
+        if (e.target.closest('.dish-price') || e.target.closest('.add-to-cart')) return;
         document.querySelectorAll('.dish.expanded').forEach(other => {
           if (other !== this) other.classList.remove('expanded');
         });
@@ -858,10 +970,9 @@
     // ========== DYNAMICZNY STATUS OTWARCIA ==========
     function updateOpeningStatus() {
       const now = new Date();
-      const day = now.getDay(); // 0 = Niedziela, 1 = Poniedziałek ... 6 = Sobota
+      const day = now.getDay(); 
       const hour = now.getHours();
 
-      // Czynne od Poniedziałku (1) do Piątku (5) w godzinach 08:00 - 19:59
       const isOpen = (day >= 1 && day <= 5) && (hour >= 8 && hour < 20);
       
       const statusEl = document.getElementById("statusText");
@@ -881,9 +992,73 @@
         statusEl.className = "info-value status-closed";
       }
     }
-
-    // Aktualizuj status co 1 minutę
     setInterval(updateOpeningStatus, 60000);
+
+    // ========== KOSZYK WHATSAPP ==========
+    let cart = [];
+    const WHATSAPP_NUMBER = "491756803931";
+
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation(); // Blokuje rozwijanie się opisu dania
+        
+        const name = button.getAttribute('data-name');
+        const price = parseFloat(button.getAttribute('data-price'));
+        
+        cart.push({ name, price });
+        updateCartUI();
+      });
+    });
+
+    function updateCartUI() {
+      const btn = document.getElementById('cart-floating-btn');
+      const counter = document.getElementById('cart-counter');
+      
+      if (cart.length > 0) {
+        btn.style.display = 'flex';
+        counter.textContent = cart.length;
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+
+    function sendWhatsApp() {
+      if (cart.length === 0) return;
+
+      let total = 0;
+      let summary = {};
+      
+      cart.forEach(item => {
+        summary[item.name] = (summary[item.name] || 0) + 1;
+        total += item.price;
+      });
+
+      const lang = document.documentElement.lang || "de";
+      let msgIntro = "Hallo! Ich möchte gerne bestellen:\n\n";
+      let msgTotal = "\nGesamt: ";
+      
+      if (lang === "pl") {
+        msgIntro = "Dzień dobry! Chciałbym złożyć zamówienie:\n\n";
+        msgTotal = "\nSuma: ";
+      } else if (lang === "en") {
+        msgIntro = "Hello! I would like to order:\n\n";
+        msgTotal = "\nTotal: ";
+      }
+
+      let message = msgIntro;
+
+      for (const [name, qty] of Object.entries(summary)) {
+        const itemPrice = cart.find(i => i.name === name).price;
+        const subtotal = itemPrice * qty;
+        message += `• ${qty}x ${name} (${subtotal.toFixed(2)} €)\n`;
+      }
+
+      message += `${msgTotal}${total.toFixed(2)} €`;
+
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
 
     // ========== TŁUMACZENIA ==========
     const translations = {
@@ -906,7 +1081,8 @@
         noteHouse: "Nur Artikel mit sichtbarem Preis.",
         days: ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"],
         closed: "Geschlossen",
-        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
+        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931",
+        cartBtn: "BESTELLEN (WhatsApp)"
       },
       pl: {
         motto: "Jedzenie z wyjątkową nutą",
@@ -927,7 +1103,8 @@
         noteHouse: "Tylko pozycje z widoczną ceną ze screenów.",
         days: ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"],
         closed: "Zamknięte",
-        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
+        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931",
+        cartBtn: "ZAMÓW (WhatsApp)"
       },
       en: {
         motto: "Food with a special note",
@@ -948,7 +1125,8 @@
         noteHouse: "Only items with visible prices.",
         days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
         closed: "Closed",
-        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931"
+        footer: "Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931",
+        cartBtn: "ORDER (WhatsApp)"
       }
     };
 
@@ -1001,12 +1179,14 @@
       document.getElementById("closed-sat").textContent = t.closed;
       document.getElementById("closed-sun").textContent = t.closed;
       document.getElementById("footerText").textContent = t.footer;
+      
+      // Tłumaczenie przycisku WhatsApp
+      document.getElementById("cartLabelBtn").textContent = t.cartBtn;
 
       langButtons.forEach(btn => {
         btn.classList.toggle("active", btn.dataset.lang === lang);
       });
 
-      // Zaktualizuj status (biorąc pod uwagę aktualny wybrany język)
       updateOpeningStatus();
     }
 
