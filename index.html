@@ -52,123 +52,53 @@
     h4 { font-family: 'Cormorant Garamond', serif; }
 
     /* ========== TŁO: MOTYW WOŹNICY (SVG) ========== */
+    /* ========== TŁO: ODBIJAJĄCE SIĘ KOŁA ========== */
     .bg-decorations {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: -1;
-      opacity: 0.04;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: -1; overflow: hidden;
     }
-    .wheel {
-      position: absolute;
-      width: 40vw; max-width: 400px;
-      animation: slowSpin 60s linear infinite;
-      fill: var(--gold-light);
-    }
-    .wheel-1 { top: -10%; left: -10%; }
-    .wheel-2 { bottom: -10%; right: -10%; animation-direction: reverse; }
+
+    /* Animacje osi X i Y z różnymi czasami (tworzą nieprzewidywalny tor lotu) */
+    .bounce-x-1 { position: absolute; animation: moveX 22s linear infinite alternate; }
+    .bounce-y-1 { animation: moveY 15s linear infinite alternate; }
     
-    @keyframes slowSpin { 100% { transform: rotate(360deg); } }
+    .bounce-x-2 { position: absolute; animation: moveX 27s linear infinite alternate-reverse; }
+    .bounce-y-2 { animation: moveY 19s linear infinite alternate-reverse; }
+
+    .wheel {
+      width: 250px; height: 250px; /* Stały rozmiar kół */
+      color: var(--gold-light);
+      opacity: 0.06; /* Widoczność tła */
+    }
+
+    .wheel-spin-1 { animation: slowSpin 20s linear infinite; }
+    .wheel-spin-2 { animation: slowSpin 25s linear infinite reverse; }
+
+    @keyframes moveX {
+      0% { transform: translateX(-50px); }
+      100% { transform: translateX(calc(100vw - 200px)); }
+    }
+    @keyframes moveY {
+      0% { transform: translateY(-50px); }
+      100% { transform: translateY(calc(100vh - 200px)); }
+    }
+    @keyframes slowSpin { 
+      100% { transform: rotate(360deg); } 
+    }
+
 
     /* ========== LOADING ANIMATION - ELEGANCKI KLOSZ ========== */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: var(--tavern-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.8s ease, visibility 0.8s;
-    }
-
+    #loader { position: fixed; inset: 0; background: var(--tavern-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.8s ease, visibility 0.8s; }
     #loader.hidden { opacity: 0; visibility: hidden; }
-
-    .cloche-scene {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      margin-bottom: 20px;
-    }
-
-    .plate {
-      position: absolute;
-      bottom: 10px;
-      left: 10%;
-      width: 80%;
-      height: 12px;
-      background: linear-gradient(to right, #a68427, #f3e5ab, #a68427);
-      border-radius: 50%;
-      box-shadow: 0 10px 15px rgba(0,0,0,0.8);
-      z-index: 1;
-    }
-
-    .cloche {
-      position: absolute;
-      bottom: 16px;
-      left: 15%;
-      width: 70%;
-      height: 60px;
-      background: linear-gradient(135deg, rgba(243, 229, 171, 0.1), rgba(212, 175, 55, 0.9));
-      border-radius: 50px 50px 0 0;
-      border: 1px solid var(--gold-light);
-      border-bottom: 3px solid #a68427;
-      z-index: 3;
-      transform-origin: bottom center;
-      animation: liftCloche 2.5s ease-in-out infinite;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-    }
-    
-    .cloche::before {
-      content: '';
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 16px;
-      height: 16px;
-      background: radial-gradient(circle, #f3e5ab, #a68427);
-      border-radius: 50%;
-    }
-
-    .elegant-steam {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 60px;
-      z-index: 2;
-      opacity: 0;
-      animation: fadeSteam 2.5s ease-in-out infinite;
-    }
-    .elegant-steam path {
-      fill: none;
-      stroke: var(--gold-light);
-      stroke-width: 2;
-      stroke-linecap: round;
-      filter: blur(1px);
-    }
-
-    .loader-text {
-      font-family: 'Cinzel', serif;
-      font-size: 1.1rem;
-      color: var(--gold-primary);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      animation: pulseText 2s infinite;
-    }
-
-    @keyframes liftCloche {
-      0%, 100% { transform: translateY(0); }
-      40%, 60% { transform: translateY(-40px) rotate(5deg); }
-    }
-    @keyframes fadeSteam {
-      0%, 20% { opacity: 0; transform: translate(-50%, 10px) scale(0.8); }
-      50% { opacity: 0.8; transform: translate(-50%, -20px) scale(1.1); }
-      80%, 100% { opacity: 0; transform: translate(-50%, -40px) scale(1.3); }
-    }
+    .cloche-scene { position: relative; width: 120px; height: 120px; margin-bottom: 20px; }
+    .plate { position: absolute; bottom: 10px; left: 10%; width: 80%; height: 12px; background: linear-gradient(to right, #a68427, #f3e5ab, #a68427); border-radius: 50%; box-shadow: 0 10px 15px rgba(0,0,0,0.8); z-index: 1; }
+    .cloche { position: absolute; bottom: 16px; left: 15%; width: 70%; height: 60px; background: linear-gradient(135deg, rgba(243, 229, 171, 0.1), rgba(212, 175, 55, 0.9)); border-radius: 50px 50px 0 0; border: 1px solid var(--gold-light); border-bottom: 3px solid #a68427; z-index: 3; transform-origin: bottom center; animation: liftCloche 2.5s ease-in-out infinite; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+    .cloche::before { content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 16px; height: 16px; background: radial-gradient(circle, #f3e5ab, #a68427); border-radius: 50%; }
+    .elegant-steam { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 40px; height: 60px; z-index: 2; opacity: 0; animation: fadeSteam 2.5s ease-in-out infinite; }
+    .elegant-steam path { fill: none; stroke: var(--gold-light); stroke-width: 2; stroke-linecap: round; filter: blur(1px); }
+    .loader-text { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold-primary); letter-spacing: 3px; text-transform: uppercase; animation: pulseText 2s infinite; }
+    @keyframes liftCloche { 0%, 100% { transform: translateY(0); } 40%, 60% { transform: translateY(-40px) rotate(5deg); } }
+    @keyframes fadeSteam { 0%, 20% { opacity: 0; transform: translate(-50%, 10px) scale(0.8); } 50% { opacity: 0.8; transform: translate(-50%, -20px) scale(1.1); } 80%, 100% { opacity: 0; transform: translate(-50%, -40px) scale(1.3); } }
     @keyframes pulseText { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
     /* ========== WSPÓLNE ========== */
@@ -178,7 +108,7 @@
 
     /* ========== HEADER / HERO ========== */
     .hero { padding: 50px 0 40px; position: relative; }
-    .hero-top { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; margin-bottom: 40px; }
+    .hero-top { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; margin-bottom: 30px; }
     .hero-icon { width: 45px; height: 45px; fill: var(--gold-primary); margin-bottom: -5px; }
     .brand h1 { font-size: clamp(1.8rem, 8vw, 4rem); color: transparent; background: linear-gradient(to bottom, #fff8d6, #d4af37, #997312); -webkit-background-clip: text; background-clip: text; text-transform: uppercase; letter-spacing: 1px; margin: 0; line-height: 1.1; filter: drop-shadow(0px 4px 15px rgba(0,0,0,0.6)); word-break: keep-all; }
     .motto { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.1rem, 4vw, 1.5rem); color: var(--text-muted); font-style: italic; letter-spacing: 1px; margin-top: 5px; }
@@ -186,6 +116,21 @@
     .lang-switch { display: flex; gap: 5px; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 30px; border: var(--border-gold); margin-top: 15px; }
     .lang-btn { background: transparent; border: none; color: var(--text-muted); padding: 8px 16px; font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 0.9rem; cursor: pointer; border-radius: 20px; transition: var(--transition); }
     .lang-btn.active, .lang-btn:hover { background: var(--gold-primary); color: var(--tavern-dark); font-weight: 600; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+
+    /* GŁÓWNA ZMIANA: WYRAŹNY ZNACZEK STOLIKA */
+    .table-badge {
+      display: none; /* Domyślnie ukryte, skrypt to pokaże */
+      align-items: center; justify-content: center; gap: 10px;
+      background: linear-gradient(135deg, rgba(37, 19, 54, 0.9), rgba(22, 11, 30, 0.95));
+      border: 1px solid var(--gold-primary); color: var(--gold-light);
+      padding: 12px 30px; border-radius: 50px;
+      margin: 0 auto 30px auto; width: fit-content;
+      font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    .table-badge svg { color: var(--gold-primary); }
+    @keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
     .hero-card { background: rgba(37, 19, 54, 0.6); border: var(--border-gold); border-radius: 12px; padding: 40px; backdrop-filter: blur(10px); box-shadow: var(--shadow-tavern); position: relative; }
     .hero-card::before, .hero-card::after { content: ''; position: absolute; width: 20px; height: 20px; border: 2px solid var(--gold-primary); }
@@ -273,86 +218,61 @@
       .dish-desc { padding-right: 0; }
     }
 
-    /* ========== STYLE KOSZYKA Z ZAKŁADKI (DODAJ) ========== */
-    .add-to-cart {
-      background: var(--gold-primary); color: var(--tavern-dark); border: none; border-radius: 50%;
-      width: 32px; height: 32px; font-weight: bold; font-size: 1.2rem; cursor: pointer;
-      margin-left: 15px; display: flex; align-items: center; justify-content: center;
-      transition: var(--transition); box-shadow: 0 2px 10px rgba(0,0,0,0.3); flex-shrink: 0;
-    }
+    /* ========== KOSZYK STYLE ========== */
+    .add-to-cart { background: var(--gold-primary); color: var(--tavern-dark); border: none; border-radius: 50%; width: 32px; height: 32px; font-weight: bold; font-size: 1.2rem; cursor: pointer; margin-left: 15px; display: flex; align-items: center; justify-content: center; transition: var(--transition); box-shadow: 0 2px 10px rgba(0,0,0,0.3); flex-shrink: 0; }
     .add-to-cart:hover { transform: scale(1.1); background: var(--gold-light); }
-
-    #cart-floating-btn {
-      position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white;
-      padding: 15px 25px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      display: none; z-index: 2000; cursor: pointer; font-family: 'Cinzel', serif;
-      border: 2px solid white; align-items: center; gap: 12px; animation: slideIn 0.5s ease-out;
-    }
+    #cart-floating-btn { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; padding: 15px 25px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; z-index: 2000; cursor: pointer; font-family: 'Cinzel', serif; border: 2px solid white; align-items: center; gap: 12px; animation: slideIn 0.5s ease-out; }
     @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     .cart-count { background: white; color: #25d366; border-radius: 50%; padding: 2px 10px; font-weight: bold; font-family: 'Outfit', sans-serif; }
+    @media (max-width: 600px) { #cart-floating-btn { width: calc(100% - 40px); left: 20px; bottom: 20px; justify-content: center; } }
 
-    @media (max-width: 600px) {
-      #cart-floating-btn { width: calc(100% - 40px); left: 20px; bottom: 20px; justify-content: center; }
-    }
-
-    /* ========== MODAL (NOWE - EKRAN KOSZYKA) ========== */
-    .cart-modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
-      display: none; justify-content: center; align-items: center; z-index: 3000;
-      opacity: 0; transition: opacity 0.3s ease;
-    }
+    /* ========== MODAL ========== */
+    .cart-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 3000; opacity: 0; transition: opacity 0.3s ease; }
     .cart-modal-overlay.active { display: flex; opacity: 1; }
-    
-    .cart-modal {
-      background: var(--tavern-dark); border: var(--border-gold); border-radius: 12px;
-      width: 90%; max-width: 500px; max-height: 85vh;
-      display: flex; flex-direction: column; box-shadow: var(--shadow-tavern);
-      transform: translateY(20px); transition: transform 0.3s ease;
-    }
+    .cart-modal { background: var(--tavern-dark); border: var(--border-gold); border-radius: 12px; width: 90%; max-width: 500px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: var(--shadow-tavern); transform: translateY(20px); transition: transform 0.3s ease; }
     .cart-modal-overlay.active .cart-modal { transform: translateY(0); }
-
     .cart-modal-header { padding: 20px; border-bottom: var(--border-gold); display: flex; justify-content: space-between; align-items: center; }
     .cart-modal-header h3 { color: var(--gold-primary); margin: 0; font-size: 1.5rem; }
     .cart-modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 2rem; cursor: pointer; line-height: 1; transition: 0.3s; }
     .cart-modal-close:hover { color: var(--gold-light); }
-
     .cart-modal-body { padding: 20px; overflow-y: auto; flex-grow: 1; }
     .cart-modal-body::-webkit-scrollbar { width: 6px; }
     .cart-modal-body::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 10px; }
-
     .cart-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(212, 175, 55, 0.2); }
     .cart-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    
     .cart-row-info { flex-grow: 1; padding-right: 15px; }
     .cart-row-title { color: var(--gold-light); font-weight: 500; font-size: 1.1rem; line-height: 1.3; margin-bottom: 5px; }
     .cart-row-price { color: var(--text-muted); font-family: 'Cinzel', serif; }
-    
-    .cart-btn-remove {
-      background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.4);
-      border-radius: 4px; padding: 6px 12px; font-weight: 600; cursor: pointer; transition: 0.3s;
-      white-space: nowrap; font-family: 'Outfit', sans-serif;
-    }
+    .cart-btn-remove { background: rgba(231, 76, 60, 0.1); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.4); border-radius: 4px; padding: 6px 12px; font-weight: 600; cursor: pointer; transition: 0.3s; white-space: nowrap; font-family: 'Outfit', sans-serif; }
     .cart-btn-remove:hover { background: #e74c3c; color: white; }
-
     .cart-modal-footer { padding: 20px; border-top: var(--border-gold); background: rgba(0,0,0,0.2); }
     .cart-total-row { display: flex; justify-content: space-between; margin-bottom: 20px; font-family: 'Cinzel', serif; color: var(--gold-primary); font-size: 1.4rem; font-weight: 700; }
   </style>
 </head>
 <body>
+  <div class="bg-decorations">
+    <div class="bounce-x-1"><div class="bounce-y-1">
+      <svg class="wheel wheel-spin-1" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="6"/>
+        <circle cx="50" cy="50" r="10" fill="currentColor"/>
+        <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" stroke-width="4"/>
+        <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="4"/>
+        <line x1="18" y1="18" x2="82" y2="82" stroke="currentColor" stroke-width="4"/>
+        <line x1="18" y1="82" x2="82" y2="18" stroke="currentColor" stroke-width="4"/>
+      </svg>
+    </div></div>
+    <div class="bounce-x-2"><div class="bounce-y-2">
+      <svg class="wheel wheel-spin-2" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="6"/>
+        <circle cx="50" cy="50" r="10" fill="currentColor"/>
+        <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" stroke-width="4"/>
+        <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="4"/>
+        <line x1="18" y1="18" x2="82" y2="82" stroke="currentColor" stroke-width="4"/>
+        <line x1="18" y1="82" x2="82" y2="18" stroke="currentColor" stroke-width="4"/>
+      </svg>
+    </div></div>
+  </div>
 
-  <svg class="bg-decorations" xmlns="http://www.w3.org/2000/svg">
-    <symbol id="wagon-wheel" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="6"/>
-      <circle cx="50" cy="50" r="10" fill="currentColor"/>
-      <line x1="50" y1="5" x2="50" y2="95" stroke="currentColor" stroke-width="4"/>
-      <line x1="5" y1="50" x2="95" y2="50" stroke="currentColor" stroke-width="4"/>
-      <line x1="18" y1="18" x2="82" y2="82" stroke="currentColor" stroke-width="4"/>
-      <line x1="18" y1="82" x2="82" y2="18" stroke="currentColor" stroke-width="4"/>
-    </symbol>
-    <use href="#wagon-wheel" class="wheel wheel-1" />
-    <use href="#wagon-wheel" class="wheel wheel-2" />
-  </svg>
 
   <div id="loader">
     <div class="cloche-scene">
@@ -378,6 +298,13 @@
         </div>
       </div>
 
+      <div id="prominentTableBadge" class="table-badge">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10h18M5 10v7M19 10v7M8 10V7c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2v3" />
+        </svg>
+        <span id="prominentTableText">Tisch -</span>
+      </div>
+
       <div class="hero-card">
         <div class="hero-grid">
           <div>
@@ -389,7 +316,6 @@
             <div class="info-row"><div class="info-label" id="labelStatus">Status</div><div class="info-value" id="statusText">Lädt...</div></div>
             <div class="info-row"><div class="info-label" id="labelPhone">Telefon</div><div class="info-value">0175 6803931</div></div>
             <div class="info-row"><div class="info-label" id="labelService">Service</div><div class="info-value" id="serviceText">Vor Ort · Zum Mitnehmen</div></div>
-            <div class="info-row"><div class="info-label" id="labelNote">Hinweis</div><div class="info-value" id="noteText">Nur Barzahlung</div></div>
           </aside>
         </div>
       </div>
@@ -556,10 +482,10 @@
     <div class="cart-modal" onclick="event.stopPropagation()">
       <div class="cart-modal-header">
         <h3 id="modalTitleText">Ihre Bestellung</h3>
-        <button class="cart-modal-close" onclick="closeCartModal()">&times;</button>
+        <button class="cart-modal-close" onclick="closeCartModal()">×</button>
       </div>
       <div class="cart-modal-body" id="cartModalBody">
-        </div>
+      </div>
       <div class="cart-modal-footer">
         <div class="cart-total-row">
           <span id="modalTotalLabel">Gesamt:</span>
@@ -575,20 +501,20 @@
 
   <footer class="footer">
     <div class="wrap">
-      <svg class="footer-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+     <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+</svg>
+
       </svg><br>
-      <span id="footerText">Kutscherstube · Großmoorbogen 11A · 21079 Hamburg · 0175 6803931</span>
+      <span id="footerText">Virtuelles Kelner App. IX Design. All rights Reserved. Hamburg 2026 </span>
     </div>
   </footer>
 
   <script>
-    // ========== LOADER ==========
     window.addEventListener('load', () => {
       setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); 
     });
 
-    // ========== ROZWIJANIE DAŃ ==========
     document.querySelectorAll('.dish').forEach(dish => {
       dish.addEventListener('click', function(e) {
         if (e.target.closest('.dish-price') || e.target.closest('.add-to-cart')) return;
@@ -602,7 +528,6 @@
       });
     });
 
-    // ========== ANIMACJA SCROLL & TABS ==========
     const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
@@ -611,9 +536,7 @@
 
     const tabButtons = document.querySelectorAll('.tab-btn');
     const observedSections = ["fruehstueck", "schnitzel", "salat", "snacks", "hausgerichte", "getraenke", "oeffnungszeiten"].map(id => document.getElementById(id));
-
     function centerActiveTab(button) { button.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" }); }
-
     tabButtons.forEach(button => {
       button.addEventListener("click", () => {
         const target = document.getElementById(button.dataset.target);
@@ -623,7 +546,6 @@
         }
       });
     });
-
     const tabObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -638,7 +560,6 @@
     }, { rootMargin: "-30% 0px -70% 0px", threshold: 0 });
     observedSections.forEach(section => tabObserver.observe(section));
 
-    // ========== DYNAMICZNY STATUS OTWARCIA ==========
     function updateOpeningStatus() {
       const now = new Date();
       const day = now.getDay(); 
@@ -646,13 +567,7 @@
       const isOpen = (day >= 1 && day <= 5) && (hour >= 8 && hour < 20);
       const statusEl = document.getElementById("statusText");
       const lang = document.documentElement.lang || "de";
-
-      const texts = {
-        de: { open: "Geöffnet · Schließt um 20:00", closed: "Geschlossen" },
-        pl: { open: "Otwarte · Zamknięcie o 20:00", closed: "Zamknięte" },
-        en: { open: "Open · Closes at 20:00", closed: "Closed" }
-      };
-
+      const texts = { de: { open: "Geöffnet · Schließt um 20:00", closed: "Geschlossen" }, pl: { open: "Otwarte · Zamknięcie o 20:00", closed: "Zamknięte" }, en: { open: "Open · Closes at 20:00", closed: "Closed" } };
       if (isOpen) {
         statusEl.textContent = texts[lang].open;
         statusEl.className = "info-value status-open";
@@ -663,20 +578,19 @@
     }
     setInterval(updateOpeningStatus, 60000);
 
-    // ========== KOSZYK WHATSAPP Z PODGLĄDEM ==========
+    // ========== LOGIKA STOLIKÓW I KOSZYKA ==========
     let cart = [];
     const WHATSAPP_NUMBER = "491756803931";
     
-    // POBIERANIE NUMERU STOLIKA
-    // Skrypt sprawdza, czy w linku jest np. "?table=5". Jeśli nie ma, ustawia "Brak (na wynos?)".
-    // Jeśli wolisz robić kopie plików, po prostu zmień "Brak" wpisując numer na sztywno, np. "1".
+    // Pobieranie numeru stolika z linku (np. ?table=1)
     let TABLE_NUMBER = "Brak"; 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('table')) {
       TABLE_NUMBER = urlParams.get('table');
+      // Wyświetlanie nowej pięknej odznaki na samej górze!
+      document.getElementById('prominentTableBadge').style.display = 'flex';
     }
 
-    // Dodawanie do koszyka
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', (e) => {
         e.stopPropagation(); 
@@ -687,7 +601,6 @@
       });
     });
 
-    // Aktualizacja ikonki na dole
     function updateCartUI() {
       const btn = document.getElementById('cart-floating-btn');
       const counter = document.getElementById('cart-counter');
@@ -696,11 +609,10 @@
         counter.textContent = cart.length;
       } else {
         btn.style.display = 'none';
-        closeCartModal(); // Zamknij modal, jeśli usunięto ostatni element
+        closeCartModal(); 
       }
     }
 
-    // Otwieranie Modalu Koszyka
     function openCartModal() {
       renderCartItems();
       const modal = document.getElementById('cartModalOverlay');
@@ -709,10 +621,8 @@
       document.body.style.overflow = 'hidden'; 
     }
 
-    // Zamykanie Modalu
     function closeCartModal(e) {
       if(e && e.target !== document.getElementById('cartModalOverlay')) return; 
-      
       const modal = document.getElementById('cartModalOverlay');
       modal.classList.remove('active');
       setTimeout(() => { 
@@ -721,7 +631,6 @@
       }, 300);
     }
 
-    // Usuwanie 1 sztuki danego przedmiotu z koszyka
     function removeOneItem(name) {
       const index = cart.findIndex(item => item.name === name);
       if (index > -1) {
@@ -731,7 +640,6 @@
       }
     }
 
-    // Renderowanie listy wewnątrz Modalu
     function renderCartItems() {
       const body = document.getElementById('cartModalBody');
       const totalEl = document.getElementById('cartModalTotal');
@@ -763,7 +671,6 @@
       totalEl.textContent = total.toFixed(2) + ' €';
     }
 
-    // Finalne wysłanie wiadomości na WhatsApp z NUMEREM STOLIKA
     function sendWhatsApp() {
       if (cart.length === 0) return;
       let total = 0;
@@ -775,134 +682,21 @@
       });
 
       const lang = document.documentElement.lang || "de";
-      
-      // Zmienione powitania - dodano numer stolika!
-      let msgIntro = `Hallo! Neue Bestellung für TISCH ${TABLE_NUMBER}:\n\n`;
+      let msgIntro = "";
       let msgTotal = "\nGesamt: ";
       
-      if (lang === "pl") {
-        msgIntro = `Dzień dobry! Zamówienie na STOLIK ${TABLE_NUMBER}:\n\n`;
-        msgTotal = "\nSuma: ";
-      } else if (lang === "en") {
-        msgIntro = `Hello! New order for TABLE ${TABLE_NUMBER}:\n\n`;
-        msgTotal = "\nTotal: ";
-      }
-
-      let message = msgIntro;
-      for (const [name, qty] of Object.entries(summary)) {
-        const itemPrice = cart.find(i => i.name === name).price;
-        const subtotal = itemPrice * qty;
-        message += `• ${qty}x ${name} (${subtotal.toFixed(2)} €)\n`;
-      }
-
-      message += `${msgTotal}${total.toFixed(2)} €`;
-      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-      
-      closeCartModal();
-      window.open(whatsappUrl, '_blank');
-    }
-
-
-    // Aktualizacja ikonki na dole
-    function updateCartUI() {
-      const btn = document.getElementById('cart-floating-btn');
-      const counter = document.getElementById('cart-counter');
-      if (cart.length > 0) {
-        btn.style.display = 'flex';
-        counter.textContent = cart.length;
+      if (TABLE_NUMBER !== "Brak") {
+        if (lang === "pl") msgIntro = `Dzień dobry! Zamówienie na STOLIK ${TABLE_NUMBER}:\n\n`;
+        else if (lang === "en") msgIntro = `Hello! New order for TABLE ${TABLE_NUMBER}:\n\n`;
+        else msgIntro = `Hallo! Neue Bestellung für TISCH ${TABLE_NUMBER}:\n\n`;
       } else {
-        btn.style.display = 'none';
-        closeCartModal(); // Zamknij modal, jeśli usunięto ostatni element
+        if (lang === "pl") msgIntro = `Dzień dobry! Chciałbym złożyć zamówienie:\n\n`;
+        else if (lang === "en") msgIntro = `Hello! I would like to order:\n\n`;
+        else msgIntro = `Hallo! Ich möchte gerne bestellen:\n\n`;
       }
-    }
 
-    // Otwieranie Modalu Koszyka
-    function openCartModal() {
-      renderCartItems();
-      const modal = document.getElementById('cartModalOverlay');
-      modal.style.display = 'flex';
-      // Krótkie opóźnienie dla płynnej animacji pojawiania się
-      setTimeout(() => { modal.classList.add('active'); }, 10);
-      document.body.style.overflow = 'hidden'; // Blokada przewijania tła
-    }
-
-    // Zamykanie Modalu
-    function closeCartModal(e) {
-      if(e && e.target !== document.getElementById('cartModalOverlay')) return; // Zamknij tylko przy kliknięciu w tło lub krzyżyk
-      
-      const modal = document.getElementById('cartModalOverlay');
-      modal.classList.remove('active');
-      setTimeout(() => { 
-        modal.style.display = 'none'; 
-        document.body.style.overflow = 'auto'; // Odblokowanie przewijania
-      }, 300);
-    }
-
-    // Usuwanie 1 sztuki danego przedmiotu z koszyka
-    function removeOneItem(name) {
-      const index = cart.findIndex(item => item.name === name);
-      if (index > -1) {
-        cart.splice(index, 1);
-        updateCartUI();
-        renderCartItems();
-      }
-    }
-
-    // Renderowanie listy wewnątrz Modalu
-    function renderCartItems() {
-      const body = document.getElementById('cartModalBody');
-      const totalEl = document.getElementById('cartModalTotal');
-      let total = 0;
-      let summary = {};
-      
-      // Grupowanie przedmiotów
-      cart.forEach(item => {
-        summary[item.name] = summary[item.name] || { price: item.price, qty: 0 };
-        summary[item.name].qty++;
-        total += item.price;
-      });
-
-      body.innerHTML = '';
-      const lang = document.documentElement.lang || "de";
-      const removeBtnText = translations[lang].removeBtn;
-
-      for (const [name, data] of Object.entries(summary)) {
-        const subtotal = data.price * data.qty;
-        body.innerHTML += `
-          <div class="cart-row">
-            <div class="cart-row-info">
-              <div class="cart-row-title">${data.qty}x ${name}</div>
-              <div class="cart-row-price">${subtotal.toFixed(2)} €</div>
-            </div>
-            <button class="cart-btn-remove" onclick="removeOneItem('${name}')">${removeBtnText}</button>
-          </div>
-        `;
-      }
-      totalEl.textContent = total.toFixed(2) + ' €';
-    }
-
-    // Finalne wysłanie wiadomości na WhatsApp
-    function sendWhatsApp() {
-      if (cart.length === 0) return;
-      let total = 0;
-      let summary = {};
-      
-      cart.forEach(item => {
-        summary[item.name] = (summary[item.name] || 0) + 1;
-        total += item.price;
-      });
-
-      const lang = document.documentElement.lang || "de";
-      let msgIntro = "Hallo! Ich möchte gerne bestellen:\n\n";
-      let msgTotal = "\nGesamt: ";
-      
-      if (lang === "pl") {
-        msgIntro = "Dzień dobry! Chciałbym złożyć zamówienie:\n\n";
-        msgTotal = "\nSuma: ";
-      } else if (lang === "en") {
-        msgIntro = "Hello! I would like to order:\n\n";
-        msgTotal = "\nTotal: ";
-      }
+      if (lang === "pl") msgTotal = "\nSuma: ";
+      else if (lang === "en") msgTotal = "\nTotal: ";
 
       let message = msgIntro;
       for (const [name, qty] of Object.entries(summary)) {
@@ -918,14 +712,11 @@
       window.open(whatsappUrl, '_blank');
     }
 
-    // ========== TŁUMACZENIA ==========
     const translations = {
       de: {
-        motto: "Essen mit besonderer Note", heroTitle: "Kutscherstube",
-        heroText: "Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost. Treten Sie ein in unsere gemütliche Stube.",
-        btnMenu: "Zur Speisekarte", btnCall: "Anrufen", btnRoute: "Anfahrt",
-        labelStatus: "Status", labelPhone: "Telefon", labelService: "Service", serviceText: "Vor Ort · Zum Mitnehmen",
-        labelNote: "Hinweis", noteText: "Nur Barzahlung", menuHeading: "Speisekarte",
+        motto: "Essen mit besonderer Note", heroTitle: "Kutscherstube", heroText: "Traditionelle Küche, Frühstück, Schnitzel und klassische Hausmannskost.",
+        btnMenu: "Zur Speisekarte", btnCall: "Anrufen", btnRoute: "Anfahrt", labelStatus: "Status", labelPhone: "Telefon", labelService: "Service",
+        serviceText: "Vor Ort · Zum Mitnehmen", labelNote: "Hinweis", noteText: "Nur Barzahlung", labelTable: "Tisch", menuHeading: "Speisekarte",
         tabs: { fruehstueck: "Frühstück", schnitzel: "Schnitzel", salat: "Salat", snacks: "Snacks", hausgerichte: "Hausgerichte", getraenke: "Getränke", zeiten: "Zeiten" },
         noteBreakfast: "Nur Artikel mit sichtbarem Preis.", noteHouse: "Nur Artikel mit sichtbarem Preis.",
         days: ["Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag","Sonntag"], closed: "Geschlossen",
@@ -933,11 +724,9 @@
         cartBtn: "KORB", modalTitle: "Ihre Bestellung", modalTotal: "Gesamt:", modalSendBtn: "Bestellung senden", removeBtn: "− 1 Entf"
       },
       pl: {
-        motto: "Jedzenie z wyjątkową nutą", heroTitle: "Kutscherstube",
-        heroText: "Tradycyjna kuchnia, śniadania, sznycle i klasyczne domowe jedzenie. Rozgość się w naszej karczmie.",
-        btnMenu: "Zobacz menu", btnCall: "Zadzwoń", btnRoute: "Dojazd",
-        labelStatus: "Status", labelPhone: "Telefon", labelService: "Obsługa", serviceText: "Na miejscu · Na wynos",
-        labelNote: "Informacja", noteText: "Tylko gotówka", menuHeading: "Menu",
+        motto: "Jedzenie z wyjątkową nutą", heroTitle: "Kutscherstube", heroText: "Tradycyjna kuchnia, śniadania, sznycle i klasyczne domowe jedzenie.",
+        btnMenu: "Zobacz menu", btnCall: "Zadzwoń", btnRoute: "Dojazd", labelStatus: "Status", labelPhone: "Telefon", labelService: "Obsługa",
+        serviceText: "Na miejscu · Na wynos", labelNote: "Informacja", noteText: "Tylko gotówka", labelTable: "Stolik", menuHeading: "Menu",
         tabs: { fruehstueck: "Śniadania", schnitzel: "Sznycle", salat: "Sałatki", snacks: "Przekąski", hausgerichte: "Dania domowe", getraenke: "Napoje", zeiten: "Godziny" },
         noteBreakfast: "Tylko pozycje z widoczną ceną.", noteHouse: "Tylko pozycje z widoczną ceną ze screenów.",
         days: ["Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota","Niedziela"], closed: "Zamknięte",
@@ -945,11 +734,9 @@
         cartBtn: "KOSZYK", modalTitle: "Twój Koszyk", modalTotal: "Suma:", modalSendBtn: "Wyślij zamówienie", removeBtn: "− 1 Usuń"
       },
       en: {
-        motto: "Food with a special note", heroTitle: "Kutscherstube",
-        heroText: "Traditional cuisine, breakfasts, schnitzels and classic home-style food. Step into our cozy tavern.",
-        btnMenu: "View menu", btnCall: "Call us", btnRoute: "Directions",
-        labelStatus: "Status", labelPhone: "Phone", labelService: "Service", serviceText: "Dine in · Takeaway",
-        labelNote: "Note", noteText: "Cash only", menuHeading: "Menu",
+        motto: "Food with a special note", heroTitle: "Kutscherstube", heroText: "Traditional cuisine, breakfasts, schnitzels and classic home-style food.",
+        btnMenu: "View menu", btnCall: "Call us", btnRoute: "Directions", labelStatus: "Status", labelPhone: "Phone", labelService: "Service",
+        serviceText: "Dine in · Takeaway", labelNote: "Note", noteText: "Cash only", labelTable: "Table", menuHeading: "Menu",
         tabs: { fruehstueck: "Breakfast", schnitzel: "Schnitzels", salat: "Salads", snacks: "Snacks", hausgerichte: "House dishes", getraenke: "Drinks", zeiten: "Hours" },
         noteBreakfast: "Only items with visible prices.", noteHouse: "Only items with visible prices.",
         days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], closed: "Closed",
@@ -974,7 +761,6 @@
       document.getElementById("labelPhone").textContent = t.labelPhone;
       document.getElementById("labelService").textContent = t.labelService;
       document.getElementById("serviceText").textContent = t.serviceText;
-      document.getElementById("labelNote").textContent = t.labelNote;
       document.getElementById("noteText").textContent = t.noteText;
       document.getElementById("menuHeading").textContent = t.menuHeading;
 
@@ -1008,16 +794,21 @@
       document.getElementById("closed-sun").textContent = t.closed;
       document.getElementById("footerText").textContent = t.footer;
       
-      // Tłumaczenia Koszyka
       document.getElementById("cartLabelBtn").textContent = t.cartBtn;
-      document.getElementById("modalTitleText").textContent = t.modalTitle;
       document.getElementById("modalTotalLabel").textContent = t.modalTotal;
       document.getElementById("modalSendBtnText").textContent = t.modalSendBtn;
 
-      langButtons.forEach(btn => { btn.classList.toggle("active", btn.dataset.lang === lang); });
+      // === AKTUALIZACJA ZNACZKA I TYTUŁU KOSZYKA ZALEŻNIE OD JĘZYKA ===
+      if (TABLE_NUMBER !== "Brak") {
+        document.getElementById("prominentTableText").textContent = `${t.labelTable} ${TABLE_NUMBER}`;
+        document.getElementById("modalTitleText").textContent = `${t.modalTitle} - ${t.labelTable} ${TABLE_NUMBER}`;
+      } else {
+        document.getElementById("modalTitleText").textContent = t.modalTitle;
+      }
 
+      langButtons.forEach(btn => { btn.classList.toggle("active", btn.dataset.lang === lang); });
       updateOpeningStatus();
-      if(cart.length > 0) renderCartItems(); // Przeładuj teksty przycisków "Usuń" w aktywnym koszyku
+      if(cart.length > 0) renderCartItems(); 
     }
 
     langButtons.forEach(btn => { btn.addEventListener("click", () => setLanguage(btn.dataset.lang)); });
